@@ -1,0 +1,9 @@
+<button
+  class="sbb-svg-icon-wrapper sbb-button-reset-frameless"
+  (click)="openDialog()"
+  aria-label="See icon details"
+  type="button"
+>
+  <sbb-icon [svgIcon]="cdnIconPath" aria-hidden="false" [attr.aria-label]="cdnIconPath"></sbb-icon>
+</button>
+<span class="sbb-svg-icon-path" [sbbTooltip]="cdnIconPath">{{ cdnIconPath }}</span>

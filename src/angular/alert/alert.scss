@@ -1,0 +1,93 @@
+@use '@sbb-esta/angular' as sbb;
+
+.sbb-alert {
+  display: flex;
+  background-color: var(--sbb-color-iron);
+  color: var(--sbb-color-white);
+  justify-content: center;
+  align-items: flex-start;
+  font-size: var(--sbb-font-size);
+  line-height: var(--sbb-line-height);
+  outline: none;
+  overflow-y: hidden;
+
+  padding: sbb.pxToRem(16);
+  @include sbb.mq($from: tablet) {
+    padding: sbb.pxToRem(36) sbb.pxToRem(24) sbb.pxToRem(36) sbb.pxToRem(48);
+  }
+  @include sbb.mq($from: desktop) {
+    padding: calc(#{sbb.pxToRem(40)} * var(--sbb-scaling-factor))
+      calc(#{sbb.pxToRem(56)} * var(--sbb-scaling-factor));
+  }
+
+  :is(a, a:is(:hover, :focus)) {
+    color: var(--sbb-color-white);
+  }
+}
+
+.sbb-alert-link {
+  text-decoration: none;
+  transition: background-color var(--sbb-transition-duration-default)
+    var(--sbb-transition-timing-default);
+
+  &:is(:hover, :focus, :focus-within, :active) {
+    background-color: var(--sbb-color-black);
+    color: var(--sbb-color-white);
+  }
+}
+
+:is(.sbb-alert-icon, .sbb-alert-close) {
+  flex: 0 0 var(--sbb-icon-size-default);
+  line-height: 0;
+
+  :where(html:not(.sbb-lean)) & {
+    @include sbb.mq($from: desktop4k) {
+      flex-shrink: 1;
+      flex-grow: 1;
+      text-align: right;
+    }
+  }
+}
+
+.sbb-alert-content {
+  flex: 1 1 auto;
+  margin: calc(#{sbb.pxToRem(-2)} * var(--sbb-scaling-factor)) sbb.pxToRem(12) sbb.pxToRem(0);
+
+  :where(html:not(.sbb-lean)) & {
+    @include sbb.mq($from: tablet) {
+      margin-left: calc(#{sbb.pxToRem(24)} * var(--sbb-scaling-factor));
+      margin-right: calc(#{sbb.pxToRem(24)} * var(--sbb-scaling-factor));
+    }
+    @include sbb.mq($from: desktop4k) {
+      flex: 0 0 50%;
+    }
+  }
+
+  :where(html.sbb-lean) & {
+    margin-top: 0;
+  }
+}
+
+.sbb-alert-content-link-icon {
+  vertical-align: middle;
+  margin-left: calc(#{sbb.pxToRem(3)} * var(--sbb-scaling-factor));
+}
+
+.sbb-alert-close-button {
+  cursor: pointer;
+  color: var(--sbb-color-white);
+
+  @include sbb.mq($from: desktop) {
+    align-self: center;
+  }
+}
+
+.sbb-alert-close-button-icon {
+  padding: calc(#{sbb.pxToRem(3)} * var(--sbb-scaling-factor));
+  border: var(--sbb-color-white) solid var(--sbb-border-width-thin);
+  border-radius: 50%;
+}
+
+.sbb-alert-outlet {
+  display: block;
+}

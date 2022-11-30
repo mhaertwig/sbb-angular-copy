@@ -1,0 +1,109 @@
+@use 'external/npm/node_modules/@angular/cdk' as cdk;
+@use '@sbb-esta/angular' as sbb;
+
+.sbb-overlay-background {
+  background-color: var(--sbb-color-white-alpha70);
+  align-items: center;
+}
+
+.sbb-dialog-container {
+  display: flex;
+  flex-direction: column;
+  border: var(--sbb-border-width) solid var(--sbb-color-weak-accent);
+  box-sizing: border-box;
+  overflow: hidden;
+  outline: 0;
+  background-color: var(--sbb-color-background);
+  box-shadow: var(--sbb-box-shadow-below);
+
+  // The dialog container should completely fill its parent overlay element.
+  width: 100%;
+  height: 100%;
+
+  // Since the dialog won't stretch to fit the parent, if the height
+  // isn't set, we have to inherit the min and max values explicitly.
+  min-height: inherit;
+  max-height: inherit;
+
+  @include cdk.high-contrast(active, off) {
+    outline: solid sbb.pxToRem(1);
+  }
+}
+
+// When using dialog with a component, the component element is placed as a
+// single element inside the container.
+.sbb-dialog-container > *:only-child:not(.sbb-dialog-content) {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.sbb-dialog-content {
+  display: block;
+  padding: var(--sbb-dialog-padding);
+  flex: 1 1 auto;
+  max-height: 80vh;
+  overflow: auto;
+  -webkit-overflow-scrolling: touch;
+
+  // Remove the top margin from the first element inside the content.
+  > *:first-child {
+    margin-top: 0;
+  }
+}
+
+.sbb-dialog-title {
+  font-size: var(--sbb-font-size);
+  padding: calc(#{sbb.pxToRem(15)} * var(--sbb-scaling-factor))
+    calc(#{sbb.pxToRem(40)} * var(--sbb-scaling-factor))
+    calc(#{sbb.pxToRem(15)} * var(--sbb-scaling-factor)) var(--sbb-dialog-padding);
+  flex: 0 0 auto;
+  display: block;
+  position: relative;
+  box-shadow: var(--sbb-box-shadow-horizontal-border-top);
+  @include sbb.ellipsis;
+  min-height: calc(#{sbb.pxToRem(53)} * var(--sbb-scaling-factor)); // Supports empty title
+}
+
+.sbb-dialog-title-close-button {
+  position: absolute;
+  right: calc(#{sbb.pxToRem(16)} * var(--sbb-scaling-factor));
+  cursor: pointer;
+  line-height: 0;
+
+  &:is(:hover, :focus) {
+    color: var(--sbb-color-call-to-action-hover);
+  }
+}
+
+.sbb-dialog-actions {
+  padding: calc(#{sbb.pxToRem(7)} * var(--sbb-scaling-factor))
+    calc(#{sbb.pxToRem(16)} * var(--sbb-scaling-factor));
+  display: flex;
+  flex: 0 0 auto;
+  flex-wrap: wrap;
+  gap: var(--sbb-button-gap);
+  align-items: center;
+
+  // Explicitly set a box-sizing since people commonly set `border-box`
+  // on all elements which will break the height of the dialog actions.
+  box-sizing: content-box;
+  box-shadow: var(--sbb-box-shadow-horizontal-border-bottom);
+
+  // .sbb-dialog-actions-align-{start|center|end} are set by directive input "align"
+  // [align='start'], [align='center'], [align='right'] are kept for backwards compatibility
+  &.sbb-dialog-actions-align-start,
+  &[align='start'],
+  &[align='left'] {
+    justify-content: flex-start;
+  }
+  &.sbb-dialog-actions-align-center,
+  &[align='center'] {
+    justify-content: center;
+  }
+  &.sbb-dialog-actions-align-end,
+  &[align='end'] {
+    justify-content: flex-end;
+  }
+}

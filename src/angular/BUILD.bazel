@@ -1,0 +1,69 @@
+load(
+    "//src/angular:config.bzl",
+    "ANGULAR_ENTRYPOINTS",
+    "ANGULAR_MARKDOWN_TARGETS",
+    "ANGULAR_TARGETS",
+    "ANGULAR_TESTING_TARGETS",
+)
+load(
+    "//tools:defaults.bzl",
+    "markdown_to_html",
+    "ng_module",
+    "ng_package",
+    "sass_binary",
+    "sass_library",
+)
+
+package(default_visibility = ["//visibility:public"])
+
+# Root "@sbb-esta/angular" entry-point.
+ng_module(
+    name = "angular",
+    srcs = glob(
+        ["*.ts"],
+        exclude = ["**/*.spec.ts"],
+    ),
+    deps = ["//src/angular/%s" % p for p in ANGULAR_ENTRYPOINTS],
+)
+
+sass_binary(
+    name = "typography",
+    src = "typography.scss",
+    deps = ["//src/angular/styles:scss_lib"],
+)
+
+sass_binary(
+    name = "fullfont",
+    src = "fullfont.scss",
+)
+
+sass_library(
+    name = "scss_lib",
+    srcs = glob(["**/_*.scss"]),
+    deps = ["//src/angular/styles:scss_lib"],
+)
+
+markdown_to_html(
+    name = "overview",
+    srcs = glob(["*.md"]),
+)
+
+filegroup(
+    name = "overviews",
+    srcs = [":overview"] + ["//src/angular/%s:overview" % name for name in ANGULAR_MARKDOWN_TARGETS],
+)
+
+# Creates the @sbb-esta/angular package published to npm.
+ng_package(
+    name = "npm_package",
+    srcs = [
+        "package.json",
+        ":fullfont",
+        ":scss_lib",
+        ":typography",
+        "//src/angular/i18n:xlf",
+    ],
+    nested_packages = ["//src/angular/schematics:npm_package"],
+    tags = ["release-package"],
+    deps = ANGULAR_TARGETS + ANGULAR_TESTING_TARGETS,
+)

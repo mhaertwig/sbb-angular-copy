@@ -1,0 +1,81 @@
+@use '@sbb-esta/angular' as sbb;
+
+.sbb-navigation {
+  display: flex;
+}
+
+.sbb-navigation-item {
+  display: flex;
+  position: relative;
+  width: 50%;
+  line-height: 0;
+  text-align: center;
+  outline: 0;
+
+  &.sbb-navigation-item-right {
+    justify-content: flex-end;
+  }
+
+  &.sbb-navigation-item-left {
+    justify-content: flex-start;
+  }
+}
+
+.sbb-navigation-item-single {
+  width: 100%;
+}
+
+.sbb-navigation-item-button {
+  cursor: pointer;
+  background-color: var(--sbb-color-background);
+  max-width: 100%;
+  height: 100%;
+  outline: 0;
+  font-size: var(--sbb-font-size-small);
+  line-height: var(--sbb-line-height-small);
+  color: var(--sbb-pagination-base-color);
+
+  &:is(:hover, :focus) {
+    color: var(--sbb-color-call-to-action-hover);
+  }
+}
+
+.sbb-navigation-item-boundary {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.sbb-navigation-item-boundary-left {
+  justify-content: flex-start;
+}
+
+.sbb-navigation-item-boundary-right {
+  justify-content: flex-end;
+}
+
+.sbb-navigation-item-boundary-arrow {
+  line-height: 0;
+  flex: 0 0 var(--sbb-icon-size-default);
+
+  .sbb-navigation-item-boundary-right & {
+    margin-left: var(--sbb-pagination-navigation-item-margin);
+  }
+
+  .sbb-navigation-item-boundary-left & {
+    margin-right: var(--sbb-pagination-navigation-item-margin);
+  }
+}
+
+.sbb-navigation-item-boundary-text {
+  @include sbb.ellipsis;
+  max-width: 100%;
+
+  .sbb-navigation-item-boundary-left & {
+    padding-right: var(--sbb-pagination-navigation-item-margin);
+  }
+
+  .sbb-navigation-item-boundary-right & {
+    padding-left: var(--sbb-pagination-navigation-item-margin);
+  }
+}

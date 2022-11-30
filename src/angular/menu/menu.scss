@@ -1,0 +1,170 @@
+@use '@sbb-esta/angular' as sbb;
+
+// Prevent rendering sbb-menu as it can affect the flex layout.
+sbb-menu {
+  display: none;
+}
+
+.sbb-menu-panel-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  min-width: calc(#{sbb.pxToRem(150)} * var(--sbb-scaling-factor));
+  max-width: calc(#{sbb.pxToRem(400)} * var(--sbb-scaling-factor));
+  outline: 0;
+
+  // Give the menu a minimum height so that the user can't
+  // collapse it to zero when they scroll away.
+  min-height: sbb.pxToRem(72);
+
+  // Prevent users from interacting with the panel while it's animating. Note that
+  // people won't be able to click through it, because the overlay pane will catch the click.
+  // This fixes the following issues:
+  //  * Users accidentally opening sub-menus when the `overlapTrigger` option is enabled.
+  //  * Users accidentally tapping on content inside the sub-menu on touch devices, if the
+  //    sub-menu overlaps the trigger. The issue is due to touch devices emulating the
+  //    `mouseenter` event by dispatching it on tap.
+  &.ng-animating {
+    pointer-events: none;
+  }
+}
+
+.sbb-menu-panel-above {
+  flex-direction: column-reverse;
+}
+
+.sbb-menu-panel-before {
+  align-items: flex-end;
+}
+
+.sbb-menu-panel {
+  border-top-style: solid;
+  width: 100%;
+
+  border-radius: var(--sbb-border-radius);
+  box-shadow: var(--sbb-box-shadow-below);
+  border-top-width: var(--sbb-border-width);
+
+  button.sbb-menu-item {
+    width: 100%;
+  }
+
+  .sbb-label {
+    padding-top: calc(#{sbb.pxToRem(22)} * var(--sbb-scaling-factor));
+
+    :where(html.sbb-lean) & {
+      padding-top: sbb.pxToRem(12);
+    }
+
+    &:first-child {
+      padding-top: calc(#{sbb.pxToRem(6)} * var(--sbb-scaling-factor));
+    }
+  }
+}
+
+.sbb-menu-panel-root {
+  .sbb-menu-panel-type-contextmenu.sbb-menu-panel-before.sbb-menu-panel-below & {
+    border-top-right-radius: 0;
+  }
+  .sbb-menu-panel-type-contextmenu.sbb-menu-panel-before.sbb-menu-panel-above & {
+    border-bottom-right-radius: 0;
+  }
+  .sbb-menu-panel-type-contextmenu.sbb-menu-panel-after.sbb-menu-panel-below & {
+    border-top-left-radius: 0;
+  }
+  .sbb-menu-panel-type-contextmenu.sbb-menu-panel-after.sbb-menu-panel-above & {
+    border-bottom-left-radius: 0;
+  }
+}
+
+// Trigger styles for closed and opened (copied) state (contextmenu only)
+// Definition has to be before .sbb-menu-panel-trigger (will be overwritten)
+.sbb-menu-trigger-contextmenu.sbb-menu-trigger-root,
+:where(.sbb-menu-panel-type-contextmenu) .sbb-menu-panel-trigger {
+  display: inline-flex;
+  background: none;
+  max-width: none;
+  min-width: 0;
+  border: none;
+  padding: var(--sbb-menu-trigger-padding);
+  outline: 0;
+  cursor: pointer;
+  color: var(--sbb-color-black);
+
+  &:is(:hover, :active, :focus) {
+    color: var(--sbb-color-call-to-action-hover);
+  }
+
+  // .sbb-icon-scaled styles
+  .sbb-icon {
+    width: var(--sbb-icon-size-default);
+    height: var(--sbb-icon-size-default);
+
+    svg {
+      width: 100%;
+      height: 100%;
+    }
+  }
+}
+
+// Trigger styles for opened (copied) state
+.sbb-menu-panel-trigger {
+  background-color: var(--sbb-color-background);
+  position: relative;
+  z-index: 1;
+  padding: calc(var(--sbb-menu-trigger-padding) - var(--sbb-border-width));
+  border: var(--sbb-border-width) solid var(--sbb-color-weak-accent);
+  border-radius: var(--sbb-border-radius);
+  width: 100%;
+
+  .sbb-menu-panel-below & {
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+    padding-bottom: var(--sbb-menu-trigger-padding);
+    border-bottom-width: 0;
+  }
+  .sbb-menu-panel-above & {
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+    padding-top: var(--sbb-menu-trigger-padding);
+    border-top-width: 0;
+
+    box-shadow: var(--sbb-box-shadow-below);
+  }
+
+  &:is(:hover, :active, :focus) {
+    color: var(--sbb-color-black);
+  }
+}
+
+.sbb-menu-panel-trigger + .sbb-menu-panel {
+  .sbb-menu-panel-below & {
+    top: var(--sbb-border-width-negative);
+  }
+
+  .sbb-menu-panel-above & {
+    top: var(--sbb-border-width);
+  }
+}
+
+.sbb-menu-item-submenu-trigger {
+  // We have to overwrite typography styles
+  &,
+  :where(html.sbb-lean) &.sbb-menu-item {
+    padding-right: calc(#{sbb.pxToRem(32)} * var(--sbb-scaling-factor));
+  }
+
+  &.sbb-menu-item .sbb-menu-item-submenu-trigger-icon.sbb-icon {
+    @include sbb.absoluteCenterY;
+    // Without important it would need redefinitions for all sizes and variants.
+    // It only affects submenu trigger icon, which should be ok.
+    margin: 0 !important;
+    float: none;
+    right: calc(#{sbb.pxToRem(5)} * var(--sbb-scaling-factor));
+  }
+}
+
+// Trigger in opened state in the panel (contextmenu only)
+.sbb-menu-panel-type-contextmenu .sbb-menu-panel-trigger {
+  width: auto;
+}

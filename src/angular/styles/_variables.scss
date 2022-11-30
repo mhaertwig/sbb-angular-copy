@@ -1,0 +1,96 @@
+// ----------------------------------------------------------------------------------------------------
+// All about variables in here
+// ----------------------------------------------------------------------------------------------------
+
+/**
+ * Font Size
+ */
+$sizeFontBase: 15px;
+$sizeLineHeightBase: 1.7; // In the Sketch files everything is annotated as 1.5 but in fact we will need 1.7 with the current Webfonts to achieve the desired line height
+
+/**
+ * Font Families
+ */
+$fontFamilyBase: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+$fontSbbRoman: 'SBBWeb Roman', $fontFamilyBase;
+$fontSbbBold: 'SBBWeb Bold', $fontFamilyBase;
+$fontSbbUltralight: 'SBBWeb Ultralight', $fontFamilyBase;
+$fontSbbLight: 'SBBWeb Light', $fontFamilyBase;
+$fontSbbThin: 'SBBWeb Thin', $fontFamilyBase;
+
+/**
+ * Breakpoints
+ */
+$sizeBreakpointMobilePortrait: 321px;
+$sizeBreakpointMobileLandscape: 421px;
+$sizeBreakpointTabletPortrait: 643px;
+$sizeBreakpointTabletLandscape: 769px;
+$sizeBreakpointDesktop: 1025px;
+$sizeBreakpointDesktopLarge: 1281px;
+$sizeBreakpointDesktop2k: 1441px; // used for checkout column change from 2:1 to 3:1.
+$sizeBreakpointDesktopMaxWidth: 1921px; // maxWidthDesktop + (2 x 8.5%)
+$sizeBreakpointDesktop4k: 2561px;
+$sizeBreakpointDesktop5k: 3841px;
+
+/**
+ * Typo
+ */
+$sizeFontDefault: 15;
+$sizeFontDefault4k: 23;
+$sizeFontDefault5k: 30;
+$sizeLineHeightDefault: 26;
+$sizeLineHeightDefaultLean: 23;
+$sizeLineHeightDefault4k: 39;
+$sizeLineHeightDefault5k: 52;
+
+/* form element sizing */
+$formElementMaxWidth: 320;
+$formElementMinWidth: 240;
+
+/**
+ * Colors
+ * https://digital.sbb.ch/en/farben
+ */
+// Core Colors
+$sbbColorRed: #eb0000;
+$sbbColorRed125: #c60018;
+$sbbColorRed150: #a20013;
+$sbbColorWhite: #ffffff;
+$sbbColorMilk: #f6f6f6;
+$sbbColorCloud: #e5e5e5;
+$sbbColorSilver: #dcdcdc;
+$sbbColorAluminum: #d2d2d2;
+$sbbColorPlatinum: #cdcdcd;
+$sbbColorCement: #bdbdbd;
+$sbbColorGraphite: #b7b7b7;
+$sbbColorStorm: #a8a8a8;
+$sbbColorSmoke: #8d8d8d;
+$sbbColorMetal: #767676;
+$sbbColorGranite: #686868;
+$sbbColorAnthracite: #5a5a5a;
+$sbbColorIron: #444444;
+$sbbColorCharcoal: #212121;
+$sbbColorMidnight: #151515;
+$sbbColorBlack: #000000;
+$sbbColorBlue: #2d327d;
+
+// Extended Colors
+$sbbColorSky: #0079c7;
+$sbbColorNight: #143a85;
+$sbbColorViolet: #6f2282;
+$sbbColorAutumn: #e84e10;
+$sbbColorOrange: #f27e00;
+$sbbColorPeach: #fcbb00;
+$sbbColorLemon: #ffde15;
+$sbbColorGreen: #00973b;
+
+// Non-Standard Colors
+$sbbColorGrey: #666666;
+$sbbColorGreyMedium: #979797;
+
+// Context Colors
+$sbbColorBg: $sbbColorWhite;
+$sbbColorCallToAction: $sbbColorRed;
+$sbbColorCallToActionHover: $sbbColorRed125;
+$sbbColorError: $sbbColorRed;
+$sbbColorText: $sbbColorBlack;

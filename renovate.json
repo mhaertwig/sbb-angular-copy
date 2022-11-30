@@ -1,0 +1,106 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": ["config:base"],
+  "username": "sbb-angular-renovate[bot]",
+  "gitAuthor": "sbb-angular-renovate<52953647+sbb-angular-renovate[bot]@users.noreply.github.com>",
+  "repositories": ["sbb-design-systems/sbb-angular"],
+  "baseBranches": ["main", "15.x"],
+  "includePaths": ["package.json", ".github/**"],
+  "schedule": ["after 10pm every weekday", "before 5am every weekday", "every weekend"],
+  "lockFileMaintenance": {
+    "schedule": ["before 7am on thursday"],
+    "enabled": true
+  },
+  "allowPostUpgradeCommandTemplating": true,
+  "allowedPostUpgradeCommands": ["^yarn"],
+  "ignoreDeps": [
+    "@arcgis/core",
+    "@types/marked",
+    "browser-sync",
+    "browser-sync-client",
+    "dgeni",
+    "dgeni-packages",
+    "highlight.js",
+    "marked",
+    "typescript",
+    "yarn",
+    "zone.js"
+  ],
+  "packageRules": [
+    {
+      "matchUpdateTypes": ["minor", "patch", "pin", "digest", "lockFileMaintenance", "bump"],
+      "automerge": true,
+      "automergeType": "branch"
+    },
+    {
+      "matchPackageNames": ["@types/grecaptcha", "@types/node", "jasmine", "jasmine-core"],
+      "matchUpdateTypes": ["major"],
+      "enabled": false
+    },
+    {
+      "groupName": "angular",
+      "matchPackagePrefixes": ["@angular/", "@angular-devkit/", "@schematics/angular", "typescript"]
+    },
+    {
+      "groupName": "bazel",
+      "matchPackagePrefixes": ["@bazel/"]
+    },
+    {
+      "groupName": "commitlint",
+      "matchPackagePrefixes": ["@commitlint/", "standard-version"]
+    },
+    {
+      "groupName": "rollup",
+      "matchPackagePrefixes": ["@rollup/", "rollup"]
+    },
+    {
+      "groupName": "karma",
+      "matchPackagePrefixes": ["karma"]
+    },
+    {
+      "groupName": "jasmine",
+      "matchPackagePrefixes": ["jasmine", "@types/jasmine"]
+    },
+    {
+      "matchPackageNames": ["@angular/cli", "@angular/cdk", "angular-server-side-configuration"],
+      "postUpgradeTasks": {
+        "commands": [
+          "yarn install --ignore-scripts --frozen-lockfile --non-interactive",
+          "yarn ng update {{{depName}}} --from={{{currentVersion}}} --to={{{newVersion}}} --migrate-only --allow-dirty --force",
+          "yarn format"
+        ],
+        "fileFilters": ["**/**"]
+      }
+    },
+    {
+      "matchPackageNames": ["prettier"],
+      "postUpgradeTasks": {
+        "commands": [
+          "yarn install --ignore-scripts --frozen-lockfile --non-interactive",
+          "yarn format:prettier"
+        ],
+        "fileFilters": ["**/**"]
+      }
+    },
+    {
+      "matchPackageNames": ["esbuild"],
+      "postUpgradeTasks": {
+        "commands": [
+          "yarn install --ignore-scripts --frozen-lockfile --non-interactive",
+          "yarn build:schematics",
+          "yarn format"
+        ],
+        "fileFilters": ["**/**"]
+      }
+    },
+    {
+      "matchPackageNames": ["renovate"],
+      "extends": ["schedule:monthly"]
+    },
+    {
+      "matchPackageNames": ["@angular/build-tooling", "angular/dev-infra", "@angular/ng-dev"],
+      "groupName": "angular shared dev-infra code",
+      "schedule": ["before 5am on wednesday"]
+    }
+  ]
+}

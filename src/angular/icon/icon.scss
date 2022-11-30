@@ -1,0 +1,52 @@
+@use '@sbb-esta/angular' as sbb;
+
+.sbb-icon {
+  background-repeat: no-repeat;
+  display: inline-block;
+  line-height: 0;
+
+  // In some cases the icon elements may extend beyond the container. Clip these cases
+  // in order to avoid weird overflows and click areas. See angular/components#11826.
+  overflow: hidden;
+
+  svg:not(.color-immutable) {
+    [fill]:not([fill='none']) {
+      fill: currentColor;
+    }
+
+    [stroke]:not([stroke='none']) {
+      stroke: currentColor;
+    }
+
+    // TODO: Maybe improve this solution in CDN Image
+    & >,
+    :where(:not([stroke]):not([fill])) {
+      :where(path, polygon, polyline):where(:not([stroke]):not([fill])) {
+        fill: currentColor;
+      }
+    }
+  }
+
+  &.sbb-icon-inline {
+    vertical-align: middle;
+    margin-block-start: calc(sbb.pxToRem(-4) * var(--sbb-scaling-factor));
+    margin-block-end: calc(sbb.pxToRem(-2) * var(--sbb-scaling-factor));
+  }
+
+  // If any ancestor has .sbb-icon-fit as a class, width and height will be set to 100%.
+  // With both .sbb-icon-scaled and .sbb-icon-fit the width and height of the nested svg will be set to 100%.
+  :where(.sbb-icon-fit) &,
+  &:where(.sbb-icon-fit),
+  :where(.sbb-icon-fit, .sbb-icon-scaled) & svg,
+  &:where(.sbb-icon-fit, .sbb-icon-scaled) svg {
+    width: 100%;
+    height: 100%;
+  }
+
+  // If any ancestor has .sbb-icon-scaled as a class, width and height will be set to the default icon size.
+  :where(.sbb-icon-scaled) &,
+  &:where(.sbb-icon-scaled) {
+    width: var(--sbb-icon-size-default);
+    height: var(--sbb-icon-size-default);
+  }
+}

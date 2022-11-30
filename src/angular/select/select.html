@@ -1,0 +1,67 @@
+<div
+  [attr.id]="_valueId"
+  [ngSwitch]="empty"
+  class="sbb-select-value"
+  aria-hidden="true"
+  [class.sbb-select-value-empty]="empty"
+>
+  <span *ngSwitchCase="true" class="sbb-select-placeholder"
+    >{{ !readonly ? (placeholder || '\u00A0') : '-' }}</span
+  >
+  <span *ngSwitchCase="false" class="sbb-select-value-text">
+    <span>{{ triggerValue || '\u00A0' }}</span>
+  </span>
+</div>
+
+<ng-container [ngSwitch]="variant | async">
+  <sbb-icon
+    *ngSwitchCase="'standard'"
+    class="sbb-icon-scaled sbb-select-arrow-icon"
+    svgIcon="kom:chevron-small-down-small"
+  ></sbb-icon>
+  <sbb-icon
+    *ngSwitchCase="'lean'"
+    class="sbb-icon-scaled sbb-select-arrow-icon sbb-select-arrow-icon-lean"
+    svgIcon="kom:chevron-right-small"
+  ></sbb-icon>
+</ng-container>
+
+<ng-template
+  cdk-connected-overlay
+  cdkConnectedOverlayLockPosition
+  cdkConnectedOverlayFlexibleDimensions
+  cdkConnectedOverlayHasBackdrop
+  cdkConnectedOverlayBackdropClass="cdk-overlay-transparent-backdrop"
+  [cdkConnectedOverlayPanelClass]="_overlayPanelClass"
+  [cdkConnectedOverlayScrollStrategy]="_scrollStrategy"
+  [cdkConnectedOverlayOrigin]="_overlayOrigin"
+  [cdkConnectedOverlayOpen]="panelOpen"
+  [cdkConnectedOverlayPositions]="_positions"
+  [cdkConnectedOverlayWidth]="_getOverlayMinWidth()"
+  [cdkConnectedOverlayOffsetX]="0"
+  [cdkConnectedOverlayOffsetY]="_offsetY"
+  [cdkConnectedOverlayMinHeight]="30"
+  (backdropClick)="close()"
+  (attach)="_onAttached()"
+  (detach)="close()"
+>
+  <div
+    #panel
+    role="listbox"
+    tabindex="-1"
+    class="sbb-panel sbb-panel-padded sbb-select-panel sbb-scrollbar"
+    [attr.id]="id + '-panel'"
+    [attr.aria-multiselectable]="multiple"
+    [attr.aria-label]="ariaLabel || null"
+    [attr.aria-labelledby]="_getPanelAriaLabelledby()"
+    [ngClass]="panelClass"
+    [@transformPanel]="multiple ? 'showing-multiple' : 'showing'"
+    (@transformPanel.done)="_panelDoneAnimatingStream.next($event.toState)"
+    [style.transformOrigin]="_transformOrigin"
+    [style.font-size.px]="_triggerFontSize"
+    (keydown)="_handleKeydown($event)"
+    [class.sbb-select-multiple]="multiple"
+  >
+    <ng-content></ng-content>
+  </div>
+</ng-template>

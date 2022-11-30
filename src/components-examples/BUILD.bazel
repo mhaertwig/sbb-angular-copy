@@ -1,0 +1,43 @@
+load("//tools:defaults.bzl", "ng_module")
+load("//tools/highlight-files:index.bzl", "highlight_files")
+load(":config.bzl", "ALL_EXAMPLES")
+
+package(default_visibility = ["//visibility:public"])
+
+ng_module(
+    name = "components-examples",
+    srcs = glob(["*.ts"]) + [":example-module.ts"],
+    deps = ALL_EXAMPLES,
+)
+
+filegroup(
+    name = "example-source-files",
+    srcs = ["%s:source-files" % pkg for pkg in ALL_EXAMPLES],
+)
+
+highlight_files(
+    name = "examples-highlighted",
+    srcs = [":example-source-files"],
+)
+
+genrule(
+    name = "example-module",
+    srcs = [":example-source-files"],
+    outs = [
+        "example-module.ts",
+        "_example_module.MF",
+    ],
+    cmd = """
+      # Create source file manifest
+      echo "$(execpaths //src/components-examples:example-source-files)" \
+          > $(execpath _example_module.MF)
+
+      # Run the bazel entry-point for generating the example module.
+      ./$(execpath //tools/example-module:bazel-bin) \
+          "$(execpath _example_module.MF)" \
+          "$(execpath example-module.ts)" \
+          "$$PWD/src/components-examples"
+    """,
+    output_to_bindir = True,
+    tools = ["//tools/example-module:bazel-bin"],
+)

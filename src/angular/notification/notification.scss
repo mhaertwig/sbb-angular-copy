@@ -1,0 +1,124 @@
+@use '@sbb-esta/angular' as sbb;
+
+.sbb-notification {
+  display: flex;
+  align-items: center;
+  color: var(--sbb-color-white);
+  width: 100%;
+  border-radius: var(--sbb-border-radius);
+  padding: var(--sbb-notification-message-padding)
+    var(--sbb-notification-message-padding-horizontal) var(--sbb-notification-message-padding)
+    var(--sbb-notification-message-padding);
+  font-size: var(--sbb-font-size);
+  line-height: var(--sbb-line-height);
+  overflow-y: hidden;
+
+  :where(html:not(.sbb-lean)) & {
+    &:not(.ng-animating) {
+      min-height: calc(#{sbb.pxToRem(68)} * var(--sbb-scaling-factor));
+    }
+  }
+  :where(html.sbb-lean) & {
+    padding-left: var(--sbb-notification-message-padding-horizontal);
+    border: var(--sbb-border-width-thin) solid transparent;
+  }
+}
+
+:is(.sbb-notification-success, .sbb-notification-info) {
+  background-color: var(--sbb-color-granite);
+}
+
+:is(.sbb-notification-error, .sbb-notification-warn) {
+  background-color: var(--sbb-color-red);
+}
+
+.sbb-notification-info-light {
+  color: var(--sbb-color-granite);
+  background-color: var(--sbb-color-white);
+  border: var(--sbb-border-width-thin) solid var(--sbb-color-granite);
+
+  :where(html:not(.sbb-lean)) & {
+    border-radius: 0;
+  }
+}
+
+:where(html.sbb-lean) .sbb-notification-success {
+  color: var(--sbb-color-green);
+  background-color: var(--sbb-color-background);
+  border-color: var(--sbb-color-green);
+}
+
+:where(html.sbb-lean) .sbb-notification-info {
+  color: var(--sbb-color-granite);
+  background-color: var(--sbb-color-background);
+  border-color: var(--sbb-color-granite);
+}
+
+:where(html.sbb-lean) .sbb-notification-warn {
+  background-color: var(--sbb-color-peach);
+  color: var(--sbb-color-black);
+}
+
+.sbb-notification-has-jump-marks {
+  padding: calc(#{sbb.pxToRem(23)} * var(--sbb-scaling-factor))
+    var(--sbb-notification-message-padding-horizontal)
+    calc(#{sbb.pxToRem(23)} * var(--sbb-scaling-factor)) var(--sbb-notification-message-padding);
+
+  :is(&, & a) {
+    line-height: var(--sbb-line-height-medium);
+
+    :where(html.sbb-lean) & {
+      line-height: var(--sbb-line-height);
+    }
+  }
+
+  :where(html:not(.sbb-lean)) & {
+    &:not(.ng-animating) {
+      min-height: calc(#{sbb.pxToRem(92)} * var(--sbb-scaling-factor));
+    }
+  }
+  :where(html.sbb-lean) & {
+    padding: sbb.pxToRem(11) sbb.pxToRem(15) sbb.pxToRem(13.5);
+  }
+}
+
+.sbb-notification-icon-wrapper {
+  flex: 0 0 var(--sbb-icon-size-large);
+  align-self: flex-start;
+  width: var(--sbb-icon-size-large);
+  height: var(--sbb-icon-size-large);
+
+  :where(html.sbb-lean) & {
+    flex-basis: var(--sbb-icon-size-default);
+    width: var(--sbb-icon-size-default);
+    height: var(--sbb-icon-size-default);
+  }
+}
+
+.sbb-notification-content {
+  flex: 1 1 auto;
+  margin-left: var(--sbb-notification-message-padding);
+
+  :where(html.sbb-lean) & {
+    margin-left: sbb.pxToRem(8);
+  }
+}
+
+.sbb-notification-content-title {
+  :where(html:not(.sbb-lean)) & {
+    font-family: var(--sbb-font-bold);
+  }
+}
+
+:is(.sbb-notification-content
+    :is(a, a:is(:hover, :active)), .sbb-notification-dismiss-icon-button) {
+  color: inherit;
+  cursor: pointer;
+}
+
+.sbb-notification-dismiss-icon-button {
+  flex: 0 0 var(--sbb-icon-size-default);
+  align-self: flex-start;
+  width: var(--sbb-icon-size-default);
+  height: var(--sbb-icon-size-default);
+}

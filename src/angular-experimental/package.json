@@ -1,0 +1,40 @@
+{
+  "name": "@sbb-esta/angular-experimental",
+  "version": "0.0.0-PLACEHOLDER",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sbb-design-systems/sbb-angular.git"
+  },
+  "engines": {
+    "node": ">=14.0.0 <17.0.0"
+  },
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/sbb-design-systems/sbb-angular/issues"
+  },
+  "homepage": "https://angular.app.sbb.ch",
+  "peerDependencies": {
+    "@angular/cdk": "0.0.0-CDK",
+    "@angular/common": "0.0.0-NG",
+    "@angular/core": "0.0.0-NG",
+    "@angular/forms": "0.0.0-NG",
+    "@angular/router": "0.0.0-NG"
+  },
+  "dependencies": {
+    "@types/grecaptcha": "^2.0.36"
+  },
+  "schematics": "./schematics/collection.json",
+  "ng-update": {
+    "packageGroup": [
+      "@sbb-esta/angular",
+      "@sbb-esta/angular-experimental",
+      "@sbb-esta/angular-maps",
+      "@sbb-esta/journey-maps"
+    ],
+    "packageGroupName": "@sbb-esta/angular"
+  },
+  "sideEffects": false,
+  "publishConfig": {
+    "access": "public"
+  }
+}

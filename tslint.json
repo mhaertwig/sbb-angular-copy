@@ -1,0 +1,205 @@
+{
+  "extends": ["tslint-plugin-prettier", "tslint-config-prettier", "rxjs-tslint-rules"],
+  "rulesDirectory": [
+    "./tools/tslint-rules/",
+    "node_modules/codelyzer",
+    "node_modules/tslint-consistent-codestyle/rules"
+  ],
+  "linterOptions": {
+    "exclude": [
+      "tools/dgeni/**/*.ts",
+      "tools/schematics/*/files/**/*",
+      "src/angular/schematics/**/files/**/*",
+      "src/angular/schematics/ng-update/test-cases/**/*_input.ts",
+      "src/angular/schematics/ng-update/test-cases/**/*_expected_output.ts",
+      "src/showcase/assets/stack-blitz/**/*.ts"
+    ]
+  },
+  "rules": {
+    "arrow-return-shorthand": true,
+    "callable-types": true,
+    "class-name": true,
+    "comment-format": [true, "check-space"],
+    "component-selector": false,
+    "curly": true,
+    "deprecation": false,
+    "directive-selector": false,
+    "forin": true,
+    "import-blacklist": [true, "rxjs/Rx"],
+    "interface-over-type-literal": true,
+    "label-position": true,
+    "member-access": false,
+    "member-ordering": false,
+    "naming-convention": [
+      true,
+      {
+        "_description": "forbid leading and trailing underscores and enforce camelCase on EVERY name. will be overridden by subtypes if needed",
+        "type": "default",
+        "format": "camelCase",
+        "leadingUnderscore": "forbid",
+        "trailingUnderscore": "forbid"
+      },
+      {
+        "_description": "require all global constants to be camelCase or UPPER_CASE all other variables and functions still need to be camelCase",
+        "type": "variable",
+        "modifiers": ["global", "const"],
+        "format": ["camelCase", "UPPER_CASE"]
+      },
+      {
+        "_description": "override the above format option for exported constants to allow only UPPER_CASE",
+        "type": "variable",
+        "modifiers": ["export", "const"],
+        "format": ["camelCase", "UPPER_CASE"]
+      },
+      {
+        "_description": "disable for mixins and inline providers",
+        "type": "variable",
+        "modifiers": ["export", "const"],
+        "filter": "(^(sbb|Sbb|SBB_)|^environment$)",
+        "format": null
+      },
+      {
+        "_description": "disable for provider factories",
+        "type": "function",
+        "modifiers": "export",
+        "filter": "^SBB_",
+        "format": null
+      },
+      {
+        "_description": "require exported constant variables that are initialized with functions to be camelCase",
+        "type": "functionVariable",
+        "modifiers": ["export", "const"],
+        "format": "camelCase"
+      },
+      {
+        "_description": "allow leading underscores for unused parameters, because `tsc --noUnusedParameters` will not flag underscore prefixed parameters all other rules (trailingUnderscore: forbid, format: camelCase) still apply",
+        "type": "parameter",
+        "modifiers": "unused",
+        "leadingUnderscore": "allow"
+      },
+      {
+        "_description": "allow placeholder parameters like (_: any) => any",
+        "type": "parameter",
+        "filter": "^_$",
+        "leadingUnderscore": "allow"
+      },
+      {
+        "_description": "allow leading underscores for public properties and methods due to internals, all other rules still apply",
+        "type": "member",
+        "leadingUnderscore": "allow"
+      },
+      {
+        "_description": "require leading underscores for private properties and methods, all other rules still apply",
+        "type": "member",
+        "modifiers": "private",
+        "leadingUnderscore": "require"
+      },
+      {
+        "_description": "same for protected",
+        "type": "member",
+        "modifiers": "protected",
+        "leadingUnderscore": "require"
+      },
+      {
+        "_description": "exclicitly disable the format check only for method toJSON",
+        "type": "method",
+        "filter": "^toJSON$",
+        "format": null
+      },
+      {
+        "_description": "enforce UPPER_CASE for all public static readonly(!) properties",
+        "type": "property",
+        "modifiers": ["public", "static", "const"],
+        "format": "UPPER_CASE"
+      },
+      {
+        "_description": "exclicitly disable the format check for ngAcceptInputType_",
+        "type": "property",
+        "filter": "^ngAcceptInputType_",
+        "modifiers": ["static"],
+        "format": null
+      },
+      {
+        "_description": "enforce PascalCase for classes, interfaces, enums, etc. Remember, there are still no underscores allowed",
+        "type": "type",
+        "format": "PascalCase"
+      },
+      {
+        "_description": "enum members must be in PascalCase. Without this config, enumMember would inherit UPPER_CASE from public static const property",
+        "type": "enumMember",
+        "format": "PascalCase"
+      }
+    ],
+    "no-arg": true,
+    "no-bitwise": true,
+    "no-collapsible-if": true,
+    "no-console": [true, "debug", "info", "time", "timeEnd", "trace"],
+    "no-construct": true,
+    "no-debugger": true,
+    "no-duplicate-super": true,
+    "no-empty": false,
+    "no-empty-interface": true,
+    "no-eval": true,
+    // Disable this flag because of SHA tslint#48b0c597f9257712c7d1f04b55ed0aa60e333f6a
+    // TSLint now shows warnings if types for properties are inferred. This rule needs to be
+    // disabled because all properties need to have explicit types set to work for Dgeni.
+    "no-inferrable-types": [true, "ignore-params", "ignore-properties"],
+    "no-misused-new": true,
+    "no-redundant-jsdoc": true,
+    "no-shadowed-variable": true,
+    "no-string-literal": false,
+    "no-string-throw": true,
+    "no-switch-case-fall-through": true,
+    "no-unnecessary-initializer": true,
+    "no-unused-expression": true,
+    "no-unused-variable": [true, { "ignore-pattern": "^_" }],
+    "no-var-before-return": true,
+    "no-var-keyword": true,
+    "object-literal-sort-keys": false,
+    "ordered-imports": [
+      true,
+      {
+        "grouped-imports": true
+      }
+    ],
+    "prefer-const": true,
+    "prettier": true,
+    "radix": true,
+    "triple-equals": [true, "allow-null-check"],
+    "typedef-whitespace": [
+      true,
+      {
+        "call-signature": "nospace",
+        "index-signature": "nospace",
+        "parameter": "nospace",
+        "property-declaration": "nospace",
+        "variable-declaration": "nospace"
+      }
+    ],
+    "unified-signatures": true,
+    "variable-name": false,
+    "whitespace": [
+      false,
+      "check-branch",
+      "check-decl",
+      "check-operator",
+      "check-separator",
+      "check-type"
+    ],
+    "no-output-on-prefix": true,
+    "no-outputs-metadata-property": true,
+    "no-host-metadata-property": false,
+    "no-input-rename": false,
+    "no-output-rename": false,
+    "use-lifecycle-interface": true,
+    "use-pipe-transform-interface": true,
+    "component-class-suffix": false,
+    "directive-class-suffix": false,
+    "rxjs-no-unsafe-takeuntil": true,
+    "rxjs-no-unsafe-catch": true,
+
+    // Custom Rules
+    "ts-loader": true,
+    "require-property-typedef": true
+  }
+}

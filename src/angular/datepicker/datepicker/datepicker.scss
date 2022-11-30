@@ -1,0 +1,62 @@
+@use '@sbb-esta/angular' as sbb;
+
+.sbb-datepicker {
+  display: inline-block;
+  position: relative;
+  color: var(--sbb-color-weak-accent);
+
+  .sbb-form-field & {
+    width: 100%;
+  }
+}
+
+.sbb-datepicker-disabled {
+  color: var(--sbb-color-granite);
+}
+
+.sbb-date-input {
+  .sbb-datepicker > & {
+    width: 100%;
+  }
+
+  :is(.sbb-datepicker-toggle-enabled, .sbb-datepicker-arrows-enabled) > & {
+    padding-left: var(--sbb-datepicker-toggle-or-arrows-padding);
+  }
+
+  .sbb-datepicker-arrows-enabled > & {
+    padding-right: var(--sbb-datepicker-toggle-or-arrows-padding);
+  }
+
+  .sbb-datepicker-arrows-enabled.sbb-datepicker-toggle-enabled > & {
+    padding-left: var(--sbb-datepicker-toggle-and-arrows-padding);
+  }
+}
+
+:is(.sbb-datepicker-arrow-button, .sbb-datepicker-toggle-button) {
+  @include sbb.buttonResetFrameless();
+  @include sbb.absoluteCenterY();
+  outline: 0;
+  color: inherit;
+  line-height: 0;
+
+  &:not(:disabled) {
+    cursor: pointer;
+
+    &:is(:hover, :focus, :active) {
+      color: var(--sbb-color-call-to-action-hover);
+    }
+  }
+}
+
+.sbb-datepicker-arrow-button-left,
+.sbb-datepicker-toggle-button {
+  left: var(--sbb-datepicker-button-offset);
+}
+
+.sbb-datepicker-arrows-enabled .sbb-datepicker-toggle-button {
+  left: var(--sbb-datepicker-adjacent-button-offset);
+}
+
+.sbb-datepicker-arrow-button-right {
+  right: var(--sbb-datepicker-button-offset);
+}

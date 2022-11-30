@@ -1,0 +1,21 @@
+{
+  "$schema": "../../node_modules/@angular-devkit/schematics/collection-schema.json",
+  "schematics": {
+    "bazel": {
+      "description": "Bazelify",
+      "factory": "./bazel/index#bazel"
+    },
+    "extractSymbols": {
+      "description": "Create map for symbols of @sbb-esta/angular package.",
+      "factory": "./extract-symbols/index#extractSymbols"
+    },
+    "selectorGroups": {
+      "description": "Get a list of selector for metrics",
+      "factory": "./selector-groups/index#selectorGroups"
+    },
+    "sassMigration": {
+      "description": "Migrate sass imports to use",
+      "factory": "./sass-migration/index#sassMigration"
+    }
+  }
+}

@@ -1,0 +1,59 @@
+load(
+    "//tools:defaults.bzl",
+    "ng_module",
+    "ng_test_library",
+    "ng_web_test_suite",
+    "sass_binary",
+)
+
+package(default_visibility = ["//visibility:public"])
+
+ng_module(
+    name = "core",
+    srcs = glob(
+        ["**/*.ts"],
+        exclude = ["**/*.spec.ts"],
+    ),
+    assets = [":option/option.css"] + glob(["**/*.html"]),
+    deps = [
+        "//src:dev_mode_types",
+        "@npm//@angular/cdk",
+        "@npm//@angular/common",
+        "@npm//@angular/core",
+        "@npm//@angular/forms",
+        "@npm//@types/node",
+        "@npm//rxjs",
+    ],
+)
+
+sass_binary(
+    name = "option_option_scss",
+    src = "option/option.scss",
+    deps = [
+        "//src/angular:scss_lib",
+    ],
+)
+
+ng_test_library(
+    name = "unit_test_sources",
+    srcs = glob(
+        ["**/*.spec.ts"],
+        exclude = ["**/*.e2e.spec.ts"],
+    ),
+    deps = [
+        ":core",
+        "//src/angular/core/testing",
+        "@npm//@angular/cdk",
+        "@npm//@angular/platform-browser",
+    ],
+)
+
+ng_web_test_suite(
+    name = "unit_tests",
+    deps = [":unit_test_sources"],
+)
+
+filegroup(
+    name = "source-files",
+    srcs = glob(["**/*.ts"]),
+)

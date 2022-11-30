@@ -1,0 +1,113 @@
+@use '@sbb-esta/angular' as sbb;
+
+.sbb-header-menu {
+  display: none;
+  position: fixed;
+  top: 0;
+  right: 0;
+  height: 100vh;
+  width: 100vw;
+  background-color: var(--sbb-color-milk);
+  z-index: var(--sbb-header-lean-menu-mobile-z-index);
+
+  @include sbb.mq($from: tabletPortrait) {
+    width: calc(100vw - var(--sbb-header-lean-menu-width));
+    z-index: var(--sbb-header-lean-menu-tablet-z-index);
+  }
+
+  &.sbb-header-menus-collapsed {
+    display: block;
+  }
+}
+
+button.sbb-header-menu-back,
+.sbb-header-menu > div.sbb-header-menu-title {
+  @include sbb.buttonResetFrameless();
+  height: var(--sbb-header-lean-height);
+  width: 100%;
+  font-size: var(--sbb-font-size);
+  line-height: var(--sbb-line-height);
+  color: var(--sbb-color-text);
+  background-color: var(--sbb-color-white);
+  border-bottom: var(--sbb-border-width-thin) solid var(--sbb-color-silver);
+}
+
+button.sbb-header-menu-back {
+  display: flex;
+  padding-top: calc(#{sbb.pxToRem(15)} * var(--sbb-scaling-factor));
+  padding-left: calc(#{sbb.pxToRem(8)} * var(--sbb-scaling-factor));
+  cursor: pointer;
+
+  @include sbb.mq($from: tabletPortrait) {
+    display: none;
+  }
+
+  &:is(:hover, :active, :focus) {
+    color: var(--sbb-color-call-to-action-hover);
+  }
+}
+
+.sbb-header-menu > div.sbb-header-menu-title {
+  font-size: var(--sbb-font-size-large);
+  line-height: var(--sbb-header-lean-label-line-height);
+  padding-top: calc(#{sbb.pxToRem(15)} * var(--sbb-scaling-factor));
+  padding-left: calc(#{sbb.pxToRem(15)} * var(--sbb-scaling-factor));
+}
+
+.sbb-header-menu > div.sbb-header-menu-panel-container {
+  height: calc(100% - var(--sbb-header-lean-height) * 2);
+
+  @include sbb.mq($from: tabletPortrait) {
+    height: calc(100% - var(--sbb-header-lean-height));
+  }
+
+  .sbb-header-menu-panel {
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    padding: 0;
+    margin-top: calc(#{sbb.pxToRem(32)} * var(--sbb-scaling-factor));
+    box-shadow: none;
+    border: 0;
+
+    & > hr {
+      display: none;
+    }
+
+    & > :is(a, button) {
+      padding: calc(#{sbb.pxToRem(7)} * var(--sbb-scaling-factor))
+        calc(#{sbb.pxToRem(48)} * var(--sbb-scaling-factor))
+        calc(#{sbb.pxToRem(11)} * var(--sbb-scaling-factor))
+        calc(#{sbb.pxToRem(16)} * var(--sbb-scaling-factor));
+      color: var(--sbb-color-weak-accent);
+      line-height: var(--sbb-line-height-medium);
+      font-size: var(--sbb-font-size);
+      text-decoration: none;
+      outline: 0;
+      position: relative;
+
+      &::after {
+        content: var(--sbb-url-icon-arrow-right-small-black);
+        display: inline-block;
+        width: var(--sbb-icon-size-default);
+        height: var(--sbb-icon-size-default);
+        position: absolute;
+        right: calc(#{sbb.pxToRem(16)} * var(--sbb-scaling-factor));
+        vertical-align: middle;
+      }
+
+      &:hover::after {
+        content: var(--sbb-url-icon-arrow-right-small-red125);
+      }
+
+      &:is(:hover, :active, :focus, .sbb-active) {
+        color: var(--sbb-color-call-to-action-hover);
+      }
+    }
+  }
+}
+
+.cdk-overlay-container .sbb-header-menu-panel .sbb-header-menu-item {
+  font-size: var(--sbb-font-size);
+  line-height: var(--sbb-line-height-medium);
+}

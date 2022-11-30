@@ -1,0 +1,152 @@
+@use '@sbb-esta/angular' as sbb;
+
+.sbb-form-field {
+  display: inline-block;
+  position: relative;
+  width: var(--sbb-form-field-width);
+}
+
+// Variant for .sbb-form-field
+.sbb-form-field-short {
+  width: 33.333%;
+
+  @include sbb.mq($from: mobileLandscape) {
+    width: 25%;
+  }
+
+  @include sbb.mq($from: desktop) {
+    width: 16.66666%;
+  }
+}
+
+// Variant for .sbb-form-field
+.sbb-form-field-medium {
+  width: 100%;
+
+  @include sbb.mq($from: tabletPortrait) {
+    width: 50%;
+  }
+}
+
+// Variant for .sbb-form-field
+.sbb-form-field-long {
+  width: 100%;
+}
+
+.sbb-form-field-wrapper {
+  padding-bottom: calc(#{sbb.pxToRem(23)} * var(--sbb-scaling-factor));
+
+  :where(html.sbb-lean) & {
+    padding-bottom: sbb.pxToRem(16);
+  }
+
+  .sbb-form-field-flexible-errors & {
+    padding-bottom: 0;
+  }
+}
+
+.sbb-form-field-label-wrapper {
+  margin-bottom: var(--sbb-form-label-wrapper-margin-bottom);
+  padding-left: var(--sbb-form-label-wrapper-padding-left);
+}
+
+// The element of the input
+// Also see Form Elements section in _typography.scss
+.sbb-form-field .sbb-input-element {
+  width: 100%;
+
+  // Prevent textareas from being resized outside the form field.
+  max-width: 100%;
+}
+
+// Prevents IE from always adding a scrollbar by default.
+.sbb-form-field textarea.sbb-input-element {
+  // Only allow resizing along the Y axis.
+  resize: vertical;
+  overflow: auto;
+
+  &.cdk-textarea-autosize {
+    resize: none;
+  }
+}
+
+.sbb-form-field-error-wrapper {
+  position: absolute;
+  box-sizing: border-box;
+  width: 100%;
+  overflow: hidden;
+
+  .sbb-form-field-flexible-errors & {
+    position: relative;
+  }
+}
+
+// Scale down icons in the label and error to be the same size as the text.
+:is(.sbb-form-field-error-wrapper, .sbb-form-field-label-wrapper) {
+  :is(.sbb-icon, .sbb-tooltip-icon),
+  .sbb-icon svg {
+    vertical-align: bottom;
+    width: calc(#{sbb.pxToRem(16)} * var(--sbb-scaling-factor));
+    height: calc(#{sbb.pxToRem(16)} * var(--sbb-scaling-factor));
+  }
+  .sbb-tooltip-icon:not(:hover):not(:focus) {
+    color: inherit;
+  }
+
+  // Make sbb-tooltip align nicely inside sbb-label.
+  .sbb-tooltip-trigger {
+    margin-left: calc(#{sbb.pxToRem(8)} * var(--sbb-scaling-factor));
+  }
+}
+
+// All form groups should use display flex and the same gap
+.sbb-form-group,
+.sbb-form-group-center,
+.sbb-form-group-wrap,
+.sbb-form-group-vertical {
+  display: flex;
+  gap: var(--sbb-divider-thin);
+}
+
+// Align items inside a form group to the top
+:is(.sbb-form-group, .sbb-form-group-center, .sbb-form-group-wrap) {
+  align-items: flex-start;
+}
+
+// Utility class for form group, which wraps the elements (default does not wrap)
+.sbb-form-group-wrap {
+  flex-wrap: wrap;
+}
+
+// Utility class for form group to center the elements (default aligns left)
+.sbb-form-group-center {
+  justify-content: center;
+}
+
+// Buttons need to be vertically indented to align with the inputs
+:is(.sbb-form-group, .sbb-form-group-center, .sbb-form-group-wrap):where(:not(.sbb-form-group-vertical))
+  :is(.sbb-button, .sbb-alt-button, .sbb-secondary-button, .sbb-ghost-button, .sbb-icon-button) {
+  margin-top: calc(var(--sbb-form-label-line-height) + var(--sbb-form-label-wrapper-margin-bottom));
+}
+
+// Utility class for vertical form groups
+.sbb-form-group-vertical {
+  flex-direction: column;
+
+  &.sbb-form-group-center {
+    justify-content: inherit;
+    align-items: center;
+  }
+}
+
+// Align button width with the input width
+.sbb-form-group-vertical
+  > :is(.sbb-button, .sbb-alt-button, .sbb-secondary-button, .sbb-ghost-button, .sbb-icon-button) {
+  width: var(--sbb-form-field-width);
+
+  :where(html:not(.sbb-lean)) & .sbb-button-right-icon {
+    // Reset right assignment of the right icon, since we manipulate the width of the button and
+    // the icon should be aligned right to the text.
+    right: unset !important;
+  }
+}

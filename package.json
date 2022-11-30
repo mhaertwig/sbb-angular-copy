@@ -1,0 +1,271 @@
+{
+  "name": "sbb-angular",
+  "version": "15.0.0",
+  "private": true,
+  "engines": {
+    "node": ">=14.0.0 <17.0.0",
+    "yarn": "^1.22.17",
+    "npm": "Please use Yarn instead of NPM to install dependencies. See: https://yarnpkg.com/lang/en/docs/install/"
+  },
+  "scripts": {
+    "postinstall": "node tools/postinstall/apply-patches.js",
+    "build": "ts-node-script ./scripts/build.ts",
+    "build:schematics": "node tools/schematics/esbuild.js",
+    "build:i18n": "ts-node-script ./scripts/build.ts i18n",
+    "generate:bazel": "ng g .:bazel",
+    "generate:symbols": "ng g .:extractSymbols",
+    "bazel": "bazelisk",
+    "bazel:buildifier": "find . -type f \\( -name \"*.bzl\" -or -name WORKSPACE -or -name BUILD -or -name BUILD.bazel \\) ! -path \"*/node_modules/*\" ! -path \"*/.git/*\" | xargs buildifier -v",
+    "bazel:format-lint": "yarn -s bazel:buildifier --lint=warn --mode=check",
+    "bazel:cache": "ts-node-script -T ./scripts/cache.ts",
+    "start": "ibazel run //src/showcase:devserver",
+    "start:prod": "ibazel run //src/showcase:prodserver",
+    "start:journey-maps-wc": "ibazel run //src/journey-maps/web-component:devserver",
+    "test": "node ./scripts/run-component-tests.js",
+    "test-local": "yarn -s test --local",
+    "test-firefox": "yarn -s test --firefox",
+    "tslint": "tslint -c tslint.json --project ./tsconfig.json",
+    "lint": "yarn -s tslint && yarn -s bazel:format-lint",
+    "format:prettier": "prettier --write \"**/*.{js,ts,css,scss,json,md,html}\"",
+    "format:tslint": "yarn -s tslint --fix",
+    "format:bazel": "yarn -s bazel:buildifier --lint=fix --mode=fix",
+    "format": "npm-run-all --parallel format:prettier format:bazel format:tslint",
+    "prepare": "husky install",
+    "release": "standard-version --tag-prefix=\"\"",
+    "t9n:xlf": "ng-t9n t9n-xlf.json",
+    "t9n:xlf2": "ng-t9n t9n-xlf2.json",
+    "_shortcuts": "Below are shortcuts for common commands",
+    "baz": "yarn -s generate:bazel",
+    "sym": "yarn -s generate:symbols",
+    "integrity": "npm-run-all --sequential baz build:schematics sym format build:i18n"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sbb-design-systems/sbb-angular.git"
+  },
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/sbb-design-systems/sbb-angular/issues"
+  },
+  "homepage": "https://angular.app.sbb.ch",
+  "schematics": "./tools/schematics/collection.json",
+  "dependencies": {
+    "@angular/animations": "15.0.1",
+    "@angular/cdk": "15.0.0",
+    "@angular/common": "15.0.1",
+    "@angular/core": "15.0.1",
+    "@angular/elements": "15.0.1",
+    "@angular/forms": "15.0.1",
+    "@angular/platform-browser": "15.0.1",
+    "@angular/platform-browser-dynamic": "15.0.1",
+    "@angular/platform-server": "15.0.1",
+    "@angular/router": "15.0.1",
+    "@arcgis/core": "~4.20.2",
+    "@stackblitz/sdk": "1.8.1",
+    "maplibre-gl": "2.4.0",
+    "rxjs": "7.5.7",
+    "tslib": "2.4.1",
+    "zone.js": "0.12.0"
+  },
+  "devDependencies": {
+    "@actions/cache": "3.0.6",
+    "@angular-devkit/build-angular": "15.0.0",
+    "@angular-devkit/core": "15.0.0",
+    "@angular-devkit/schematics": "15.0.0",
+    "@angular-devkit/schematics-cli": "15.0.0",
+    "@angular/bazel": "15.0.1",
+    "@angular/build-tooling": "https://github.com/angular/dev-infra-private-build-tooling-builds.git#6016be38e96c3fbc098cc451b651e7aedbe2eb90",
+    "@angular/cli": "15.0.0",
+    "@angular/compiler": "15.0.1",
+    "@angular/compiler-cli": "15.0.1",
+    "@angular/language-service": "15.0.1",
+    "@angular/localize": "15.0.1",
+    "@angular/ng-dev": "https://github.com/angular/dev-infra-private-ng-dev-builds.git#183ef3004a595de30b14bd9b736034d9c57f20e3",
+    "@babel/core": "7.20.2",
+    "@babel/traverse": "7.20.1",
+    "@bazel/bazelisk": "1.12.1",
+    "@bazel/buildifier": "5.1.0",
+    "@bazel/buildozer": "5.1.0",
+    "@bazel/concatjs": "5.7.1",
+    "@bazel/esbuild": "5.7.1",
+    "@bazel/ibazel": "0.16.2",
+    "@bazel/jasmine": "5.7.1",
+    "@bazel/protractor": "5.7.1",
+    "@bazel/rollup": "5.7.1",
+    "@bazel/runfiles": "5.7.1",
+    "@bazel/worker": "5.7.1",
+    "@commitlint/cli": "17.3.0",
+    "@commitlint/config-conventional": "17.3.0",
+    "@rollup/plugin-commonjs": "23.0.2",
+    "@rollup/plugin-node-resolve": "13.3.0",
+    "@rollup/plugin-typescript": "8.5.0",
+    "@schematics/angular": "15.0.0",
+    "@types/browser-sync": "2.26.3",
+    "@types/events": "3.0.0",
+    "@types/fs-extra": "9.0.13",
+    "@types/geojson": "7946.0.10",
+    "@types/glob": "8.0.0",
+    "@types/grecaptcha": "2.0.36",
+    "@types/highlight.js": "10.1.0",
+    "@types/jasmine": "4.3.0",
+    "@types/jasminewd2": "2.0.10",
+    "@types/mapbox__point-geometry": "0.1.2",
+    "@types/marked": "^2.0.2",
+    "@types/node": "16.18.3",
+    "@types/parse5": "6.0.3",
+    "@types/sass": "1.43.1",
+    "@types/send": "0.17.1",
+    "@types/yargs": "17.0.13",
+    "angular-server-side-configuration": "15.0.1",
+    "angular-t9n": "15.0.0",
+    "browser-sync": "2.23.6",
+    "codelyzer": "6.0.2",
+    "dgeni": "^0.4.14",
+    "dgeni-packages": "^0.29.3",
+    "esbuild": "0.15.15",
+    "fs-extra": "10.1.0",
+    "highlight.js": "^10.7.0",
+    "history-server": "1.3.1",
+    "html-insert-assets": "0.14.3",
+    "husky": "8.0.2",
+    "jasmine": "4.5.0",
+    "jasmine-core": "4.5.0",
+    "jsonc-parser": "3.2.0",
+    "karma": "6.4.1",
+    "karma-browserstack-launcher": "1.6.0",
+    "karma-chrome-launcher": "3.1.1",
+    "karma-coverage": "2.2.0",
+    "karma-firefox-launcher": "2.1.2",
+    "karma-jasmine": "5.1.0",
+    "karma-junit-reporter": "2.0.1",
+    "karma-parallel": "0.3.1",
+    "karma-requirejs": "1.1.0",
+    "karma-sourcemap-loader": "0.3.8",
+    "lint-staged": "13.0.3",
+    "marked": "^2.0.3",
+    "npm-run-all": "4.1.5",
+    "octokit": "2.0.10",
+    "prettier": "2.7.1",
+    "protractor": "7.0.0",
+    "renovate": "34.13.2",
+    "requirejs": "2.3.6",
+    "rollup": "2.79.1",
+    "rollup-plugin-sourcemaps": "0.6.3",
+    "rxjs-tslint-rules": "4.34.8",
+    "sass": "1.56.1",
+    "semver": "7.3.8",
+    "send": "0.18.0",
+    "shelljs": "0.8.5",
+    "standard-version": "9.5.0",
+    "stylelint": "14.15.0",
+    "stylelint-config-recommended-scss": "8.0.0",
+    "stylelint-scss": "4.3.0",
+    "terser": "5.15.1",
+    "ts-node": "10.9.1",
+    "tsconfig-paths": "4.1.0",
+    "tslint": "6.1.3",
+    "tslint-config-prettier": "1.18.0",
+    "tslint-consistent-codestyle": "1.16.0",
+    "tslint-plugin-prettier": "2.3.0",
+    "typescript": "4.8.2",
+    "yargs": "17.6.2"
+  },
+  "resolutions": {
+    "@angular/build-tooling/typescript": "4.8.2",
+    "@angular/ng-dev/typescript": "4.8.2",
+    "browser-sync-client": "2.26.13",
+    "dgeni-packages/typescript": "4.8.2"
+  },
+  "standard-version": {
+    "types": [
+      {
+        "type": "feat",
+        "section": "Features"
+      },
+      {
+        "type": "fix",
+        "section": "Bug Fixes"
+      },
+      {
+        "type": "chore",
+        "hidden": true
+      },
+      {
+        "type": "docs",
+        "section": "Documentation"
+      },
+      {
+        "type": "style",
+        "section": "Bug Fixes"
+      },
+      {
+        "type": "refactor",
+        "hidden": true
+      },
+      {
+        "type": "perf",
+        "hidden": true
+      },
+      {
+        "type": "test",
+        "hidden": true
+      }
+    ]
+  },
+  "prettier": {
+    "singleQuote": true,
+    "endOfLine": "lf",
+    "printWidth": 100
+  },
+  "stylelint": {
+    "extends": "stylelint-config-recommended-scss",
+    "rules": {
+      "no-empty-source": null,
+      "selector-pseudo-element-no-unknown": [
+        true,
+        {
+          "ignorePseudoElements": [
+            "ng-deep"
+          ]
+        }
+      ],
+      "selector-type-no-unknown": [
+        true,
+        {
+          "ignoreTypes": [
+            "/^sbb-/"
+          ]
+        }
+      ],
+      "no-descending-specificity": null
+    }
+  },
+  "commitlint": {
+    "extends": [
+      "@commitlint/config-conventional"
+    ],
+    "rules": {
+      "body-max-line-length": [
+        0,
+        "always",
+        0
+      ],
+      "footer-max-line-length": [
+        0,
+        "always",
+        0
+      ]
+    }
+  },
+  "lint-staged": {
+    "*.{js,ts,css,scss,json,md,html}": [
+      "prettier --write"
+    ],
+    "*.ts": [
+      "tslint -c tslint.json --project ./tsconfig.json --fix"
+    ],
+    "*.{bzl,bazel}": [
+      "buildifier -v"
+    ]
+  }
+}

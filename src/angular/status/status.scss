@@ -1,0 +1,42 @@
+@use '@sbb-esta/angular' as sbb;
+
+.sbb-status {
+  display: inline-flex;
+  align-items: center;
+  font-size: var(--sbb-font-size);
+  line-height: var(--sbb-line-height);
+}
+
+.sbb-status-icon {
+  width: var(--sbb-icon-size-default);
+  height: var(--sbb-icon-size-default);
+  border-radius: var(--sbb-border-radius);
+  color: var(--sbb-color-white);
+}
+
+// Variant for .sbb-status-icon
+.sbb-status-icon-valid {
+  background-color: var(--sbb-color-green);
+}
+
+// Variant for .sbb-status-icon
+.sbb-status-icon-warning {
+  color: var(--sbb-color-black);
+  background-color: var(--sbb-color-peach);
+}
+
+// Variant for .sbb-status-icon
+.sbb-status-icon-invalid {
+  background-color: var(--sbb-color-red);
+}
+
+.sbb-status-message {
+  background-color: var(--sbb-color-milk);
+  color: var(--sbb-color-granite);
+  line-height: calc(#{sbb.pxToRem(20)} * var(--sbb-scaling-factor));
+  font-family: var(--sbb-font-roman);
+  margin-left: calc(#{sbb.pxToRem(8)} * var(--sbb-scaling-factor));
+  padding: calc(#{sbb.pxToRem(1)} * var(--sbb-scaling-factor))
+    calc(#{sbb.pxToRem(8)} * var(--sbb-scaling-factor))
+    calc(#{sbb.pxToRem(3)} * var(--sbb-scaling-factor));
+}

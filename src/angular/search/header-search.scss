@@ -1,0 +1,42 @@
+@use '@sbb-esta/angular' as sbb;
+
+.sbb-header-search {
+  display: inline-flex;
+  cursor: pointer;
+  color: var(--sbb-color-metal);
+  font-size: calc(#{sbb.pxToRem(14)} * var(--sbb-scaling-factor));
+  line-height: calc(#{sbb.pxToRem(17)} * var(--sbb-scaling-factor));
+  outline: none;
+  padding: calc(#{sbb.pxToRem(12)} * var(--sbb-scaling-factor)) 0;
+
+  :where(html:not(.sbb-lean)) & {
+    @include sbb.mq($from: desktop4k, $to: desktop5k) {
+      line-height: sbb.pxToRem(25);
+    }
+  }
+  :where(html.sbb-lean) & {
+    padding: sbb.pxToRem(6) 0;
+  }
+
+  &:is(:hover, :focus) {
+    color: var(--sbb-color-call-to-action-hover);
+  }
+}
+
+.sbb-header-search-label {
+  padding-left: calc(#{sbb.pxToRem(8)} * var(--sbb-scaling-factor));
+  padding-top: calc(#{sbb.pxToRem(4)} * var(--sbb-scaling-factor));
+
+  @include sbb.mq($to: tablet) {
+    @include sbb.sbbVisuallyHidden();
+  }
+}
+
+.sbb-header-search-overlay {
+  width: 100%;
+}
+
+.sbb-header-search-overlay .sbb-search {
+  width: 100%;
+  max-width: 100%;
+}

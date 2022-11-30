@@ -1,0 +1,11 @@
+# Bazel configuration that will be copied to ~/.bazelrc in GitHub Actions containers.
+# This allows us adding specific configuration flags for builds within GitHub Actions.
+# See more: https://docs.bazel.build/versions/master/user-manual.html#where-are-the-bazelrc-files
+
+# Print all enabled Bazel flags in CI mode. This makes it easier to debug and reproduce
+# Bazel issues that show up on GitHub Actions.
+common --announce_rc
+
+# We enable writing to cache for all builds, since GitHub caches are separated
+# by branch and repository, so it should be secure.
+build --config=remote-disk-caching

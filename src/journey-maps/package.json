@@ -1,0 +1,42 @@
+{
+  "name": "@sbb-esta/journey-maps",
+  "version": "0.0.0-PLACEHOLDER",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sbb-design-systems/sbb-angular.git"
+  },
+  "engines": {
+    "node": ">=14.0.0 <17.0.0"
+  },
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/sbb-design-systems/sbb-angular/issues"
+  },
+  "homepage": "https://angular.app.sbb.ch",
+  "peerDependencies": {
+    "@angular/common": "0.0.0-NG",
+    "@angular/core": "0.0.0-NG",
+    "@types/geojson": ">=7946",
+    "maplibre-gl": "^2.1.0"
+  },
+  "ng-update": {
+    "packageGroup": [
+      "@sbb-esta/angular",
+      "@sbb-esta/angular-experimental",
+      "@sbb-esta/angular-maps",
+      "@sbb-esta/journey-maps"
+    ],
+    "packageGroupName": "@sbb-esta/angular"
+  },
+  "sideEffects": false,
+  "publishConfig": {
+    "access": "public"
+  },
+  "exports": {
+    "./web-component": {
+      "types": "./index.d.ts",
+      "es2015": "./web-component/bundle-es2015.min.js",
+      "default": "./web-component/bundle.min.js"
+    }
+  }
+}

@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+  <file source-language="en-CH" datatype="plaintext" original="ng2.template" target-language="de-CH">
+    <body>
+      <trans-unit id="sbbAlertCloseAlert" datatype="html">
+        <source>Close message</source>
+        <target state="signed-off">Meldung schliessen</target>
+      </trans-unit>
+      <trans-unit id="sbbBreadcrumbExpand" datatype="html">
+        <source>Show entire path</source>
+        <target state="signed-off">Ganzen Pfad anzeigen</target>
+      </trans-unit>
+      <trans-unit id="sbbDatepickerSwitchToPreviousMonth" datatype="html">
+        <source>Change to the previous month</source>
+        <target state="signed-off">Zum letzten Monat wechseln</target>
+      </trans-unit>
+      <trans-unit id="sbbDatepickerSwitchToNextMonth" datatype="html">
+        <source>Change to the next month</source>
+        <target state="signed-off">Zum nächsten Monat wechseln</target>
+      </trans-unit>
+      <trans-unit id="sbbDatepickerSwitchToPreviousYear" datatype="html">
+        <source>Change to the previous year</source>
+        <target state="signed-off">Zum letzten Jahr wechseln</target>
+      </trans-unit>
+      <trans-unit id="sbbDatepickerSwitchToNextYear" datatype="html">
+        <source>Change to the next year</source>
+        <target state="signed-off">Zum nächsten Jahr wechseln</target>
+      </trans-unit>
+      <trans-unit id="sbbDatepickerOpenCalendar" datatype="html">
+        <source>Show calendar</source>
+        <target state="signed-off">Kalender anzeigen</target>
+      </trans-unit>
+      <trans-unit id="sbbDatePickerNextDayAriaLabel" datatype="html">
+        <source>Next day</source>
+        <target state="translated">Nächster Tag</target>
+      </trans-unit>
+      <trans-unit id="sbbDatePickerPrevDayAriaLabel" datatype="html">
+        <source>Previous day</source>
+        <target state="translated">Vorheriger Tag</target>
+      </trans-unit>
+      <trans-unit id="sbbDialogCloseDialog" datatype="html">
+        <source>Close dialog</source>
+        <target state="signed-off">Dialog schliessen</target>
+      </trans-unit>
+      <trans-unit id="sbbFileSelectorUploadFile" datatype="html">
+        <source>Upload file</source>
+        <target state="signed-off">Datei hochladen</target>
+      </trans-unit>
+      <trans-unit id="sbbFileSelectorRemoveFile" datatype="html">
+        <source>Remove file</source>
+        <target state="signed-off">Datei entfernen</target>
+      </trans-unit>
+      <trans-unit id="sbbHeaderMenuBack" datatype="html">
+        <source>Back</source>
+        <target state="signed-off">Zurück</target>
+      </trans-unit>
+      <trans-unit id="sbbHeaderOpenMenu" datatype="html">
+        <source>Open Menu</source>
+        <target state="signed-off">Menü öffnen</target>
+      </trans-unit>
+      <trans-unit id="sbbHeaderCloseMenu" datatype="html">
+        <source>Close Menu</source>
+        <target state="signed-off">Menü schliessen</target>
+      </trans-unit>
+      <trans-unit id="sbbLightboxCloseLightbox" datatype="html">
+        <source>Close lightbox</source>
+        <target state="signed-off">Lightbox schliessen</target>
+      </trans-unit>
+      <trans-unit id="sbbPaginationPreviousPage" datatype="html">
+        <source>Previous Page</source>
+        <target state="signed-off">Vorherige Seite</target>
+      </trans-unit>
+      <trans-unit id="sbbPaginationNextPage" datatype="html">
+        <source>Next Page</source>
+        <target state="signed-off">Nächste Seite</target>
+      </trans-unit>
+      <trans-unit id="sbbSearchHeaderButtonLabel" datatype="html">
+        <source>Search</source>
+        <target state="signed-off">Suche</target>
+      </trans-unit>
+      <trans-unit id="sbbSidebarCollapse" datatype="html">
+        <source>Collapse</source>
+        <target state="signed-off">Zusammenklappen</target>
+      </trans-unit>
+      <trans-unit id="sbbSidebarExpand" datatype="html">
+        <source>Expand</source>
+        <target state="signed-off">Erweitern</target>
+      </trans-unit>
+      <trans-unit id="sbbSidebarCloseSidebar" datatype="html">
+        <source>Close Sidebar</source>
+        <target state="signed-off">Seitenmenü schliessen</target>
+      </trans-unit>
+      <trans-unit id="sbbSidebarOpenSidebar" datatype="html">
+        <source>Open Sidebar</source>
+        <target state="signed-off">Seitenmenü öffnen</target>
+      </trans-unit>
+      <trans-unit id="sbbTagBadgePillAmountOfResults" datatype="html">
+        <source><x id="PH" equiv-text="this.amount"/> results available</source>
+        <target state="signed-off"><x id="PH" equiv-text="this.amount"/> Resultate verfügbar</target>
+      </trans-unit>
+      <trans-unit id="sbbTagsAll" datatype="html">
+        <source>All</source>
+        <target state="signed-off">Alle</target>
+      </trans-unit>
+      <trans-unit id="sbbTagsAllBadgeDescription" datatype="html">
+        <source>A total of <x id="PH" equiv-text="this.totalAmount"/> results available</source>
+        <target state="signed-off">Ein Total von <x id="PH" equiv-text="this.totalAmount"/> Resultaten verfügbar</target>
+      </trans-unit>
+      <trans-unit id="sbbTextareaCounterText" datatype="html">
+        <source><x id="PH" equiv-text="this._counter.value"/> characters remaining</source>
+        <target state="signed-off">Noch <x id="PH" equiv-text="this._counter.value"/> Zeichen</target>
+      </trans-unit>
+      <trans-unit id="sbbTextexpandShowLess" datatype="html">
+        <source>Show less</source>
+        <target state="signed-off">Weniger anzeigen</target>
+      </trans-unit>
+      <trans-unit id="sbbTextexpandShowMore" datatype="html">
+        <source>Show more</source>
+        <target state="signed-off">Mehr anzeigen</target>
+      </trans-unit>
+      <trans-unit id="sbbUsermenuLogin" datatype="html">
+        <source>Login</source>
+        <target state="signed-off">Anmelden</target>
+      </trans-unit>
+      <trans-unit id="sbbUsermenuOpenPanel" datatype="html">
+        <source>Logged in as <x id="PH" equiv-text="this.displayName || this.userName"/>. Click or press enter to open user menu.</source>
+        <target state="signed-off">Angemeldet als <x id="PH" equiv-text="this.displayName || this.userName
+"/>. Klicken oder Enter drücken, um das Benutzermenü zu öffnen.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

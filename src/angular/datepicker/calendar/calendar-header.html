@@ -1,0 +1,48 @@
+<div class="sbb-calendar-controls">
+  <div class="sbb-calendar-controls-months">
+    <button
+      type="button"
+      class="sbb-calendar-controls-button sbb-calendar-controls-button-previous"
+      [disabled]="!previousMonthEnabled()"
+      (click)="previousMonthClicked()"
+      [attr.aria-label]="_labelSwitchToPreviousMonth"
+    >
+      <sbb-icon svgIcon="kom:chevron-small-left-small"></sbb-icon>
+    </button>
+    <span class="sbb-calendar-controls-label" [attr.aria-label]="monthText" aria-live="polite"
+      >{{ monthText }}</span
+    >
+    <button
+      type="button"
+      class="sbb-calendar-controls-button sbb-calendar-controls-button-next"
+      [disabled]="!nextMonthEnabled()"
+      (click)="nextMonthClicked()"
+      [attr.aria-label]="_labelSwitchToNextMonth"
+    >
+      <sbb-icon svgIcon="kom:chevron-small-right-small"></sbb-icon>
+    </button>
+  </div>
+  <div class="sbb-calendar-controls-years">
+    <button
+      type="button"
+      class="sbb-calendar-controls-button sbb-calendar-controls-button-previous"
+      [disabled]="!previousYearEnabled()"
+      (click)="previousYearClicked()"
+      [attr.aria-label]="_labelSwitchToPreviousYear"
+    >
+      <sbb-icon svgIcon="kom:chevron-small-left-small"></sbb-icon>
+    </button>
+    <span class="sbb-calendar-controls-label" [attr.aria-label]="yearText" aria-live="polite"
+      >{{ yearText }}</span
+    >
+    <button
+      type="button"
+      class="sbb-calendar-controls-button sbb-calendar-controls-button-next"
+      [disabled]="!nextYearEnabled()"
+      (click)="nextYearClicked()"
+      [attr.aria-label]="_labelSwitchToNextYear"
+    >
+      <sbb-icon svgIcon="kom:chevron-small-right-small"></sbb-icon>
+    </button>
+  </div>
+</div>

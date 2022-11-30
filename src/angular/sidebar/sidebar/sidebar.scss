@@ -1,0 +1,256 @@
+@use '@sbb-esta/angular' as sbb;
+@use '../sidebar';
+
+:is(.sbb-sidebar-container.sbb-sidebar-after-header, .sbb-header-lean + .sbb-sidebar-container) {
+  top: var(--sbb-header-lean-height);
+}
+
+.sbb-sidebar-backdrop {
+  @include sidebar.sbb-sidebar-fill();
+
+  display: block;
+
+  // Because of the new stacking context, the z-index stack is new and we can use our own
+  // numbers.
+  z-index: 3;
+
+  // We use 'visibility: hidden | visible' because 'display: none' will not animate any
+  // transitions, while visibility will interpolate transitions properly.
+  // see https://developer.mozilla.org/en-US/docs/Web/CSS/visibility, the Interpolation
+  // section.
+  visibility: hidden;
+
+  &.sbb-sidebar-shown {
+    visibility: visible;
+  }
+
+  .sbb-sidebar-transition & {
+    transition: {
+      duration: var(--sbb-transition-duration-default);
+      timing-function: var(--sbb-transition-timing-default);
+      property: background-color, visibility;
+    }
+  }
+}
+
+.sbb-sidebar-container {
+  @include sidebar.sbb-sidebar-container('.sbb-sidebar-backdrop, .sbb-sidebar-content');
+
+  // Need this to take up space in the layout.
+  display: flex;
+  flex-direction: column;
+
+  // Hide the sidebars when they're closed.
+  overflow: hidden;
+}
+
+.sbb-sidebar-container-mobile {
+  padding-top: var(--sbb-sidebar-mobile-menu-bar-height);
+}
+
+.sbb-sidebar-content {
+  @include sidebar.sbb-sidebar-content;
+  z-index: 1;
+  height: 100%;
+
+  .sbb-sidebar-transition & {
+    transition: {
+      duration: var(--sbb-transition-duration-default);
+      timing-function: var(--sbb-transition-timing-default);
+      property: transform, margin-left, margin-right;
+    }
+  }
+
+  .sbb-sidebar-container-mobile & {
+    margin-top: var(--sbb-border-width-thin);
+  }
+}
+
+.sbb-sidebar {
+  @include sidebar.sbb-sidebar;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: calc(#{sbb.pxToRem(300)} * var(--sbb-scaling-factor));
+  transform: translate3d(-100%, 0, 0);
+  border-right: var(--sbb-border-width-thin) solid var(--sbb-color-cloud);
+  background-color: var(--sbb-color-background);
+
+  // Usually the `visibility: hidden` added by the animation is enough to prevent focus from
+  // entering the hidden sidebar content, but children with their own `visibility` can override it.
+  // This is a fallback that completely hides the content when the element becomes hidden.
+  // Note that we can't do this in the animation definition, because the style gets recomputed too
+  // late, breaking the animation because Angular didn't have time to figure out the target
+  // transform. This can also be achieved with JS, but it has issues when starting an
+  // animation before the previous one has finished.
+  &[style*='visibility: hidden'] {
+    display: none;
+  }
+}
+
+.sbb-sidebar-side {
+  z-index: 2;
+}
+
+.sbb-sidebar-over {
+  z-index: 4;
+  box-shadow: var(--sbb-box-shadow-width) 0 0 0 var(--sbb-box-shadow-color);
+  border-right: var(--sbb-border-width-thin) solid var(--sbb-color-granite);
+}
+
+.sbb-sidebar-inner-container {
+  @include sidebar.sbb-sidebar-inner-container();
+
+  .sbb-sidebar-container-mobile & {
+    padding-top: var(--sbb-sidebar-mobile-menu-bar-height);
+  }
+
+  // Overwrites of expansion panel
+
+  :where(html:not(.sbb-lean)) & {
+    // Standard styles for sbb-sidebar are taken from NBC definitions and are a simple
+    // modification to achieve a minimal acceptable look of the sbb-sidebar in standard.
+    --sbb-expansion-panel-padding-horizontal: calc(#{sbb.pxToRem(24)} * var(--sbb-scaling-factor));
+    --sbb-expansion-panel-header-padding-top: calc(#{sbb.pxToRem(24)} * var(--sbb-scaling-factor));
+    --sbb-expansion-panel-header-padding-bottom: calc(
+      #{sbb.pxToRem(24)} * var(--sbb-scaling-factor)
+    );
+    --sbb-divider-medium: var(--sbb-divider-small);
+  }
+
+  .sbb-expansion-panel-header {
+    background-color: inherit;
+
+    /**
+     Animate line below legend when collapsing.
+     Base styles are copied from .sbb-expansion-panel-header
+    */
+    &::after {
+      content: '';
+      display: block;
+      position: absolute;
+      height: 0;
+      bottom: 0;
+      width: calc(
+        100% - var(--sbb-expansion-panel-padding-horizontal) * 2 + var(--sbb-border-width-thin) * 2
+      );
+      left: calc(var(--sbb-expansion-panel-padding-horizontal) - var(--sbb-border-width-thin));
+      border-bottom: var(--sbb-border-width-thin) solid transparent;
+
+      transition: border-bottom var(--sbb-transition-duration-default)
+        var(--sbb-transition-timing-default);
+    }
+  }
+
+  // Apply Expansion panel styles to fieldset
+  > fieldset {
+    padding: var(--sbb-expansion-panel-header-padding-top)
+      calc(var(--sbb-expansion-panel-padding-horizontal) - var(--sbb-border-width-thin))
+      var(--sbb-divider-medium);
+
+    > legend {
+      font-size: var(--sbb-font-size-large);
+      line-height: var(--sbb-expansion-panel-line-height);
+    }
+  }
+
+  > :is(.sbb-expansion-panel, fieldset) {
+    border: none;
+    border-bottom: var(--sbb-border-width-thin) solid var(--sbb-color-cloud);
+
+    + :is(.sbb-expansion-panel, fieldset) {
+      margin-top: calc(
+        var(--sbb-divider-medium) - var(--sbb-expansion-panel-header-padding-top) - #{sbb.pxToRem(3)} *
+          var(--sbb-scaling-factor)
+      );
+
+      :where(html.sbb-lean) & {
+        margin-top: calc(
+          var(--sbb-divider-big) - var(--sbb-expansion-panel-header-padding-top) - #{sbb.pxToRem(3)} *
+            var(--sbb-scaling-factor)
+        );
+      }
+    }
+
+    &:last-child {
+      border-bottom: none;
+    }
+  }
+}
+
+.sbb-sidebar-link {
+  position: relative;
+  text-decoration: none;
+  color: var(--sbb-color-iron);
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  // Overlap spacing of expansion panel padding
+  width: calc(100% + var(--sbb-expansion-panel-padding-horizontal) - var(--sbb-border-width-thin));
+  padding: calc(#{sbb.pxToRem(5)} * var(--sbb-scaling-factor))
+    var(--sbb-expansion-panel-padding-horizontal)
+    calc(#{sbb.pxToRem(7)} * var(--sbb-scaling-factor))
+    calc(#{sbb.pxToRem(16)} * var(--sbb-scaling-factor));
+
+  &:is(:hover, :focus) {
+    @include sbb.sbbMenuItemRedLean();
+  }
+
+  &.sbb-active {
+    @include sbb.sbbMenuItemBlackLean();
+    pointer-events: none;
+    cursor: default;
+
+    &:focus-visible {
+      @include sbb.sbbFocusOutline();
+    }
+  }
+
+  // Styles with non-active limitation to display an outline in safari where focus-visible is not working
+  // TODO: Remove limitation once Safari supports focus-visible
+  &:not(.sbb-active) {
+    outline: 0;
+  }
+}
+
+.sbb-sidebar-link-label {
+  @include sbb.ellipsis();
+  flex: 1 1;
+}
+
+:is(.sbb-sidebar-mobile-menu-bar, .sbb-sidebar-mobile-menu-bar-close-wrapper) {
+  display: none;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+
+  .sbb-sidebar-container-mobile & {
+    display: flex;
+  }
+}
+
+.sbb-sidebar-mobile-menu-bar {
+  z-index: 2;
+  border-bottom: var(--sbb-border-width-thin) solid var(--sbb-color-cloud);
+}
+
+:is(.sbb-sidebar-mobile-menu-bar-trigger, .sbb-sidebar-mobile-menu-bar-close) {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 0;
+  width: calc(#{sbb.pxToRem(54)} * var(--sbb-scaling-factor));
+  height: var(--sbb-sidebar-mobile-menu-bar-height);
+  cursor: pointer;
+  outline: none;
+
+  &:focus {
+    color: var(--sbb-color-call-to-action-hover);
+  }
+}
+
+.sbb-sidebar-mobile-menu-bar-close-wrapper {
+  background-color: var(--sbb-color-background);
+  z-index: 1;
+}

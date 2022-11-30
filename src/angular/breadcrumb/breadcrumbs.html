@@ -1,0 +1,13 @@
+<div role="list" class="sbb-breadcrumbs-wrapper">
+  <sbb-breadcrumb class="sbb-breadcrumb-root">
+    <ng-content select="[sbb-breadcrumb-root]"></ng-content>
+  </sbb-breadcrumb>
+
+  <ng-content select="sbb-breadcrumb[root]"></ng-content>
+
+  <sbb-breadcrumb class="sbb-breadcrumb-dots">
+    <button type="button" (click)="expand()" [attr.aria-label]="_labelExpand">...</button>
+  </sbb-breadcrumb>
+
+  <ng-content select="sbb-breadcrumb"></ng-content>
+</div>

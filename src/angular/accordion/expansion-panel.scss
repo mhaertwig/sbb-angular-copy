@@ -1,0 +1,148 @@
+@use '@sbb-esta/angular' as sbb;
+
+.sbb-expansion-panel {
+  box-sizing: content-box;
+  display: block;
+  margin: 0;
+  transition: border-color var(--sbb-transition-fast-start);
+  border: var(--sbb-border-width-thin) solid var(--sbb-color-milk);
+
+  & + & {
+    margin-top: calc(var(--sbb-border-width-thin) * 2);
+  }
+
+  &.sbb-expanded {
+    border-color: var(--sbb-color-cloud);
+
+    &.sbb-expansion-panel-full-width {
+      // Setting border color to transparent is necessary because of border-color animation
+      border-left-color: transparent;
+      border-right-color: transparent;
+
+      border-left-width: 0;
+      border-right-width: 0;
+      padding-left: var(--sbb-border-width-thin);
+      padding-right: var(--sbb-border-width-thin);
+    }
+  }
+}
+
+.sbb-expansion-panel-horizontal-padding {
+  padding-left: calc(var(--sbb-expansion-panel-padding-horizontal) - var(--sbb-border-width-thin));
+  padding-right: calc(var(--sbb-expansion-panel-padding-horizontal) - var(--sbb-border-width-thin));
+}
+
+.sbb-expansion-panel-header {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  position: relative;
+  background-color: var(--sbb-color-milk);
+  outline: none;
+  padding-top: var(--sbb-expansion-panel-header-padding-top);
+  padding-bottom: var(--sbb-expansion-panel-header-padding-bottom);
+
+  :where(html.sbb-lean) & {
+    padding-bottom: calc(#{sbb.pxToRem(12)} - var(--sbb-border-width-thin));
+  }
+
+  &.sbb-expanded::after {
+    content: '';
+    display: block;
+    position: absolute;
+    height: 0;
+    bottom: 0;
+    width: calc(
+      100% - var(--sbb-expansion-panel-padding-horizontal) * 2 + var(--sbb-border-width-thin) * 2
+    );
+    left: calc(var(--sbb-expansion-panel-padding-horizontal) - var(--sbb-border-width-thin));
+    border-bottom: var(--sbb-border-width-thin) solid var(--sbb-color-cloud);
+  }
+
+  &:is(.sbb-expanded, .sbb-expanded:is(:focus, :hover)) {
+    background: inherit;
+  }
+
+  &.sbb-disabled {
+    cursor: default;
+    opacity: 0.75;
+  }
+}
+
+.sbb-expansion-panel-header-indicator {
+  flex: 0 0 auto;
+  line-height: 0; // Centers the svg icon inside sbb-icon
+  height: var(--sbb-icon-size-default);
+  width: var(--sbb-icon-size-default);
+  margin-left: sbb.pxToRem(24);
+  color: var(--sbb-color-black);
+
+  // Workaround to ensure calculated height of icon is not greater than line-height
+  margin-top: -0.5em;
+  margin-bottom: -0.5em;
+
+  :where(html:not(.sbb-lean)) & {
+    border: var(--sbb-border-width-thin) solid var(--sbb-color-storm);
+    border-radius: 50%;
+    padding: calc(#{sbb.pxToRem(4)} * var(--sbb-scaling-factor) - var(--sbb-border-width-thin));
+
+    @include sbb.mq($from: tablet, $to: desktop) {
+      margin-left: sbb.pxToRem(40);
+    }
+
+    @include sbb.mq($from: tablet) {
+      height: calc(#{sbb.pxToRem(32)} * var(--sbb-scaling-factor));
+      width: calc(#{sbb.pxToRem(32)} * var(--sbb-scaling-factor));
+    }
+
+    @include sbb.mq($from: desktop4k) {
+      margin-left: sbb.pxToRem(36);
+    }
+
+    @include sbb.mq($from: desktop5k) {
+      margin-left: sbb.pxToRem(44);
+    }
+  }
+}
+
+.sbb-expansion-panel-header-content {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+  font-family: var(--sbb-font-light);
+  font-size: var(--sbb-font-size-large);
+  line-height: var(--sbb-expansion-panel-line-height);
+}
+
+.sbb-expansion-panel-content {
+  display: flex;
+  flex-direction: column;
+  overflow: visible;
+
+  // Usually the `visibility: hidden` added by the animation is enough to prevent focus from
+  // entering the collapsed content, but children with their own `visibility` can override it.
+  // In other components we set a `display: none` at the root to stop focus from reaching the
+  // elements, however we can't do that here, because the content can determine the width
+  // of an expansion panel. The most practical fallback is to use `!important` to override
+  // any custom visibility.
+  &[style*='visibility: hidden'] * {
+    visibility: hidden !important;
+  }
+
+  &.ng-animating,
+  .sbb-expansion-panel:not(.sbb-expanded) & {
+    overflow: hidden;
+  }
+}
+
+.sbb-expansion-panel-body {
+  font-size: var(--sbb-font-size);
+  line-height: var(--sbb-line-height);
+  padding-top: var(--sbb-divider-medium);
+  padding-bottom: var(--sbb-divider-medium);
+
+  // Remove the top margin from the first element inside the body.
+  > *:first-child {
+    margin-top: 0;
+  }
+}

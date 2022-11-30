@@ -1,0 +1,27 @@
+@use '@sbb-esta/angular' as sbb;
+
+.sbb-svg-icon-wrapper {
+  width: 100%;
+  height: 100px;
+  padding: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: transparent;
+  cursor: pointer;
+  color: var(--sbb-color-granite);
+  border: var(--sbb-border-width) solid var(--sbb-color-storm);
+  outline: 0;
+
+  &:is(:hover, :focus) {
+    border-color: var(--sbb-color-iron);
+  }
+}
+
+.sbb-svg-icon-path {
+  display: block;
+  text-align: center;
+  font-size: 0.8em;
+  line-height: var(--sbb-line-height-small);
+  @include sbb.ellipsis();
+}

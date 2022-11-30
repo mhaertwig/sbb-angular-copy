@@ -1,0 +1,165 @@
+@use 'external/npm/node_modules/@angular/cdk' as cdk;
+@use '@sbb-esta/angular' as sbb;
+
+.sbb-tooltip-component {
+  display: block;
+  filter: drop-shadow(0 var(--sbb-box-shadow-width) 0 var(--sbb-box-shadow-color));
+}
+
+.sbb-tooltip-container {
+  height: 100%;
+  font-size: var(--sbb-font-size);
+  line-height: var(--sbb-line-height);
+  opacity: 0;
+
+  &._sbb-animation-noopable {
+    animation: none;
+    opacity: 1;
+  }
+
+  &::after,
+  &::before {
+    // Slightly move down arrow to avoid artifacts on certain zoom levels
+    top: calc(0.5 * var(--sbb-border-width));
+    left: 0;
+    right: 0;
+    margin-left: auto;
+    margin-right: auto;
+    content: '';
+    height: var(--sbb-tooltip-content-arrow-size);
+    width: var(--sbb-tooltip-content-arrow-size);
+    position: absolute;
+    pointer-events: none;
+    transform: rotate(45deg);
+    border: var(--sbb-border-width) solid transparent;
+
+    .sbb-tooltip-panel-above & {
+      top: auto;
+      bottom: calc(0.5 * var(--sbb-tooltip-shadow-arrow-size));
+      transform: rotate(225deg);
+    }
+
+    .sbb-tooltip-panel-left & {
+      margin-right: var(--sbb-tooltip-arrow-horizontal-space);
+    }
+
+    .sbb-tooltip-panel-right & {
+      margin-left: var(--sbb-tooltip-arrow-horizontal-space);
+    }
+  }
+
+  &::before {
+    border-color: var(--sbb-color-weak-accent);
+    z-index: 1;
+  }
+
+  &::after {
+    background-color: var(--sbb-tooltip-background-color);
+    background-clip: padding-box;
+    z-index: 2;
+
+    --sbb-tooltip-arrow-padding-offset: 0rem; // Unit is necessary for calc()
+    clip-path: polygon(
+      0 0,
+      calc(var(--sbb-tooltip-content-arrow-size) - var(--sbb-tooltip-arrow-padding-offset)) 0,
+      0 calc(var(--sbb-tooltip-content-arrow-size) - var(--sbb-tooltip-arrow-padding-offset))
+    );
+
+    html.sbb-lean & {
+      --sbb-tooltip-arrow-padding-offset: #{sbb.pxToRem(1)};
+    }
+  }
+
+  .sbb-tooltip-panel-above & {
+    margin-bottom: calc(#{sbb.pxToRem(12)} * var(--sbb-scaling-factor));
+  }
+}
+
+@keyframes sbb-tooltip-container-show {
+  0% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes sbb-tooltip-container-hide {
+  0% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0;
+  }
+}
+
+.sbb-tooltip-container-show {
+  animation: sbb-tooltip-container-show var(--sbb-transition-duration-fast)
+    cubic-bezier(0, 0, 0.2, 1) forwards;
+}
+
+.sbb-tooltip-container-hide {
+  animation: sbb-tooltip-container-hide 75ms cubic-bezier(0, 0, 0.2, 1) forwards;
+}
+
+.sbb-tooltip {
+  max-width: calc(#{sbb.pxToRem(460)} * var(--sbb-scaling-factor));
+  padding: var(--sbb-tooltip-padding);
+  position: relative;
+  overflow: hidden;
+  color: var(--sbb-color-granite);
+  text-overflow: ellipsis;
+  background-color: var(--sbb-tooltip-background-color);
+  border: var(--sbb-border-width) solid var(--sbb-color-weak-accent);
+  border-radius: var(--sbb-border-radius);
+  z-index: 2;
+
+  @include cdk.high-contrast(active, off) {
+    outline: solid 1px;
+  }
+
+  .sbb-tooltip-panel-below & {
+    margin-top: var(--sbb-tooltip-arrow-offset);
+  }
+
+  :where(html.sbb-lean) & {
+    color: var(--sbb-color-text);
+  }
+}
+
+.sbb-tooltip-zero-padding {
+  --sbb-tooltip-padding: 0;
+}
+
+.sbb-tooltip-has-close-button {
+  padding-right: calc(#{sbb.pxToRem(71)} * var(--sbb-scaling-factor));
+
+  :where(html.sbb-lean) & {
+    padding-right: sbb.pxToRem(48);
+  }
+
+  .sbb-tooltip-zero-padding & {
+    padding-right: 0;
+  }
+}
+
+.sbb-tooltip-close-button {
+  color: var(--sbb-color-weak-accent);
+  position: absolute;
+  width: var(--sbb-icon-size-default);
+  height: var(--sbb-icon-size-default);
+  top: var(--sbb-tooltip-padding);
+  right: var(--sbb-tooltip-padding);
+  line-height: 0;
+
+  :where(html:not(.sbb-lean)) & {
+    border: var(--sbb-border-width-thin) solid var(--sbb-color-storm);
+    border-radius: 50%;
+  }
+}
+
+.sbb-tooltip-panel-non-interactive {
+  pointer-events: none;
+}

@@ -1,0 +1,47 @@
+@use '@sbb-esta/angular' as sbb;
+
+.sbb-textarea {
+  display: inline-block;
+  letter-spacing: 0;
+  width: 100%;
+
+  textarea {
+    width: 100%;
+    outline: none;
+    border: none;
+    padding: 0;
+    min-height: inherit;
+    resize: none;
+    overflow: hidden;
+    background-color: transparent;
+    text-overflow: clip;
+
+    // Undo the red box-shadow glow added by Firefox on invalid inputs.
+    // See https://developer.mozilla.org/en-US/docs/Web/CSS/:-moz-ui-invalid
+    &:-moz-ui-invalid {
+      box-shadow: none;
+    }
+  }
+
+  // We want to provide the error styles both for invalid state
+  // in a sbb-form-field and also for Angular Form Validation.
+  .sbb-form-field-invalid & textarea,
+  &.ng-touched.ng-invalid textarea {
+    color: var(--sbb-color-error);
+  }
+}
+
+.sbb-textarea-remaining-chars {
+  position: relative;
+  float: right;
+  background: transparent;
+  color: var(--sbb-color-text);
+  letter-spacing: 0;
+  font-size: var(--sbb-font-size-small);
+  line-height: 1;
+  font-family: var(--sbb-font-roman);
+
+  :where(html.sbb-lean) & {
+    color: var(--sbb-color-metal);
+  }
+}

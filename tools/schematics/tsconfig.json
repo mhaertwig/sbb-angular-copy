@@ -1,0 +1,26 @@
+{
+  "compilerOptions": {
+    "baseUrl": "tsconfig",
+    "lib": ["es2020", "dom"],
+    "allowSyntheticDefaultImports": true,
+    "declaration": false,
+    "esModuleInterop": true,
+    "module": "esnext",
+    "moduleResolution": "node",
+    "noEmitOnError": true,
+    "noFallthroughCasesInSwitch": true,
+    "noImplicitAny": true,
+    "noImplicitThis": true,
+    "noUnusedParameters": true,
+    "noUnusedLocals": true,
+    "rootDir": ".",
+    "skipDefaultLibCheck": true,
+    "skipLibCheck": true,
+    "sourceMap": false,
+    "strictNullChecks": true,
+    "target": "es2020",
+    "types": ["jasmine", "node"]
+  },
+  "include": ["**/*"],
+  "exclude": ["*/files/**/*", "**/index.d.ts"]
+}

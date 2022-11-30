@@ -1,0 +1,260 @@
+@use '@sbb-esta/angular' as sbb;
+
+.sbb-usermenu {
+  display: inline-block;
+  max-width: var(--sbb-usermenu-panel-width);
+}
+
+:is(.sbb-usermenu-trigger, .sbb-menu-panel-type-usermenu .sbb-menu-panel-trigger) {
+  display: flex;
+  align-items: center;
+  color: var(--sbb-color-weak-accent);
+  outline: 0;
+  width: 100%;
+  height: var(--sbb-usermenu-trigger-height);
+  font-size: var(--sbb-font-size);
+  line-height: var(--sbb-line-height);
+  padding: 0 var(--sbb-border-width);
+
+  &:where(button) {
+    cursor: pointer;
+  }
+
+  &:is(:hover, :focus) {
+    color: var(--sbb-color-call-to-action-hover);
+  }
+
+  // applies to custom icons and arrow icon
+  .sbb-icon {
+    flex-shrink: 0;
+    flex-grow: 0;
+  }
+}
+
+.sbb-menu-panel-type-usermenu .sbb-menu-panel-trigger {
+  // Horizontal divider line
+  &::after {
+    content: '';
+    position: absolute;
+    width: 100%;
+    left: 0;
+    background-color: var(--sbb-color-cloud);
+    height: sbb.pxToRem(1);
+    bottom: sbb.pxToRem(-1);
+  }
+
+  flex-grow: 0;
+  flex-shrink: 0;
+  padding: 0 !important; // Overwrite default menu styles
+  height: calc(var(--sbb-usermenu-trigger-height) - var(--sbb-border-width));
+}
+
+.sbb-usermenu-logged-out-icon {
+  margin-right: calc(#{sbb.pxToRem(4)} * var(--sbb-scaling-factor));
+}
+
+.sbb-usermenu-logged-out-label {
+  display: none;
+  @include sbb.mq($from: tablet) {
+    display: inline;
+  }
+}
+
+.sbb-usermenu-identification {
+  display: flex;
+  flex-grow: 0;
+  flex-shrink: 0;
+  color: var(--sbb-color-weak-accent);
+
+  .sbb-menu-panel-wrapper & {
+    padding-left: var(--sbb-usermenu-trigger-padding);
+  }
+
+  img {
+    border-radius: 50%;
+    border: var(--sbb-border-width) solid var(--sbb-color-cloud);
+  }
+}
+
+:is(.sbb-usermenu-identification img, .sbb-usermenu-initial-letters) {
+  width: calc(#{sbb.pxToRem(30)} * var(--sbb-scaling-factor));
+  height: calc(#{sbb.pxToRem(30)} * var(--sbb-scaling-factor));
+
+  :where(html.sbb-lean) & {
+    width: var(--sbb-icon-size-default);
+    height: var(--sbb-icon-size-default);
+  }
+}
+
+.sbb-usermenu-initial-letters {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-grow: 0;
+  flex-shrink: 0;
+  border-radius: 50%;
+  background-color: var(--sbb-color-cloud);
+  color: var(--sbb-color-metal);
+  font-family: var(--sbb-font-bold);
+  font-weight: 700;
+  text-align: center;
+  font-size: calc(#{sbb.pxToRem(13)} * var(--sbb-scaling-factor));
+
+  :where(html:not(.sbb-lean)) & {
+    line-height: 1;
+  }
+  :where(html.sbb-lean) & {
+    font-size: sbb.pxToRem(10);
+  }
+}
+
+.sbb-usermenu-user-info {
+  display: none;
+  flex-grow: 1;
+  flex-direction: column;
+  justify-content: flex-start;
+  overflow: hidden;
+  color: var(--sbb-color-weak-accent);
+  padding-left: calc(#{sbb.pxToRem(8)} * var(--sbb-scaling-factor));
+
+  :is(.sbb-usermenu-user-info-has-display-name, .sbb-menu-panel-wrapper) & {
+    display: flex;
+  }
+}
+
+:is(.sbb-usermenu-user-info-display-name, .sbb-usermenu-user-info-name) {
+  display: none;
+  text-align: left;
+  @include sbb.ellipsis();
+
+  .sbb-menu-panel-type-usermenu.ng-animating & {
+    text-overflow: clip; // Prevents showing ellipsis during animation
+  }
+}
+
+.sbb-usermenu-user-info-display-name {
+  .sbb-usermenu-user-info-has-display-name & {
+    @include sbb.mq($from: tablet) {
+      display: inline-block;
+    }
+  }
+
+  .sbb-menu-panel-wrapper & {
+    display: inline-block;
+  }
+}
+
+.sbb-usermenu-user-info-name {
+  .sbb-menu-panel-wrapper & {
+    display: inline-block;
+  }
+
+  color: var(--sbb-color-metal);
+  font-size: var(--sbb-font-size-small);
+  line-height: calc(#{sbb.pxToRem(14)} * var(--sbb-scaling-factor));
+
+  :where(html.sbb-lean) & {
+    color: var(--sbb-color-iron);
+  }
+}
+
+.sbb-usermenu-arrow.sbb-icon {
+  display: none;
+  flex-shrink: 0;
+  flex-grow: 0;
+  margin-right: calc(#{sbb.pxToRem(8)} * var(--sbb-scaling-factor));
+  transition: transform var(--sbb-transition-default);
+
+  @include sbb.mq($from: tablet) {
+    display: inline-block;
+  }
+  .sbb-overlay-panel & {
+    display: inline-block;
+  }
+
+  :where(html.sbb-lean) & {
+    margin-left: sbb.pxToRem(8);
+    transform: rotate(90deg);
+  }
+
+  :is(.sbb-menu-trigger-menu-open, .sbb-menu-panel-wrapper) & {
+    transform: rotate(-180deg);
+
+    :where(html.sbb-lean) & {
+      transform: rotate(-90deg);
+    }
+  }
+
+  .sbb-menu-panel-wrapper & {
+    @keyframes arrowRotate {
+      0% {
+        transform: rotate(0);
+      }
+      100% {
+        transform: rotate(-180deg);
+      }
+    }
+    animation: var(--sbb-transition-default) 0s 1 arrowRotate;
+
+    :where(html.sbb-lean) & {
+      @keyframes arrowRotateLean {
+        0% {
+          transform: rotate(90deg);
+        }
+        100% {
+          transform: rotate(-90deg);
+        }
+      }
+      animation: var(--sbb-transition-default) 0s 1 arrowRotateLean;
+    }
+  }
+
+  .sbb-menu-panel-wrapper.sbb-menu-panel-closing & {
+    @keyframes arrowRotateBackwards {
+      0% {
+        transform: rotate(-180deg);
+      }
+      100% {
+        transform: rotate(0);
+      }
+    }
+    animation: var(--sbb-transition-default) 0s 1 arrowRotateBackwards;
+
+    :where(html.sbb-lean) & {
+      @keyframes arrowRotateBackwardsLean {
+        0% {
+          transform: rotate(-90deg);
+        }
+        100% {
+          transform: rotate(90deg);
+        }
+      }
+      animation: var(--sbb-transition-default) 0s 1 arrowRotateBackwardsLean;
+    }
+  }
+}
+
+.sbb-menu-panel-wrapper.sbb-menu-panel-type-usermenu {
+  max-width: 100%;
+  position: absolute;
+  right: 0;
+  --sbb-menu-trigger-width: #{sbb.pxToRem(48)}; // Only fallback, will normally be defined programmatically
+  --sbb-menu-trigger-height: #{sbb.pxToRem(48)}; // Only fallback, will normally be defined programmatically
+  min-width: calc(var(--sbb-menu-trigger-width) + var(--sbb-usermenu-trigger-padding));
+  min-height: var(--sbb-menu-trigger-height);
+
+  .sbb-menu-item {
+    min-width: calc(var(--sbb-usermenu-panel-width) - var(--sbb-border-width) * 2);
+  }
+
+  &.ng-animating {
+    .sbb-panel {
+      overflow: hidden; // Disable scroll bars during animation
+    }
+
+    &.sbb-menu-panel-closing .sbb-panel {
+      padding: 0;
+      transition: padding var(--sbb-transition-default);
+    }
+  }
+}

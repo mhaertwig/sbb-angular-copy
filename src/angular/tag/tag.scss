@@ -1,0 +1,115 @@
+@use '@sbb-esta/angular' as sbb;
+
+:is(.sbb-tag, .sbb-tag-link) {
+  .sbb-badge {
+    display: flex;
+    align-self: center;
+    // In order to align in the center, we need to slightly move the badge downwards.
+    // This is due to the padding of the label inside the sbb-tag.
+    margin-top: sbb.pxToRem(1);
+  }
+  .sbb-badge-content {
+    position: relative;
+    display: block;
+    transition: background-color var(--sbb-transition-fast-start);
+  }
+}
+
+.sbb-tag {
+  display: inline-block;
+}
+
+.sbb-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: calc(#{sbb.pxToRem(8)} * var(--sbb-scaling-factor));
+}
+
+.sbb-tag-base {
+  display: flex;
+  transition: {
+    duration: var(--sbb-transition-duration-fast);
+    timing-function: var(--sbb-transition-timing-fast-start);
+    property: border-color, background-color, color;
+  }
+  cursor: pointer;
+  background-color: var(--sbb-color-milk);
+  border: var(--sbb-border-width-thin) solid transparent;
+  border-radius: 1.2em;
+  color: var(--sbb-color-granite);
+
+  font-size: var(--sbb-font-size);
+  line-height: var(--sbb-line-height-medium);
+  padding: sbb.pxToRem(4) sbb.pxToRem(8) sbb.pxToRem(6) sbb.pxToRem(15);
+
+  :where(html:not(.sbb-lean)) & {
+    @include sbb.mq($from: desktop4k) {
+      padding: sbb.pxToRem(6) sbb.pxToRem(12) sbb.pxToRem(7) sbb.pxToRem(22);
+    }
+    @include sbb.mq($from: desktop5k) {
+      padding: sbb.pxToRem(9) sbb.pxToRem(16) sbb.pxToRem(12) sbb.pxToRem(30);
+    }
+  }
+
+  :where(html.sbb-lean) & {
+    line-height: var(--sbb-line-height);
+    padding: sbb.pxToRem(2) sbb.pxToRem(6) sbb.pxToRem(3) sbb.pxToRem(13);
+  }
+}
+
+.sbb-tag-label {
+  position: relative;
+
+  .sbb-tag:not(.sbb-tag-disabled):is(:hover, :focus, .cdk-focused) & {
+    background-color: var(--sbb-color-cloud);
+    color: var(--sbb-color-black);
+
+    .sbb-badge-content {
+      background-color: var(--sbb-color-cement);
+    }
+  }
+
+  .sbb-tag-active & {
+    background-color: var(--sbb-color-background);
+    border-color: var(--sbb-color-black);
+    color: var(--sbb-color-black);
+  }
+
+  .sbb-tag-active:not(.sbb-tag-disabled):is(:hover, :focus, .cdk-focused) & {
+    background-color: transparent;
+    border-color: var(--sbb-color-graphite);
+    color: var(--sbb-color-granite);
+
+    .sbb-badge-content {
+      background-color: var(--sbb-color-red);
+
+      :where(html.sbb-lean) & {
+        background-color: var(--sbb-color-black);
+      }
+    }
+  }
+
+  .sbb-tag-disabled & {
+    cursor: default;
+  }
+}
+
+.sbb-tag-link {
+  display: inline-flex;
+  background-color: var(--sbb-color-background);
+  border-color: var(--sbb-color-black);
+  color: var(--sbb-color-black);
+  outline: 0;
+  text-decoration: none;
+
+  &:is(:hover, :focus, :active, .sbb-active) {
+    border-color: var(--sbb-color-call-to-action-hover);
+    color: var(--sbb-color-call-to-action-hover);
+
+    .sbb-badge-content {
+      :where(html.sbb-lean) & {
+        background-color: var(--sbb-color-call-to-action-hover);
+      }
+    }
+  }
+}

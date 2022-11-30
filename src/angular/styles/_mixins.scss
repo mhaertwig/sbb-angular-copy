@@ -1,0 +1,152 @@
+// ----------------------------------------------------------------------------------------------------
+// Mixins
+// ----------------------------------------------------------------------------------------------------
+
+/**
+ * Better font rendering (on OS X)
+ * http://maximilianhoffmann.com/posts/better-font-rendering-on-osx
+ *
+ * Usage:
+ *
+ * .var-dark-on-light {
+ * 	@include fontSmoothing;
+ * }
+ * .var-light-on-dark {
+ * 	@include fontSmoothingReset;
+ * }
+ */
+
+@mixin fontSmoothing() {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+@mixin fontSmoothingReset() {
+  -webkit-font-smoothing: subpixel-antialiased;
+  -moz-osx-font-smoothing: auto;
+}
+
+// Typo Styles
+// ----------------------------------------------------------------------------------------------------
+
+@mixin ellipsis() {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+@mixin absoluteCenterXY() {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+@mixin absoluteCenterX() {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+@mixin absoluteCenterY() {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+/**
+ * Display content for screen reader only.
+ * Copied from angular/components .cdk-visually-hidden, in order
+ * to apply it to a class conditionally.
+ */
+@mixin sbbVisuallyHidden() {
+  border: 0;
+  clip: rect(0 0 0 0);
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  padding: 0;
+  position: absolute;
+  width: 1px;
+
+  // This works around a Chrome bug that can cause the tab to crash when large amounts of
+  // non-English text get wrapped: https://bugs.chromium.org/p/chromium/issues/detail?id=1201444
+  white-space: nowrap;
+
+  // Avoid browsers rendering the focus ring in some cases.
+  outline: 0;
+
+  // Avoid some cases where the browser will still render the native controls (see #9049).
+  -webkit-appearance: none;
+  -moz-appearance: none;
+
+  // We need at least one of top/bottom/left/right in order to prevent cases where the
+  // absolute-positioned element is pushed down and can affect scrolling (see angular/components#24597).
+  // `left` was chosen here, because it's the least likely to break overrides where the
+  // element might have been positioned (e.g. `sbb-checkbox`).
+  left: 0;
+
+  [dir='rtl'] & {
+    left: auto;
+    right: 0;
+  }
+}
+
+@mixin buttonReset() {
+  background: none;
+  max-width: none;
+  min-width: 0;
+  padding: 0;
+  margin: 0;
+}
+
+@mixin buttonResetFrameless() {
+  @include buttonReset();
+  border: none;
+}
+
+// ----------------------------------------------------------------------------------------------------
+// Sbb Menu
+// ----------------------------------------------------------------------------------------------------
+
+@mixin borderLeftAsBefore($color, $width) {
+  &::before {
+    content: '';
+    position: absolute;
+    height: 100%;
+    width: $width;
+    left: 0;
+    top: 0;
+    background-color: $color;
+  }
+}
+
+@mixin sbbMenuItemBlackLean($width: var(--sbb-border-width-thin)) {
+  color: var(--sbb-color-black);
+  background-color: var(--sbb-color-cloud);
+  @include borderLeftAsBefore(var(--sbb-color-black), $width);
+}
+
+@mixin sbbMenuItemRedLean($width: var(--sbb-border-width-thin)) {
+  color: var(--sbb-color-call-to-action-hover);
+  background-color: var(--sbb-color-milk);
+  @include borderLeftAsBefore(var(--sbb-color-call-to-action-hover), $width);
+}
+
+@mixin sbbAbsoluteFill() {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+
+@mixin sbbFocusOutline() {
+  outline: var(--sbb-border-width-thin) solid var(--sbb-color-weak-accent);
+  outline-offset: var(--sbb-border-width-thin-negative);
+}
+
+@mixin user-select($value) {
+  -webkit-user-select: $value;
+  user-select: $value;
+}

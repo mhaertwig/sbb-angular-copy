@@ -1,0 +1,79 @@
+@use '@sbb-esta/angular' as sbb;
+
+.sbb-paginator {
+  display: inline-block;
+}
+
+.sbb-paginator-list {
+  display: flex;
+  color: var(--sbb-pagination-base-color);
+}
+
+.sbb-paginator-item {
+  position: relative;
+  line-height: 0;
+  text-align: center;
+  outline: 0;
+  flex-shrink: 0;
+  min-width: var(--sbb-pagination-paginator-size);
+  height: var(--sbb-pagination-paginator-size);
+}
+
+.sbb-paginator-item-button {
+  cursor: pointer;
+  border-radius: 1.5em;
+  border: var(--sbb-border-width) solid transparent;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  line-height: 1;
+  outline: 0;
+
+  &:is(:hover, :focus):not(.sbb-paginator-item-selected) {
+    color: var(--sbb-color-call-to-action-hover);
+  }
+
+  :where(html.sbb-lean) & {
+    border-width: sbb.pxToRem(2);
+  }
+}
+
+.sbb-paginator-item-selected {
+  border-color: var(--sbb-pagination-base-color);
+  cursor: default;
+}
+
+.sbb-paginator-item-boundary {
+  color: var(--sbb-color-weak-accent);
+  width: var(--sbb-pagination-paginator-size);
+  height: var(--sbb-pagination-paginator-size);
+
+  padding: 0;
+
+  &:hover {
+    color: var(--sbb-color-call-to-action-hover);
+  }
+}
+
+.sbb-paginator-item-disabled {
+  color: var(--sbb-pagination-disabled-color);
+  cursor: default;
+  pointer-events: none;
+
+  &.sbb-paginator-item-selected {
+    border-color: var(--sbb-pagination-disabled-color);
+  }
+}
+
+.sbb-paginator-item-ellipsis {
+  cursor: default;
+  display: block;
+  margin-top: 54%;
+}
+
+.sbb-paginator-item-ellipsis-disabled {
+  color: var(--sbb-pagination-disabled-color);
+}

@@ -1,0 +1,98 @@
+###############################
+# Filesystem interactions     #
+###############################
+
+# Don't create bazel-* symlinks in the WORKSPACE directory.
+# These require .gitignore and may scare users. Also, it's a workaround for
+# https://github.com/bazelbuild/rules_typescript/issues/12 which affects the common case of
+# having `tsconfig.json` in the WORKSPACE directory. Instead, you should run
+# `bazel info output_base` to find out where the outputs went.
+build --symlink_prefix=/
+
+# Performance: avoid stat'ing input files
+build --watchfs
+
+# Turn off legacy external runfiles
+build --nolegacy_external_runfiles
+run --nolegacy_external_runfiles
+test --nolegacy_external_runfiles
+
+# This flag is needed to so that the bazel cache is not invalidated
+# when running bazel via `yarn bazel`.
+build --incompatible_strict_action_env
+
+############################
+# --strategy=BundlingTypes #
+############################
+# Use BundlingTypes strategy to avoid the `Worker process did not return a WorkResponse` error
+# being caused when Microsoft API extractor prints to stdout and conflicts with the Bazel worker 
+# IPC also using stdout. See https://github.com/angular/angular/issues/46965
+build --strategy=BundlingTypes=remote,sandboxed,local
+
+###############################
+# Output control              #
+###############################
+
+# A more useful default output mode for bazel query
+# Prints eg. "ng_module rule //foo:bar" rather than just "//foo:bar"
+query --output=label_kind
+
+# By default, failing tests don't print any output, it goes to the log file
+test --test_output=errors
+
+#################################
+# Release configuration.        #
+# Run with "--config=release"   #
+#################################
+
+# Configures script to do version stamping.
+# See https://docs.bazel.build/versions/master/user-manual.html#flag--workspace_status_command
+build:release --workspace_status_command="node ./tools/bazel-stamp-vars.js"
+build:release --stamp
+
+####################################
+# Bazel custom flags               #
+####################################
+build --flag_alias=partial_compilation=@npm//@angular/bazel/src:partial_compilation
+
+##################################
+# Always enable Ivy compilation  #
+##################################
+build --define=angular_ivy_enabled=True
+
+#######################
+# Remote Disk Caching #
+#######################
+build --disk_cache=~/.bazel-cache/sbb-angular
+build --remote_accept_cached=true
+build --remote_upload_local_results=false
+
+######################################
+# Remote Disk Caching writes support #
+# Turn on these settings with        #
+#  --config=remote-disk-caching      #
+######################################
+build:remote-disk-caching --remote_upload_local_results=true
+
+################################
+# --config=debug               #
+################################
+
+# Enable debugging tests with --config=debug
+test:debug --test_arg=--node_options=--inspect-brk --test_output=streamed --test_strategy=exclusive --test_timeout=9999 --nocache_test_results
+
+################################
+# Coverage                     #
+################################
+
+# When running `bazel coverage` --instrument_test_targets needs to be set in order to
+# collect coverage information from test targets
+coverage --instrument_test_targets
+
+################################
+# Local Environment Setup      #
+#  Needs to be last statement  #
+################################
+# Load any settings which are specific to the current user. Needs to be *last* statement
+# in this config, as the user configuration should be able to overwrite flags from this file.
+try-import .bazelrc.user

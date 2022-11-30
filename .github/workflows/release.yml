@@ -1,0 +1,106 @@
+name: Release
+on:
+  push:
+    tags:
+      - '[0-9]+.[0-9]+.[0-9]+'
+      - '[0-9]+.[0-9]+.[0-9]+-*'
+env:
+  BAZEL_COMMAND: bazelisk
+  BAZEL_CACHE_VERSION: v3
+
+permissions:
+  packages: write
+
+jobs:
+  packages:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - name: "Bazel: Copy .bazelrc to user home"
+      run: cp ./.github/.bazelrc ~/
+    - uses: actions/setup-node@v3
+      with:
+        node-version: 16
+        registry-url: 'https://registry.npmjs.org'
+        scope: sbb-esta
+    - name: "Yarn: Install"
+      uses: ./.github/actions/yarn-install
+
+    - name: "Bazel: Restore remote cache"
+      if: ${{ success() || failure() }}
+      uses: ./.github/actions/download-workflow-bazel-cache
+      with:
+        key: packages
+    - name: "Bazel: Build packages"
+      run: yarn -s build packages
+
+    - uses: actions/upload-artifact@v3
+      with:
+        name: packages
+        path: dist/releases
+
+    - name: "Publish: Determine npm tag"
+      id: npm_tag
+      run: |
+        if [[ "$REF" == *"-"* ]]
+        then
+            echo "npm_tag=next" >> $GITHUB_OUTPUT
+        else
+            echo "npm_tag=latest" >> $GITHUB_OUTPUT
+        fi
+      env:
+        REF: ${{ github.ref }}
+    - name: "Publish: @sbb-esta/angular"
+      run: yarn publish dist/releases/angular --tag ${{ steps.npm_tag.outputs.npm_tag }}  || true
+      env:
+        NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+    - name: "Publish: @sbb-esta/angular-maps"
+      run: yarn publish dist/releases/angular-maps --tag ${{ steps.npm_tag.outputs.npm_tag }} || true
+      env:
+        NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+    - name: "Publish: @sbb-esta/journey-maps"
+      run: yarn publish dist/releases/journey-maps --tag ${{ steps.npm_tag.outputs.npm_tag }} || true
+      env:
+        NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+  showcase:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Login to GitHub Docker Repository
+      uses: azure/docker-login@v1
+      with:
+        login-server: ghcr.io
+        username: ${{ github.actor }}
+        password: ${{ secrets.GITHUB_TOKEN }}
+    - uses: actions/checkout@v3
+    - name: "Bazel: Copy .bazelrc to user home"
+      run: cp ./.github/.bazelrc ~/
+    - uses: actions/setup-node@v3
+      with:
+        node-version: 16
+    - name: "Yarn: Install"
+      uses: ./.github/actions/yarn-install
+
+    - name: "Bazel: Restore remote cache"
+      if: ${{ success() || failure() }}
+      uses: ./.github/actions/download-workflow-bazel-cache
+      with:
+        key: combined
+    - name: "Bazel: Build showcase"
+      run: yarn -s build showcase
+      env:
+        JM_API_KEY: ${{ secrets.JM_API_KEY }}
+
+    - name: "Docker: Parse release version"
+      id: docker_release_version
+      run: echo ::set-output name=docker_release_version::${GITHUB_REF/refs\/tags\//}
+    - name: "Docker: Build image"
+      run: |
+        docker build \
+        -t ghcr.io/sbb-design-systems/sbb-angular/showcase:${{ steps.docker_release_version.outputs.docker_release_version }} \
+        -t ghcr.io/sbb-design-systems/sbb-angular/showcase:latest \
+        .
+    - name: "Docker: Publish image"
+      run: docker push ghcr.io/sbb-design-systems/sbb-angular/showcase:${{ steps.docker_release_version.outputs.docker_release_version }}
+    - name: "Docker: Publish image as latest"
+      run: docker push ghcr.io/sbb-design-systems/sbb-angular/showcase:latest

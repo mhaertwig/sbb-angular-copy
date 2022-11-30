@@ -1,0 +1,27 @@
+@use '@sbb-esta/angular' as sbb;
+
+.sbb-textexpand {
+  font-size: var(--sbb-font-size-small);
+  line-height: 1.5;
+  letter-spacing: 0;
+  color: var(--sbb-color-metal);
+
+  :where(html.sbb-lean) & {
+    font-size: var(--sbb-font-size);
+    line-height: var(--sbb-line-height);
+    color: var(--sbb-color-text);
+  }
+}
+
+.sbb-textexpand-button {
+  cursor: pointer;
+  letter-spacing: inherit;
+
+  &:is(:focus, :hover) {
+    color: var(--sbb-color-call-to-action-hover);
+  }
+}
+
+.sbb-textexpand-button-label {
+  text-decoration: underline;
+}

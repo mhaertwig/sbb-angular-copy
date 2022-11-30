@@ -1,0 +1,16 @@
+<p>Local usage of <code>SbbShowOnDirtyErrorStateMatcher</code>.</p>
+
+<sbb-form-field>
+  <sbb-label>Name</sbb-label>
+  <input
+    type="text"
+    sbbInput
+    [formControl]="name"
+    [errorStateMatcher]="errorStateMatcher"
+    placeholder="Name"
+  />
+  <sbb-error *ngIf="name.errors?.required">Name is required!</sbb-error>
+  <sbb-error *ngIf="name.errors?.minlength"
+    >Min length is {{ name.errors?.minlength?.requiredLength }}!</sbb-error
+  >
+</sbb-form-field>

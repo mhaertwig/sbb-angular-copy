@@ -1,0 +1,16 @@
+@use '@sbb-esta/angular' as sbb;
+
+.sbb-autocomplete-visible {
+  visibility: visible;
+}
+
+.sbb-autocomplete-hidden {
+  visibility: hidden;
+  padding: 0 !important; // Overwrite sbb-panel-padded styles
+}
+
+.sbb-autocomplete-panel .sbb-menu-group .sbb-menu-item {
+  :where(html:not(.sbb-lean)) & {
+    padding-left: calc(#{sbb.pxToRem(14)} * var(--sbb-scaling-factor));
+  }
+}

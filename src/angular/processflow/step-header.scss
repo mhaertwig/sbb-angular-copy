@@ -1,0 +1,95 @@
+@use 'external/npm/node_modules/@angular/cdk' as cdk;
+@use '@sbb-esta/angular' as sbb;
+
+.sbb-step-header {
+  outline: none;
+  position: relative;
+  font-family: var(--sbb-font-light);
+  -webkit-tap-highlight-color: transparent;
+  // Create a buffer space in order for the scrollbar to not be adjacent to the active underline.
+  margin-bottom: sbb.pxToRem(8);
+}
+
+.sbb-step-label {
+  display: inline-block;
+  @include sbb.ellipsis;
+  vertical-align: middle;
+  color: var(--sbb-color-metal);
+  cursor: default;
+  padding-bottom: 0.5em;
+  font-size: var(--sbb-font-size-large);
+  // The line-height must be greater than 1 to avoid letters like "g" and "y" being cut off.
+  // The correct placing is ensured using a negative top- and bottom margin.
+  line-height: var(--sbb-line-height-medium);
+  margin-top: calc((var(--sbb-font-size-large) - var(--sbb-line-height-medium)) / 2);
+  margin-bottom: calc((var(--sbb-font-size-large) - var(--sbb-line-height-medium)) / 2);
+
+  :where(html:not(.sbb-lean)) & {
+    @include sbb.mq($from: desktop) {
+      padding-bottom: 1em;
+    }
+  }
+  :where(html.sbb-lean) & {
+    font-size: sbb.pxToRem(16);
+    padding-bottom: sbb.pxToRem(5);
+    line-height: var(--sbb-line-height-small);
+    margin-top: calc((sbb.pxToRem(16) - var(--sbb-line-height-small)) / 2);
+    margin-bottom: calc((sbb.pxToRem(16) - var(--sbb-line-height-small)) / 2);
+  }
+
+  @include cdk.high-contrast(active, off) {
+    &:where(:not(.sbb-step-label-active)) {
+      color: GrayText;
+    }
+  }
+}
+
+.sbb-step-text-label {
+  @include sbb.ellipsis;
+}
+
+.sbb-step-label-active {
+  cursor: pointer;
+  color: var(--sbb-color-text);
+
+  &::after {
+    content: '';
+    display: block;
+    position: absolute;
+    bottom: 0;
+    width: 0;
+    left: 50%;
+    height: sbb.pxToRem(1);
+    border-bottom: var(--sbb-border-width-thin) solid currentColor;
+    transition: {
+      duration: var(--sbb-transition-duration-default);
+      property: left, width;
+    }
+  }
+
+  .sbb-step-header:is(:focus, :hover) & {
+    color: var(--sbb-color-call-to-action-hover);
+
+    &::after {
+      left: 0;
+      width: 100%;
+    }
+  }
+}
+
+.sbb-step-label-selected::after {
+  left: 0;
+  width: 100%;
+}
+
+.sbb-step-label-active.sbb-step-label-locked {
+  cursor: default;
+
+  .sbb-step-header:is(:focus, :hover) & {
+    color: var(--sbb-color-text);
+  }
+
+  &::after {
+    display: none;
+  }
+}

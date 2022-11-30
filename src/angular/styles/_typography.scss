@@ -1,0 +1,2632 @@
+@use 'external/npm/node_modules/@angular/cdk' as cdk;
+@use 'sass:math';
+@use '@sbb-esta/angular' as sbb;
+
+// ----------------------------------------------------------------------------------------------------
+// Custom Webfonts
+// ----------------------------------------------------------------------------------------------------
+
+@font-face {
+  font-family: 'SBBWeb Bold';
+  src: url('https://cdn.app.sbb.ch/fonts/v1_6_subset/SBBWeb-Bold.woff2') format('woff2'),
+    url('https://cdn.app.sbb.ch/fonts/v1_6_subset/SBBWeb-Bold.woff') format('woff');
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'SBBWeb Light';
+  src: url('https://cdn.app.sbb.ch/fonts/v1_6_subset/SBBWeb-Light.woff2') format('woff2'),
+    url('https://cdn.app.sbb.ch/fonts/v1_6_subset/SBBWeb-Light.woff') format('woff');
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'SBBWeb Roman';
+  src: url('https://cdn.app.sbb.ch/fonts/v1_6_subset/SBBWeb-Roman.woff2') format('woff2'),
+    url('https://cdn.app.sbb.ch/fonts/v1_6_subset/SBBWeb-Roman.woff') format('woff');
+  font-display: fallback;
+}
+
+@font-face {
+  font-family: 'SBBWeb Thin';
+  src: url('https://cdn.app.sbb.ch/fonts/v1_6_subset/SBBWeb-Thin.woff2') format('woff2'),
+    url('https://cdn.app.sbb.ch/fonts/v1_6_subset/SBBWeb-Thin.woff') format('woff');
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'SBBWeb Ultralight';
+  src: url('https://cdn.app.sbb.ch/fonts/v1_6_subset/SBBWeb-UltraLight.woff2') format('woff2'),
+    url('https://cdn.app.sbb.ch/fonts/v1_6_subset/SBBWeb-UltraLight.woff') format('woff');
+  font-display: swap;
+}
+
+// ----------------------------------------------------------------------------------------------------
+// Global CSS properties
+// ----------------------------------------------------------------------------------------------------
+
+:root {
+  // Fonts
+  --sbb-font-roman: #{sbb.$fontSbbRoman};
+  --sbb-font-bold: #{sbb.$fontSbbBold};
+  --sbb-font-light: #{sbb.$fontSbbLight};
+  --sbb-font-thin: #{sbb.$fontSbbThin};
+
+  // Colors
+  --sbb-color-red: #{sbb.$sbbColorRed};
+  --sbb-color-red125: #{sbb.$sbbColorRed125};
+  --sbb-color-red150: #{sbb.$sbbColorRed150};
+  --sbb-color-white: #{sbb.$sbbColorWhite};
+  --sbb-color-milk: #{sbb.$sbbColorMilk};
+  --sbb-color-cloud: #{sbb.$sbbColorCloud};
+  --sbb-color-silver: #{sbb.$sbbColorSilver};
+  --sbb-color-aluminum: #{sbb.$sbbColorAluminum};
+  --sbb-color-platinum: #{sbb.$sbbColorPlatinum};
+  --sbb-color-cement: #{sbb.$sbbColorCement};
+  --sbb-color-graphite: #{sbb.$sbbColorGraphite};
+  --sbb-color-storm: #{sbb.$sbbColorStorm};
+  --sbb-color-smoke: #{sbb.$sbbColorSmoke};
+  --sbb-color-metal: #{sbb.$sbbColorMetal};
+  --sbb-color-granite: #{sbb.$sbbColorGranite};
+  --sbb-color-anthracite: #{sbb.$sbbColorAnthracite};
+  --sbb-color-iron: #{sbb.$sbbColorIron};
+  --sbb-color-charcoal: #{sbb.$sbbColorCharcoal};
+  --sbb-color-midnight: #{sbb.$sbbColorMidnight};
+  --sbb-color-black: #{sbb.$sbbColorBlack};
+  --sbb-color-blue: #{sbb.$sbbColorBlue};
+
+  // With Alpha
+  --sbb-color-granite-alpha40: #{rgba(sbb.$sbbColorGranite, 0.4)};
+  --sbb-color-red-alpha40: #{rgba(sbb.$sbbColorRed, 0.4)};
+  --sbb-color-silver-alpha40: #{rgba(sbb.$sbbColorSilver, 0.4)};
+  --sbb-color-storm-alpha40: #{rgba(sbb.$sbbColorStorm, 0.4)};
+  --sbb-color-iron-alpha40: #{rgba(sbb.$sbbColorIron, 0.4)};
+  --sbb-color-iron-alpha50: #{rgba(sbb.$sbbColorIron, 0.5)};
+  --sbb-color-white-alpha50: #{rgba(sbb.$sbbColorWhite, 0.5)};
+  --sbb-color-white-alpha70: #{rgba(sbb.$sbbColorWhite, 0.7)};
+
+  // Extended Colors
+  --sbb-color-sky: #{sbb.$sbbColorSky};
+  --sbb-color-night: #{sbb.$sbbColorNight};
+  --sbb-color-violet: #{sbb.$sbbColorViolet};
+  --sbb-color-autumn: #{sbb.$sbbColorAutumn};
+  --sbb-color-orange: #{sbb.$sbbColorOrange};
+  --sbb-color-peach: #{sbb.$sbbColorPeach};
+  --sbb-color-lemon: #{sbb.$sbbColorLemon};
+  --sbb-color-green: #{sbb.$sbbColorGreen};
+
+  // Non-Standard Colors
+  --sbb-color-grey: #{sbb.$sbbColorGrey};
+  --sbb-color-grey-medium: #{sbb.$sbbColorGreyMedium};
+
+  // Context Colors
+  --sbb-color-background: var(--sbb-color-white);
+  --sbb-color-call-to-action: var(--sbb-color-red);
+  --sbb-color-call-to-action-hover: var(--sbb-color-red125);
+  --sbb-color-error: #{sbb.$sbbColorError};
+  --sbb-color-text: var(--sbb-color-black);
+  --sbb-color-weak-accent: var(--sbb-color-granite);
+
+  // Scaling
+  --sbb-scaling-factor: 1;
+
+  // Sizings
+  --sbb-border-radius: calc(#{sbb.pxToRem(2)} * var(--sbb-scaling-factor));
+  --sbb-border-width: calc(#{sbb.pxToRem(2)} * var(--sbb-scaling-factor));
+  --sbb-border-width-negative: calc(var(--sbb-border-width) * -1);
+  --sbb-border-width-thin: #{sbb.pxToRem(1)};
+  --sbb-border-width-thin-negative: calc(var(--sbb-border-width-thin) * -1);
+  --sbb-button-gap: calc(#{sbb.pxToRem(8)} * var(--sbb-scaling-factor));
+  --sbb-font-size-constant: #{sbb.pxToRem(sbb.$sizeFontDefault)};
+  --sbb-font-size: var(--sbb-font-size-constant);
+  --sbb-line-height-constant: #{sbb.pxToRem(sbb.$sizeLineHeightDefault)};
+  --sbb-line-height: var(--sbb-line-height-constant);
+  --sbb-line-height-root: #{sbb.$sizeLineHeightBase};
+  --sbb-font-size-small: #{sbb.pxToRem(13)};
+  --sbb-line-height-small: #{sbb.pxToRem(20)};
+  --sbb-line-height-medium: #{sbb.pxToRem(23)};
+  --sbb-font-size-large: #{sbb.pxToRem(20)};
+
+  // Dividers
+  --sbb-divider-thin: calc(#{sbb.pxToRem(8)} * var(--sbb-scaling-factor));
+  --sbb-divider-small: calc(#{sbb.pxToRem(24)} * var(--sbb-scaling-factor));
+  --sbb-divider-medium: #{sbb.pxToRem(36)};
+  --sbb-divider-big: #{sbb.pxToRem(48)};
+
+  // Animation
+  --sbb-transition-duration-fast: 225ms;
+  --sbb-transition-duration-default: 300ms;
+  --sbb-transition-duration-slow: 500ms;
+  --sbb-transition-timing-fast-start: cubic-bezier(0.4, 0, 0.2, 1);
+  --sbb-transition-timing-default: cubic-bezier(0.785, 0.135, 0.15, 0.86);
+  --sbb-transition-fast-start: var(--sbb-transition-duration-fast)
+    var(--sbb-transition-timing-fast-start);
+  --sbb-transition-default: var(--sbb-transition-duration-default)
+    var(--sbb-transition-timing-default);
+
+  // Breadcrumb
+  --sbb-breadcrumb-trigger-padding-horizontal: calc(#{sbb.pxToRem(30)} * var(--sbb-scaling-factor));
+  --sbb-breadcrumb-trigger-padding-vertical: calc(#{sbb.pxToRem(14)} * var(--sbb-scaling-factor));
+
+  // Button
+  --sbb-button-height: calc(#{sbb.pxToRem(48)} * var(--sbb-scaling-factor));
+  --sbb-button-icon-top-margin: calc(#{sbb.pxToRem(-12.5)} * var(--sbb-scaling-factor));
+
+  // Chips
+  --sbb-chips-list-height: var(--sbb-form-input-min-height);
+  --sbb-chips-chip-margin-vertical: calc(2 * var(--sbb-border-width));
+  --sbb-chips-chip-height: calc(
+    var(--sbb-chips-list-height) - 2 * var(--sbb-chips-chip-margin-vertical) - 2 *
+      var(--sbb-border-width)
+  );
+  --sbb-chips-chip-padding-horizontal: calc(#{sbb.pxToRem(8)} * var(--sbb-scaling-factor));
+  --sbb-chips-input-width: calc(#{sbb.pxToRem(150)} * var(--sbb-scaling-factor));
+
+  // Dialog
+  --sbb-dialog-padding: calc(#{sbb.pxToRem(16)} * var(--sbb-scaling-factor));
+
+  // Datepicker
+  --sbb-datepicker-toggle-or-arrows-padding: calc(
+    #{sbb.pxToRem(44)} * var(--sbb-scaling-factor) - var(--sbb-border-width)
+  );
+  --sbb-datepicker-toggle-and-arrows-padding: calc(
+    #{sbb.pxToRem(72)} * var(--sbb-scaling-factor) - var(--sbb-border-width)
+  );
+  --sbb-datepicker-button-offset: calc(#{sbb.pxToRem(12)} * var(--sbb-scaling-factor));
+  --sbb-datepicker-button-gap: calc(#{sbb.pxToRem(4)} * var(--sbb-scaling-factor));
+  --sbb-datepicker-adjacent-button-offset: calc(
+    var(--sbb-datepicker-button-offset) + var(--sbb-icon-size-default) +
+      var(--sbb-datepicker-button-gap)
+  );
+  --sbb-datepicker-content-offset: calc(#{sbb.pxToRem(17)} * var(--sbb-scaling-factor));
+  --sbb-datepicker-calendar-header-height: calc(#{sbb.pxToRem(68)} * var(--sbb-scaling-factor));
+  --sbb-datepicker-calendar-header-color: var(--sbb-color-metal);
+  --sbb-datepicker-calendar-line-color: var(--sbb-color-platinum);
+  --sbb-datepicker-calendar-table-range-bg-color: var(--sbb-color-milk);
+  --sbb-datepicker-calendar-table-content-padding-width: #{sbb.pxToRem(11)};
+  --sbb-datepicker-calendar-arrow-width: calc(#{sbb.pxToRem(20)} * var(--sbb-scaling-factor));
+  --sbb-datepicker-calendar-arrow-offset: calc(
+    var(--sbb-datepicker-calendar-arrow-width) / -2 + var(--sbb-border-width)
+  );
+  --sbb-datepicker-calendar-width: #{sbb.pxToRem(340)};
+  --sbb-datepicker-calendar-height: calc(#{sbb.pxToRem(428)} * var(--sbb-scaling-factor));
+  --sbb-datepicker-calendar-controls-padding: #{sbb.pxToRem(6)};
+  --sbb-datepicker-calendar-body-cell-padding: calc(#{sbb.pxToRem(24)} * var(--sbb-scaling-factor));
+  --sbb-datepicker-calendar-body-cell-disabled-offset: #{sbb.pxToRem(12)};
+  --sbb-datepicker-calendar-body-cell-size: calc(#{sbb.pxToRem(40)} * var(--sbb-scaling-factor));
+
+  // Fieldset
+  --sbb-fieldset-legend-font-size: #{sbb.pxToRem(24)};
+  --sbb-fieldset-legend-nested-font-size: #{sbb.pxToRem(20)};
+
+  // Forms
+  --sbb-form-background-color-readonly: var(--sbb-color-milk);
+  --sbb-form-border-color-readonly: var(--sbb-color-aluminum);
+  --sbb-form-field-width: #{sbb.pxToRem(320)};
+  --sbb-form-input-color: var(--sbb-color-charcoal);
+  --sbb-form-input-color-disabled: var(--sbb-color-granite);
+  --sbb-form-input-min-height: calc(#{sbb.pxToRem(48)} * var(--sbb-scaling-factor));
+  --sbb-form-label-line-height: calc(#{sbb.pxToRem(16)} * var(--sbb-scaling-factor));
+  --sbb-form-label-wrapper-margin-bottom: calc(#{sbb.pxToRem(5)} * var(--sbb-scaling-factor));
+  --sbb-form-label-wrapper-padding-left: calc(#{sbb.pxToRem(10)} * var(--sbb-scaling-factor));
+
+  // Expansion Panel
+  --sbb-expansion-panel-padding-horizontal: #{sbb.pxToRem(24)};
+  --sbb-expansion-panel-header-padding-top: #{sbb.pxToRem(23)};
+  --sbb-expansion-panel-header-padding-bottom: #{sbb.pxToRem(26)};
+  --sbb-expansion-panel-line-height: #{sbb.pxToRem(28)};
+
+  // Header
+  --sbb-header-lean-height: calc(#{sbb.pxToRem(54)} * var(--sbb-scaling-factor));
+  --sbb-header-lean-base-z-index: 1000;
+  --sbb-header-lean-side-menu-z-index: 800;
+  --sbb-header-lean-menu-mobile-z-index: 1100;
+  --sbb-header-lean-menu-tablet-z-index: 700;
+  --sbb-header-lean-menu-width: calc(#{sbb.pxToRem(300)} * var(--sbb-scaling-factor));
+  --sbb-header-lean-label-line-height: calc(#{sbb.pxToRem(25)} * var(--sbb-scaling-factor));
+
+  // Lightbox
+  --sbb-lightbox-padding-horizontal: #{sbb.pxToRem(24)};
+  --sbb-lightbox-actions-padding-vertical: calc(#{sbb.pxToRem(24)} * var(--sbb-scaling-factor));
+
+  // Notification
+  --sbb-notification-message-padding: calc(#{sbb.pxToRem(16)} * var(--sbb-scaling-factor));
+  --sbb-notification-message-padding-horizontal: calc(
+    #{sbb.pxToRem(24)} * var(--sbb-scaling-factor)
+  );
+
+  // Pagination
+  --sbb-pagination-base-color: var(--sbb-color-granite);
+  --sbb-pagination-disabled-color: var(--sbb-color-silver);
+  --sbb-pagination-paginator-size: calc(#{sbb.pxToRem(40)} * var(--sbb-scaling-factor));
+  --sbb-pagination-navigation-item-margin: calc(#{sbb.pxToRem(4)} * var(--sbb-scaling-factor));
+
+  // Sidebar
+  --sbb-sidebar-mobile-menu-bar-height: calc(2 * var(--sbb-icon-size-default));
+  --sbb-icon-sidebar-item-dimension: calc(2 * var(--sbb-icon-size-default));
+
+  // Menu
+  // (36 (Desired width) - 24 (icon width)) / 2
+  --sbb-menu-trigger-padding: calc(#{sbb.pxToRem(6)} * var(--sbb-scaling-factor));
+
+  // Table
+  --sbb-table-background-color: var(--sbb-color-background);
+  --sbb-table-thead-background-color: var(--sbb-color-cloud);
+  --sbb-table-tbody-stripe-background-color: var(--sbb-color-milk);
+  --sbb-table-thead-padding: calc(#{sbb.pxToRem(16)} * var(--sbb-scaling-factor));
+  --sbb-table-thead-padding-vertical-top: calc(#{sbb.pxToRem(29)} * var(--sbb-scaling-factor));
+  --sbb-table-thead-padding-vertical-bottom: calc(#{sbb.pxToRem(30)} * var(--sbb-scaling-factor));
+  --sbb-table-tbody-padding: calc(#{sbb.pxToRem(16)} * var(--sbb-scaling-factor));
+  --sbb-table-cell-padding-horizontal: calc(#{sbb.pxToRem(12)});
+  --sbb-table-cell-padding-vertical-top: calc(#{sbb.pxToRem(18)} * var(--sbb-scaling-factor));
+  --sbb-table-cell-padding-vertical-bottom: calc(#{sbb.pxToRem(19)} * var(--sbb-scaling-factor));
+  --sbb-table-sticky-shadow-width: #{sbb.pxToRem(8)};
+  --sbb-table-sticky-shadow-offset: #{sbb.pxToRem(-9)};
+  --sbb-table-sort-header-arrow-margin: calc(#{sbb.pxToRem(8)} * var(--sbb-scaling-factor));
+
+  // Tooltip
+  --sbb-tooltip-padding: calc(#{sbb.pxToRem(23)} * var(--sbb-scaling-factor));
+  --sbb-tooltip-arrow-offset: calc(#{sbb.pxToRem(7.2)} * var(--sbb-scaling-factor));
+  --sbb-tooltip-arrow-horizontal-space: calc(#{sbb.pxToRem(8)} * var(--sbb-scaling-factor));
+  // The diagonal of the indicator square is 24 pixel. The width and height of the
+  // indicator square is therefore d / √2 = a.
+  --sbb-tooltip-content-arrow-size: calc(
+    #{sbb.pxToRem(math.div(24, math.sqrt(2)))} * var(--sbb-scaling-factor)
+  );
+  --sbb-tooltip-shadow-arrow-size: calc(#{sbb.pxToRem(12)} * var(--sbb-scaling-factor));
+  --sbb-tooltip-background-color: var(--sbb-color-background);
+
+  // Usermenu
+  --sbb-usermenu-panel-width: calc(#{sbb.pxToRem(288)} * var(--sbb-scaling-factor));
+  --sbb-usermenu-trigger-height: calc(#{sbb.pxToRem(48)} * var(--sbb-scaling-factor));
+  --sbb-usermenu-trigger-padding: calc(#{sbb.pxToRem(12)} * var(--sbb-scaling-factor));
+
+  // Icons
+  --sbb-icon-size-default: calc(#{sbb.pxToRem(24)} * var(--sbb-scaling-factor));
+  --sbb-icon-size-large: calc(1.5 * var(--sbb-icon-size-default));
+
+  // Arrow-right-small color black applied
+  --sbb-url-icon-arrow-right-small-black: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCI+PHBhdGggZmlsbD0ibm9uZSIgc3Ryb2tlPSIjMDAwIiBkPSJNNSAxMi40OTFoMTIuNDlNMTMuNSAxNi41bDMuOTktNC4wMDhMMTMuNSA4LjUiLz48L3N2Zz4=');
+  // Arrow-right-small color #c60018 (red 125) applied
+  --sbb-url-icon-arrow-right-small-red125: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCI+PHBhdGggZmlsbD0ibm9uZSIgc3Ryb2tlPSIjYzYwMDE4IiBkPSJNNSAxMi40OTFoMTIuNDlNMTMuNSAxNi41bDMuOTktNC4wMDhMMTMuNSA4LjUiLz48L3N2Zz4=');
+  // Chevron-down-small color #686868 (granite) applied
+  --sbb-url-icon-chevron-down-small-granite: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmVyc2lvbj0iMS4xIiB2aWV3Qm94PSIwIDAgMjQgMjQiPgogICAgPHBvbHlsaW5lIGZpbGw9Im5vbmUiIGZpbGwtcnVsZT0iZXZlbm9kZCIgc3Ryb2tlPSIjNjg2ODY4IiBzdHJva2Utd2lkdGg9IjEiIHBvaW50cz0iMjAgNy45OTkgMTIgMTUuOTk5IDQgNy45OTkiLz4KPC9zdmc+');
+  // Chevron-small-down-circle-small color #686868 (granite) applied
+  --sbb-url-icon-chevron-small-down-circle-small-granite: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0Ij4KICA8cGF0aCBmaWxsPSJub25lIiBzdHJva2U9IiM2ODY4NjgiIGQ9Ik0xMiw0LjQ5OTcgQzE2LjE0Myw0LjQ5OTcgMTkuNSw3Ljg1NzcgMTkuNSwxMS45OTk3IEMxOS41LDE2LjE0MjcgMTYuMTQzLDE5LjQ5OTcgMTIsMTkuNDk5NyBDNy44NTgsMTkuNDk5NyA0LjUsMTYuMTQyNyA0LjUsMTEuOTk5NyBDNC41LDcuODU3NyA3Ljg1OCw0LjQ5OTcgMTIsNC40OTk3IFogTTguMDkyMywxMC4zNDk4IEwxMS45OTYzLDE0LjI5OTggTDE1LjkwMDMsMTAuMzUxOCIvPgo8L3N2Zz4K');
+  // Chevron-small-down-circle-small color #c60018 (red 125) applied
+  --sbb-url-icon-chevron-small-down-circle-small-red125: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0Ij4KICA8cGF0aCBmaWxsPSJub25lIiBzdHJva2U9IiNjNjAwMTgiIGQ9Ik0xMiw0LjQ5OTcgQzE2LjE0Myw0LjQ5OTcgMTkuNSw3Ljg1NzcgMTkuNSwxMS45OTk3IEMxOS41LDE2LjE0MjcgMTYuMTQzLDE5LjQ5OTcgMTIsMTkuNDk5NyBDNy44NTgsMTkuNDk5NyA0LjUsMTYuMTQyNyA0LjUsMTEuOTk5NyBDNC41LDcuODU3NyA3Ljg1OCw0LjQ5OTcgMTIsNC40OTk3IFogTTguMDkyMywxMC4zNDk4IEwxMS45OTYzLDE0LjI5OTggTDE1LjkwMDMsMTAuMzUxOCIvPgo8L3N2Zz4K');
+  // Chevron-small-down-small color black applied
+  --sbb-url-icon-chevron-small-down-small-black: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCI+PHBvbHlsaW5lIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzAwMCIgcG9pbnRzPSI4LjA5MiAxMC4zNSAxMS45OTYgMTQuMyAxNS45IDEwLjM1MiIvPjwvc3ZnPg==');
+  // Chevron-small-down-small color #666 (grey) applied
+  --sbb-url-icon-chevron-small-down-small-grey: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0Ij4KICA8cG9seWxpbmUgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjNjY2IiBwb2ludHM9IjguMDkyIDEwLjM1IDExLjk5NiAxNC4zIDE1LjkgMTAuMzUyIi8+Cjwvc3ZnPg==');
+  // Chevron-small-down-small color #c60018 (red 125) applied
+  --sbb-url-icon-chevron-small-down-small-red125: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCI+PHBvbHlsaW5lIGZpbGw9Im5vbmUiIHN0cm9rZT0iI2M2MDAxOCIgcG9pbnRzPSI4LjA5MiAxMC4zNSAxMS45OTYgMTQuMyAxNS45IDEwLjM1MiIvPjwvc3ZnPg==');
+  // Chevron-small-right-small color #686868 (granite) applied
+  --sbb-url-icon-chevron-small-right-small-granite: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0Ij4KICA8cG9seWxpbmUgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjNjg2ODY4IiBwb2ludHM9IjEwLjMyNSAxNS45MDQgMTQuMjc1IDEyIDEwLjMyNiA4LjA5NiIvPgo8L3N2Zz4K');
+  // Chevron-small-right-small color #cdcdcd (platinum) applied
+  --sbb-url-icon-chevron-small-right-small-platinum: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0Ij4KICA8cG9seWxpbmUgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjY2RjZGNkIiBwb2ludHM9IjEwLjMyNSAxNS45MDQgMTQuMjc1IDEyIDEwLjMyNiA4LjA5NiIvPgo8L3N2Zz4=');
+
+  // Shadow
+  --sbb-box-shadow-width: calc(var(--sbb-border-width) * 4);
+  --sbb-box-shadow-arrow-width: calc(var(--sbb-border-width) * 2);
+  // Cut out obsolete triangle and also overlapping shadow so it does not collide with calendar content
+  // `-0.4px` fixes calculation issue in Firefox
+  --sbb-box-shadow-arrow-clip-path: polygon(
+    -0.4px 100%,
+    100% -0.4px,
+    100% 71%,
+    150% 21%,
+    150% 150%,
+    21% 150%,
+    71% 100%
+  );
+  --sbb-box-shadow-color: rgba(0, 0, 0, 0.15);
+  --sbb-box-shadow-below: 0 var(--sbb-box-shadow-width) 0 var(--sbb-box-shadow-color);
+  --sbb-box-shadow-horizontal-border-top: 0
+    calc(var(--sbb-border-width) + calc(#{sbb.pxToRem(1)} * var(--sbb-scaling-factor))) 0
+    calc(var(--sbb-border-width) * -1) var(--sbb-color-cloud);
+  --sbb-box-shadow-horizontal-border-bottom: 0
+    calc(var(--sbb-border-width) * -1 - calc(#{sbb.pxToRem(1)} * var(--sbb-scaling-factor))) 0
+    calc(var(--sbb-border-width) * -1) var(--sbb-color-cloud);
+  --sbb-box-shadow-horizontal-border-offset-top-above: calc(
+    calc(var(--sbb-border-width) - #{sbb.pxToRem(1)}) * var(--sbb-scaling-factor)
+  );
+  --sbb-box-shadow-horizontal-border-offset-top-below: calc(
+    var(--sbb-box-shadow-horizontal-border-offset-top-above) * -1
+  );
+
+  &:where(:not(.sbb-lean)) {
+    @include sbb.mq($from: tablet) {
+      // Dividers
+      --sbb-divider-medium: calc(#{sbb.pxToRem(48)} * var(--sbb-scaling-factor));
+      --sbb-divider-big: #{sbb.pxToRem(72)};
+
+      // Sizings
+      --sbb-font-size-large: #{sbb.pxToRem(21)};
+
+      // Datepicker
+      --sbb-datepicker-calendar-table-content-padding-width: calc(
+        #{sbb.pxToRem(18)} * var(--sbb-scaling-factor)
+      );
+      --sbb-datepicker-calendar-width: calc(#{sbb.pxToRem(428)} * var(--sbb-scaling-factor));
+      --sbb-datepicker-calendar-controls-padding: calc(
+        #{sbb.pxToRem(8)} * var(--sbb-scaling-factor)
+      );
+      --sbb-datepicker-calendar-body-cell-disabled-offset: calc(
+        #{sbb.pxToRem(17)} * var(--sbb-scaling-factor)
+      );
+
+      // Expansion Panel
+      --sbb-expansion-panel-padding-horizontal: #{sbb.pxToRem(48)};
+      --sbb-expansion-panel-header-padding-top: #{sbb.pxToRem(34)};
+      --sbb-expansion-panel-header-padding-bottom: #{sbb.pxToRem(36)};
+      --sbb-expansion-panel-line-height: calc(#{sbb.pxToRem(30)} * var(--sbb-scaling-factor));
+
+      // Table
+      --sbb-table-cell-padding-horizontal: calc(#{sbb.pxToRem(16)} * var(--sbb-scaling-factor));
+    }
+    @include sbb.mq($from: desktop) {
+      // Dividers
+      --sbb-divider-big: calc(#{sbb.pxToRem(96)} * var(--sbb-scaling-factor));
+
+      // Expansion Panel
+      --sbb-expansion-panel-padding-horizontal: calc(
+        #{sbb.pxToRem(32)} * var(--sbb-scaling-factor)
+      );
+
+      // Fieldset
+      --sbb-fieldset-legend-font-size: calc(#{sbb.pxToRem(32)} * var(--sbb-scaling-factor));
+      --sbb-fieldset-legend-nested-font-size: calc(
+        #{sbb.pxToRem(20)} * var(--sbb-scaling-factor) + #{sbb.pxToRem(2)}
+      );
+
+      // Lightbox
+      --sbb-lightbox-padding-horizontal: calc(#{sbb.pxToRem(136)} * var(--sbb-scaling-factor));
+
+      // Sidebar
+      --sbb-sidebar-mobile-menu-bar-height: calc(#{sbb.pxToRem(48)} * var(--sbb-scaling-factor));
+    }
+    @include sbb.mq($from: desktop4k) {
+      // Scaling
+      --sbb-scaling-factor: 1.5;
+
+      // Sizings
+      --sbb-border-width-thin: #{sbb.pxToRem(2)};
+      --sbb-font-size: #{sbb.pxToRem(sbb.$sizeFontDefault4k)};
+      --sbb-line-height: #{sbb.pxToRem(sbb.$sizeLineHeightDefault4k)};
+      --sbb-font-size-small: #{sbb.pxToRem(20)};
+      --sbb-line-height-small: #{sbb.pxToRem(30)};
+      --sbb-line-height-medium: #{sbb.pxToRem(35)};
+      --sbb-font-size-large: #{sbb.pxToRem(32)};
+
+      // Expansion Panel
+      --sbb-expansion-panel-header-padding-top: #{sbb.pxToRem(51)};
+      --sbb-expansion-panel-header-padding-bottom: #{sbb.pxToRem(54)};
+
+      // Forms
+      --sbb-form-field-width: #{sbb.pxToRem(400)};
+    }
+    @include sbb.mq($from: desktop5k) {
+      // Scaling
+      --sbb-scaling-factor: 2;
+
+      // Sizings
+      --sbb-font-size: #{sbb.pxToRem(sbb.$sizeFontDefault5k)};
+      --sbb-line-height: #{sbb.pxToRem(sbb.$sizeLineHeightDefault5k)};
+      --sbb-font-size-small: #{sbb.pxToRem(26)};
+      --sbb-line-height-small: #{sbb.pxToRem(40)};
+      --sbb-line-height-medium: #{sbb.pxToRem(45)};
+      --sbb-font-size-large: #{sbb.pxToRem(42)};
+
+      // Expansion Panel
+      --sbb-expansion-panel-header-padding-top: #{sbb.pxToRem(70)};
+      --sbb-expansion-panel-header-padding-bottom: #{sbb.pxToRem(70)};
+    }
+  }
+  &:where(.sbb-lean) {
+    // Context Colors
+    --sbb-color-weak-accent: var(--sbb-color-iron);
+
+    // Dividers
+    --sbb-divider-thin: #{sbb.pxToRem(4)};
+    --sbb-divider-small: #{sbb.pxToRem(8)};
+    --sbb-divider-medium: #{sbb.pxToRem(16)};
+    --sbb-divider-big: #{sbb.pxToRem(24)};
+
+    // Sizings
+    --sbb-border-width: #{sbb.pxToRem(1)};
+    --sbb-line-height: #{sbb.pxToRem(sbb.$sizeLineHeightDefaultLean)};
+    --sbb-line-height-root: #{math.div(sbb.$sizeLineHeightDefaultLean, 15)}; // 15 = sbb.$sizeFontBase without unit
+    --sbb-line-height-medium: #{sbb.pxToRem(20)};
+    --sbb-font-size-large: #{sbb.pxToRem(21)};
+
+    // Button
+    --sbb-button-height: #{sbb.pxToRem(36)};
+
+    // Datepicker
+    --sbb-datepicker-toggle-or-arrows-padding: calc(#{sbb.pxToRem(38)} - var(--sbb-border-width));
+    --sbb-datepicker-toggle-and-arrows-padding: calc(#{sbb.pxToRem(62)} - var(--sbb-border-width));
+    --sbb-datepicker-button-offset: #{sbb.pxToRem(6)};
+    --sbb-datepicker-calendar-arrow-width: #{sbb.pxToRem(14)};
+    // rem (or any unit) is necessary for correct calc calculation.
+    --sbb-datepicker-button-gap: 0rem;
+    --sbb-datepicker-content-offset: #{sbb.pxToRem(8)};
+    --sbb-datepicker-calendar-header-height: #{sbb.pxToRem(36)};
+    --sbb-datepicker-calendar-header-color: var(--sbb-color-iron);
+    --sbb-datepicker-calendar-line-color: var(--sbb-color-cloud);
+    --sbb-datepicker-calendar-table-content-padding-width: #{sbb.pxToRem(8)};
+    --sbb-datepicker-calendar-width: #{sbb.pxToRem(303)};
+    --sbb-datepicker-calendar-height: #{sbb.pxToRem(303)};
+    --sbb-datepicker-calendar-controls-padding: #{sbb.pxToRem(8)};
+    --sbb-datepicker-calendar-body-cell-padding: #{sbb.pxToRem(16.5)};
+    --sbb-datepicker-calendar-body-cell-size: #{sbb.pxToRem(30)};
+
+    // Fieldset
+    --sbb-fieldset-legend-font-size: #{sbb.pxToRem(21)};
+    --sbb-fieldset-legend-nested-font-size: #{sbb.pxToRem(16)};
+
+    // Forms
+    --sbb-form-background-color-readonly: transparent;
+    --sbb-form-border-color-readonly: transparent;
+    --sbb-form-field-width: #{sbb.pxToRem(230)};
+    --sbb-form-input-min-height: #{sbb.pxToRem(36)};
+    --sbb-form-label-wrapper-margin-bottom: #{sbb.pxToRem(3)};
+    --sbb-form-label-wrapper-padding-left: 0rem;
+
+    // Notification
+    --sbb-notification-message-padding: #{sbb.pxToRem(11)};
+    --sbb-notification-message-padding-horizontal: #{sbb.pxToRem(15)};
+
+    // Expansion Panel
+    --sbb-expansion-panel-padding-horizontal: #{sbb.pxToRem(16)};
+    --sbb-expansion-panel-header-padding-top: calc(
+      #{sbb.pxToRem(12)} - var(--sbb-border-width-thin)
+    );
+    --sbb-expansion-panel-header-padding-bottom: var(--sbb-expansion-panel-header-padding-top);
+    --sbb-expansion-panel-line-height: #{sbb.pxToRem(25)};
+
+    // Pagination
+    --sbb-pagination-disabled-color: var(--sbb-color-storm);
+    --sbb-pagination-paginator-size: #{sbb.pxToRem(30)};
+
+    // Table
+    --sbb-table-cell-padding-vertical: #{sbb.pxToRem(6)};
+
+    // Tooltip
+    --sbb-tooltip-padding: #{sbb.pxToRem(8)};
+
+    // Usermenu
+    --sbb-usermenu-trigger-padding: #{sbb.pxToRem(8)};
+
+    // Shadow
+    --sbb-box-shadow-arrow-clip-path: polygon(
+      -0.4px 100%,
+      100% -0.4px,
+      100% 35%,
+      150% -15%,
+      150% 150%,
+      -15% 150%,
+      35% 100%
+    );
+
+    @include sbb.mq($from: desktop) {
+      // Dividers
+      --sbb-divider-thin: #{sbb.pxToRem(8)};
+      --sbb-divider-small: #{sbb.pxToRem(16)};
+      --sbb-divider-medium: #{sbb.pxToRem(24)};
+      --sbb-divider-big: #{sbb.pxToRem(32)};
+    }
+  }
+}
+
+// ----------------------------------------------------------------------------------------------------
+// Reset HTML
+// ----------------------------------------------------------------------------------------------------
+
+:root {
+  // Defaults
+  background: var(--sbb-color-background);
+  color: var(--sbb-color-text);
+  // !important is required, as arcgis defines its own font-family and we need to overwrite it.
+  font-family: var(--sbb-font-roman) !important;
+  font-size: math.div(sbb.$sizeFontBase, 16px) * 100%;
+  line-height: var(--sbb-line-height-root);
+
+  @include sbb.fontSmoothing;
+
+  &:where(:not(.sbb-lean)) {
+    @include sbb.mq($from: desktop4k) {
+      line-height: var(--sbb-line-height-4k);
+    }
+    @include sbb.mq($from: desktop5k) {
+      line-height: var(--sbb-line-height-5k);
+    }
+  }
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+article,
+aside,
+figcaption,
+figure,
+footer,
+header,
+hgroup,
+main,
+nav,
+section {
+  display: block;
+}
+
+body {
+  margin: 0;
+}
+
+// Suppress the focus outline on elements that cannot be accessed via keyboard.
+// This prevents an unwanted focus outline from appearing around elements that
+// might still respond to pointer events.
+//
+// Credit: https://github.com/suitcss/base
+[tabindex='-1']:focus {
+  outline: 0 !important;
+}
+
+b,
+strong,
+optgroup[label='*'] {
+  font-family: var(--sbb-font-bold);
+  font-weight: normal;
+}
+
+input,
+button,
+select,
+optgroup,
+textarea {
+  margin: 0; // Remove the margin in Firefox and Safari
+  font-family: inherit;
+  font-size: inherit;
+  line-height: inherit;
+  color: inherit;
+}
+
+[hidden] {
+  display: none !important;
+}
+
+// ----------------------------------------------------------------------------------------------------
+// CDK Styles
+// ----------------------------------------------------------------------------------------------------
+
+@include cdk.a11y-visually-hidden();
+@include cdk.overlay();
+@include cdk.text-field-autosize();
+@include cdk.text-field-autofill();
+
+// SBB CDK Overlay Patch
+.cdk-overlay-pane.sbb-overlay-panel {
+  max-height: none;
+}
+
+// Overwrites the 'scroll' value from the CDK, since this causes a scrollbar to be shown
+// on top of the lightbox.
+.cdk-global-scrollblock {
+  overflow-y: auto;
+}
+
+// ----------------------------------------------------------------------------------------------------
+// Headings
+// ----------------------------------------------------------------------------------------------------
+
+:is(h1:where(:not([class*='mod_'])), .sbb-headline1) {
+  font-family: var(--sbb-font-thin);
+  font-weight: normal;
+  font-size: sbb.pxToRem(28);
+  line-height: 1.2;
+  margin: var(--sbb-divider-big) 0 var(--sbb-divider-medium);
+
+  :where(html:not(.sbb-lean)) & {
+    @include sbb.mq($from: tablet) {
+      font-size: sbb.pxToRem(30);
+    }
+    @include sbb.mq($from: desktop) {
+      font-size: calc(#{sbb.pxToRem(40)} * var(--sbb-scaling-factor));
+    }
+  }
+  :where(html.sbb-lean) & {
+    font-family: var(--sbb-font-light);
+    font-weight: normal;
+    font-size: sbb.pxToRem(21);
+    line-height: sbb.pxToRem(25);
+
+    @include sbb.mq($from: desktop) {
+      font-size: sbb.pxToRem(28);
+      line-height: sbb.pxToRem(34);
+    }
+  }
+}
+
+:is(h2:where(:not([class*='mod_'])), .sbb-headline2) {
+  font-family: var(--sbb-font-light);
+  font-weight: normal;
+  font-size: sbb.pxToRem(24);
+  line-height: 1.2;
+  margin: var(--sbb-divider-medium) 0 var(--sbb-divider-small);
+
+  :where(html:not(.sbb-lean)) & {
+    @include sbb.mq($from: desktop) {
+      font-size: calc(#{sbb.pxToRem(32)} * var(--sbb-scaling-factor));
+    }
+  }
+  :where(html.sbb-lean) & {
+    font-size: sbb.pxToRem(18);
+    line-height: sbb.pxToRem(19);
+
+    @include sbb.mq($from: desktop) {
+      font-size: sbb.pxToRem(21);
+      line-height: sbb.pxToRem(25);
+    }
+  }
+}
+
+:is(h3:where(:not([class*='mod_'])), .sbb-headline3) {
+  font-family: var(--sbb-font-light);
+  font-weight: normal;
+  font-size: var(--sbb-font-size-large);
+  line-height: 1.2;
+  margin: var(--sbb-divider-small) 0 var(--sbb-divider-thin);
+
+  :where(html.sbb-lean) & {
+    font-size: sbb.pxToRem(16);
+    line-height: sbb.pxToRem(17);
+
+    @include sbb.mq($from: desktop) {
+      font-size: sbb.pxToRem(18);
+      line-height: sbb.pxToRem(22);
+    }
+  }
+}
+
+:is(h4:where(:not([class*='mod_'])), .sbb-headline4) {
+  font-family: var(--sbb-font-bold);
+  font-weight: normal;
+  font-size: var(--sbb-font-size);
+  line-height: 1.5;
+  margin: var(--sbb-divider-small) 0 var(--sbb-divider-thin);
+
+  :where(html.sbb-lean) & {
+    line-height: sbb.pxToRem(17);
+    margin: sbb.pxToRem(8) 0 sbb.pxToRem(4);
+
+    @include sbb.mq($from: desktop) {
+      font-size: sbb.pxToRem(16);
+      line-height: sbb.pxToRem(19);
+      margin: sbb.pxToRem(16) 0 sbb.pxToRem(8);
+    }
+  }
+}
+
+// ----------------------------------------------------------------------------------------------------
+// Text
+// ----------------------------------------------------------------------------------------------------
+
+.sbb-text-scaled {
+  font-size: var(--sbb-font-size);
+  line-height: var(--sbb-line-height);
+}
+
+.sbb-text-ellipsis {
+  @include sbb.ellipsis();
+}
+
+:is(p:where(:not([class*='mod_'])), .sbb-copy) {
+  font-size: var(--sbb-font-size);
+  line-height: var(--sbb-line-height);
+  margin: var(--sbb-divider-thin) 0;
+}
+
+.sbb-text-lead {
+  font-family: var(--sbb-font-light);
+  font-weight: normal;
+  color: sbb.$sbbColorText;
+  font-size: var(--sbb-font-size-large);
+  line-height: 1.3;
+  margin: var(--sbb-divider-medium) 0;
+
+  :where(html:not(.sbb-lean)) & {
+    @include sbb.mq($from: desktop, $to: desktop4k) {
+      line-height: sbb.pxToRem(32);
+    }
+    @include sbb.mq($from: desktop5k) {
+      font-size: sbb.pxToRem(40);
+    }
+  }
+}
+
+// ----------------------------------------------------------------------------------------------------
+// Link
+// ----------------------------------------------------------------------------------------------------
+
+:is(a:where(:not(.sbb-link-reset):not(.sbb-button-base):not([class*='mod_'])), .sbb-link) {
+  color: var(--sbb-color-text);
+  text-decoration: underline;
+  // Read more about here https://medium.com/@iamhiwelo/improving-text-readability-for-dyslexic-users-with-skip-ink-underlines-bf52a2f3426b
+  text-decoration-skip-ink: auto;
+  line-height: var(--sbb-line-height);
+  // Fixes an issue where links are not placed correctly in fluid texts or lists.
+  vertical-align: bottom;
+
+  &:is(:hover, :focus) {
+    color: var(--sbb-color-call-to-action-hover);
+
+    @media screen and (-ms-high-contrast: active) {
+      color: windowText;
+
+      &::before,
+      &::after {
+        border-color: windowText;
+      }
+    }
+  }
+
+  // TODO: 4k, 5k
+}
+
+// ----------------------------------------------------------------------------------------------------
+// Lists
+// ----------------------------------------------------------------------------------------------------
+
+:is(ul:where(:not([class*='mod_'])), .sbb-unordered-list, ol:where(:not([class*='mod_'])), .sbb-ordered-list) {
+  font-size: var(--sbb-font-size);
+  line-height: var(--sbb-line-height);
+  margin-top: calc(#{sbb.pxToRem(17)} * var(--sbb-scaling-factor));
+  margin-bottom: calc(#{sbb.pxToRem(48)} * var(--sbb-scaling-factor));
+  margin-left: calc(#{sbb.pxToRem(10)} * var(--sbb-scaling-factor));
+
+  @include sbb.mq($from: desktop) {
+    margin-top: calc(#{sbb.pxToRem(25)} * var(--sbb-scaling-factor));
+  }
+
+  li {
+    margin-top: var(--sbb-divider-thin);
+  }
+
+  :is(ol, ul) {
+    margin: calc(#{sbb.pxToRem(6)} * var(--sbb-scaling-factor)) 0 0
+      calc(#{sbb.pxToRem(8)} * var(--sbb-scaling-factor));
+  }
+}
+
+:is(ul:where(:not([class*='mod_'])), .sbb-unordered-list) {
+  list-style-type: disc;
+  padding-left: calc(sbb.pxToRem(16) * var(--sbb-scaling-factor));
+
+  li {
+    padding-left: calc(sbb.pxToRem(16 - 6) * var(--sbb-scaling-factor));
+
+    // if ol is nested inside ul, we need just 1 hierarchy level for the counter
+    ol > li::before {
+      content: counter(item) '.';
+    }
+  }
+}
+
+:is(ol:where(:not([class*='mod_'])), .sbb-ordered-list) {
+  list-style-type: none;
+  counter-reset: item;
+  padding-left: 0;
+
+  > li {
+    display: table;
+    padding-left: 0;
+  }
+
+  > li::before {
+    content: counters(item, '.') '.';
+    counter-increment: item;
+
+    display: table-cell;
+    padding-right: calc(sbb.pxToRem(13) * var(--sbb-scaling-factor));
+  }
+}
+
+.sbb-clean-list {
+  margin: 0;
+  padding-left: 0;
+  list-style: none;
+
+  li {
+    margin: 0;
+    padding-left: 0;
+  }
+}
+
+// ----------------------------------------------------------------------------------------------------
+// Form Elements
+// ----------------------------------------------------------------------------------------------------
+
+:is(.sbb-input-element, input:where([type='email'], [type='password'], [type='search'], [type='text'], [type='number'], [type='tel'], [type='time'], [type='datetime'], [type='datetime-local'], [type='url'], :not([type]))) {
+  outline: none;
+  background-color: var(--sbb-color-background);
+  padding: sbb.pxToRem(10) sbb.pxToRem(14) sbb.pxToRem(11);
+  border: var(--sbb-border-width) solid var(--sbb-color-graphite);
+  border-radius: var(--sbb-border-radius);
+  color: var(--sbb-form-input-color);
+  font-size: var(--sbb-font-size);
+  line-height: var(--sbb-line-height-medium);
+  min-height: var(--sbb-form-input-min-height);
+
+  &:where(:not(textarea)) {
+    @include sbb.ellipsis;
+  }
+
+  :where(html:not(.sbb-lean)) & {
+    @include sbb.mq($from: desktop4k) {
+      padding: sbb.pxToRem(15) sbb.pxToRem(21) sbb.pxToRem(16);
+    }
+    @include sbb.mq($from: desktop5k) {
+      padding: sbb.pxToRem(21) sbb.pxToRem(28) sbb.pxToRem(22);
+    }
+  }
+  :where(html.sbb-lean) & {
+    padding: sbb.pxToRem(6) sbb.pxToRem(7) sbb.pxToRem(8);
+  }
+
+  &::placeholder {
+    color: var(--sbb-color-metal);
+    opacity: 1; // Needed for Firefox
+  }
+
+  // Undo the red box-shadow glow added by Firefox on invalid inputs.
+  // See https://developer.mozilla.org/en-US/docs/Web/CSS/:-moz-ui-invalid
+  &:-moz-ui-invalid {
+    box-shadow: none;
+  }
+
+  // Clear Safari's decorations for search fields.
+  &,
+  &::-webkit-search-cancel-button,
+  &::-webkit-search-decoration,
+  &::-webkit-search-results-button,
+  &::-webkit-search-results-decoration {
+    -webkit-appearance: none;
+  }
+
+  // Also clear Safari's autofill icons. Note that this can't be in the
+  // same selector as the IE ones, otherwise Safari will ignore it.
+  &::-webkit-contacts-auto-fill-button,
+  &::-webkit-caps-lock-indicator,
+  &::-webkit-credentials-auto-fill-button {
+    visibility: hidden;
+  }
+
+  &:where([type='date'], [type='datetime'], [type='datetime-local'], [type='month'], [type='week'], [type='time']) {
+    // Due to the native input masking these inputs can be slightly taller than
+    // the plain text inputs. We normalize it by resetting the line height.
+    line-height: 1;
+
+    // Fixes an issue on iOS where the following input types will collapse to 1px,
+    // if they're empty, because we've overridden their background color.
+    // See: https://stackoverflow.com/questions/18381594/input-type-date-appearance-in-safari-on-ios
+    &::after {
+      content: ' ';
+      white-space: pre;
+      width: 1px;
+    }
+  }
+
+  // Reduce the size of the native buttons in a date/time input,
+  // because they can increase the height of the input (see #13317).
+  &::-webkit-inner-spin-button,
+  &::-webkit-calendar-picker-indicator,
+  &::-webkit-clear-button {
+    font-size: 0.75em;
+  }
+
+  &:is(:focus, .sbb-focused) {
+    border-color: var(--sbb-color-weak-accent);
+  }
+
+  &:is(:disabled, [disabled], .sbb-disabled) {
+    background-color: var(--sbb-color-milk);
+    border-color: var(--sbb-color-aluminum);
+    color: var(--sbb-form-input-color-disabled);
+    -webkit-text-fill-color: var(--sbb-form-input-color-disabled);
+    opacity: 1;
+    cursor: default;
+    pointer-events: none;
+  }
+
+  &:is([readonly], .sbb-readonly) {
+    &,
+    &:focus {
+      color: var(--sbb-form-input-color);
+      -webkit-text-fill-color: var(--sbb-form-input-color);
+      background-color: var(--sbb-form-background-color-readonly);
+      border-color: var(--sbb-form-border-color-readonly);
+    }
+  }
+
+  // We want to provide the error styles both for invalid state
+  // in a sbb-form-field and also for Angular Form Validation.
+  :is(.sbb-form-field-invalid
+      &:not(:where([aria-expanded='true'], .sbb-expanded)), &.ng-touched.ng-invalid:not(:where([aria-expanded='true'], .sbb-expanded))) {
+    color: var(--sbb-color-error);
+    border-color: var(--sbb-color-error);
+  }
+}
+
+:is(input, .sbb-input-element)[placeholder] {
+  text-overflow: ellipsis;
+}
+
+input:where([type='number'], [type='time'], [type='datetime'], [type='datetime-local']) {
+  -moz-appearance: textfield;
+
+  &::-webkit-inner-spin-button,
+  &::-webkit-outer-spin-button,
+  &::-webkit-clear-button {
+    appearance: none;
+    margin: 0;
+    width: 0;
+    padding: 0;
+    background: transparent;
+  }
+}
+
+select {
+  -moz-appearance: none;
+  -webkit-appearance: none;
+  position: relative;
+  display: inline-flex;
+  box-sizing: border-box;
+  // We need to specify !important, due to being less specific than .sbb-input-element
+  padding-right: calc(#{sbb.pxToRem(44)} * var(--sbb-scaling-factor)) !important;
+
+  // Custom select expand icon
+  align-items: center;
+  background: transparent var(--sbb-url-icon-chevron-small-down-small-grey) no-repeat center right
+    calc(#{sbb.pxToRem(9)} * var(--sbb-scaling-factor));
+  background-size: var(--sbb-icon-size-default);
+
+  :where(html.sbb-lean) & {
+    padding-right: sbb.pxToRem(38) !important;
+    background-position: center right sbb.pxToRem(6);
+    background-image: var(--sbb-url-icon-chevron-down-small-granite);
+  }
+
+  &::-ms-expand {
+    display: none;
+  }
+
+  // As a part of its user agent styling, IE11 has a blue box inside each focused
+  // `select` element which we have to reset. Note that this needs to be in its own
+  // selector, because having it together with another one will cause other browsers
+  // to ignore it.
+  &::-ms-value {
+    // We need to reset the `color` as well, because IE sets it to white.
+    color: inherit;
+    background: none;
+
+    // IE and Edge in high contrast mode reset the color for a focused select to the same color
+    // as the background, however this causes it blend in because we've reset the `background`
+    // above. We have to add a more specific selector in order to ensure that it gets the
+    // `color` from our theme instead.
+    @include cdk.high-contrast(active, off) {
+      .sbb-focused & {
+        color: inherit;
+      }
+    }
+  }
+
+  // The `outline: none` from `.sbb-input-element` works on all browsers, however Firefox also
+  // adds a special `focus-inner` which we have to disable explicitly. See:
+  // https://developer.mozilla.org/en-US/docs/Web/HTML/Element/button#Firefox
+  &::-moz-focus-inner {
+    border: 0;
+  }
+
+  &:not(:disabled) {
+    cursor: pointer;
+  }
+
+  &:is([readonly], .sbb-readonly) {
+    background-image: none; // Hide arrow
+    pointer-events: none;
+    touch-action: none;
+  }
+}
+
+textarea {
+  white-space: pre-wrap;
+  overflow: auto;
+
+  &:disabled {
+    opacity: 1;
+  }
+}
+
+.sbb-error {
+  display: block;
+  letter-spacing: 0;
+  outline: none;
+  resize: none;
+  opacity: 1;
+  font-family: var(--sbb-font-roman);
+  color: var(--sbb-color-error);
+
+  font-size: calc(#{sbb.pxToRem(14)} * var(--sbb-scaling-factor));
+  line-height: calc(#{sbb.pxToRem(21)} * var(--sbb-scaling-factor));
+
+  :where(html.sbb-lean) & {
+    font-size: sbb.pxToRem(13);
+    line-height: sbb.pxToRem(16);
+  }
+}
+
+// ----------------------------------------------------------------------------------------------------
+// Fieldset
+// ----------------------------------------------------------------------------------------------------
+
+:is(fieldset, .sbb-fieldset) {
+  margin: 0;
+  min-width: 0;
+  font-size: var(--sbb-font-size);
+  line-height: var(--sbb-line-height);
+  border: var(--sbb-border-width-thin) solid var(--sbb-color-silver);
+  padding: var(--sbb-divider-medium) calc(var(--sbb-divider-small) - var(--sbb-border-width-thin));
+
+  :where(html.sbb-lean) & {
+    border-color: var(--sbb-color-graphite);
+    padding: sbb.pxToRem(15);
+  }
+
+  > legend {
+    display: block;
+    width: 100%;
+    max-width: 100%;
+    padding: 0;
+    font-family: var(--sbb-font-light);
+    font-weight: 400;
+    font-size: var(--sbb-fieldset-legend-font-size);
+    line-height: 1.2;
+    margin: 0 0 var(--sbb-divider-small);
+    float: left;
+
+    + * {
+      clear: both;
+    }
+  }
+
+  fieldset {
+    --sbb-fieldset-legend-font-size: var(--sbb-fieldset-legend-nested-font-size);
+
+    border-top: none;
+    border-right: none;
+    border-left: none;
+    padding-left: 0;
+    padding-right: 0;
+
+    &:last-of-type {
+      border-bottom: none;
+    }
+
+    :where(html.sbb-lean) & {
+      border-color: var(--sbb-color-cloud);
+    }
+  }
+}
+
+// ----------------------------------------------------------------------------------------------------
+// Helper Classes
+// ----------------------------------------------------------------------------------------------------
+
+.sbb-transparent-parent-overlay {
+  opacity: 0;
+  position: absolute;
+  top: 0;
+  left: 0;
+  margin: 0;
+  width: 100%;
+  height: 100%;
+  cursor: inherit;
+
+  // Puts the element behind the parent while keeping it visible so that
+  // it allows `click` events to propagate up.
+  z-index: -1;
+}
+
+// ----------------------------------------------------------------------------------------------------
+// Button Resets
+// ----------------------------------------------------------------------------------------------------
+
+.sbb-button-reset {
+  @include sbb.buttonReset();
+}
+
+.sbb-button-reset-frameless {
+  @include sbb.buttonResetFrameless();
+}
+
+// ----------------------------------------------------------------------------------------------------
+// SBB Badge
+// ----------------------------------------------------------------------------------------------------
+
+.sbb-badge {
+  position: relative;
+
+  // The badge should make sure its host is overflow visible so that the badge content
+  // can be rendered outside of the element. Some components such as <sbb-icon> explicitly
+  // style `overflow: hidden` so this requires extra specificity so that it does not
+  // depend on style load order.
+  &.sbb-badge {
+    overflow: visible;
+  }
+}
+
+.sbb-badge-content {
+  position: absolute;
+  text-align: center;
+  display: inline-block;
+  transition: transform var(--sbb-transition-duration-fast) var(--sbb-transition-timing-default);
+  transform: scale(0.6);
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  pointer-events: none;
+
+  min-width: calc(#{sbb.pxToRem(18)} * var(--sbb-scaling-factor));
+  border-radius: 1em; // 1em ensures the borders are always fully rounded, but not oval.
+  padding: calc(#{sbb.pxToRem(4)} * var(--sbb-scaling-factor))
+    calc(#{sbb.pxToRem(5)} * var(--sbb-scaling-factor));
+  margin-left: calc(#{sbb.pxToRem(2)} * var(--sbb-scaling-factor));
+  background-color: var(--sbb-color-red);
+  color: var(--sbb-color-white);
+  font-family: var(--sbb-font-bold);
+  line-height: 1;
+  height: calc(#{sbb.pxToRem(18)} * var(--sbb-scaling-factor));
+  font-size: sbb.pxToRem(11);
+
+  :where(html:not(.sbb-lean)) & {
+    @include sbb.mq($from: desktop4k) {
+      font-size: sbb.pxToRem(17);
+    }
+    @include sbb.mq($from: desktop5k) {
+      font-size: sbb.pxToRem(22);
+    }
+  }
+  :where(html.sbb-lean) & {
+    background-color: var(--sbb-color-black);
+  }
+
+  .sbb-badge-above & {
+    top: calc(#{sbb.pxToRem(-2)} * var(--sbb-scaling-factor));
+  }
+
+  .sbb-badge-after & {
+    right: 0;
+  }
+
+  .sbb-badge-hidden & {
+    display: none;
+  }
+
+  :is(.sbb-badge-disabled, .sbb-tab-disabled) & {
+    background-color: var(--sbb-color-metal);
+    color: var(--sbb-color-white);
+
+    :where(html.sbb-lean) & {
+      background-color: var(--sbb-color-granite);
+    }
+  }
+
+  .ng-animate-disabled &,
+  &._sbb-animation-noopable {
+    transition: none;
+  }
+
+  // The active class is added after the element is added
+  // so it can animate scale to default
+  &.sbb-badge-active {
+    // Scale to `none` instead of `1` to avoid blurry text in some browsers.
+    transform: none;
+  }
+}
+
+// ----------------------------------------------------------------------------------------------------
+// SBB Button
+// ----------------------------------------------------------------------------------------------------
+
+:is(.sbb-button, .sbb-alt-button, .sbb-secondary-button, .sbb-ghost-button, .sbb-icon-button) {
+  @include sbb.ellipsis;
+  // We need to explicitly define the button height, due to rounding issues in Firefox
+  height: var(--sbb-button-height);
+  background: none;
+  max-width: none;
+  min-width: 0;
+  text-decoration: none;
+  display: inline-block;
+  position: relative;
+  text-align: center;
+  font-size: var(--sbb-font-size);
+  line-height: var(--sbb-line-height);
+  border: var(--sbb-border-width-thin) solid transparent;
+  border-radius: var(--sbb-border-radius);
+  // Subtract 1 from the padding values, since we always use the border
+  // in order to avoid tearing on state changes.
+  padding: sbb.pxToRem(9) sbb.pxToRem(39) sbb.pxToRem(11);
+  margin: 0;
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+  outline: none;
+
+  // Icon button should always be quadratic
+  &:where(:not(.sbb-icon-button)) {
+    width: 100%;
+  }
+
+  @include sbb.mq($from: tabletPortrait) {
+    width: auto;
+    // We use em here, in order to scale for 4k and 5k
+    min-width: calc(#{sbb.pxToRem(60)} * var(--sbb-scaling-factor));
+    max-width: calc(#{sbb.pxToRem(400)} * var(--sbb-scaling-factor));
+  }
+
+  :where(html:not(.sbb-lean)) & {
+    @include sbb.mq($from: desktop4k) {
+      // Subtract 2 from the padding values, since we always use the border
+      // in order to avoid tearing on state changes.
+      padding: sbb.pxToRem(14) sbb.pxToRem(58) sbb.pxToRem(15);
+    }
+    @include sbb.mq($from: desktop5k) {
+      // Subtract 2 from the padding values, since we always use the border
+      // in order to avoid tearing on state changes.
+      padding: sbb.pxToRem(19) sbb.pxToRem(78) sbb.pxToRem(21);
+    }
+  }
+  :where(html.sbb-lean) & {
+    // Subtract 1 from the padding values, since we always use the border
+    // in order to avoid tearing on state changes.
+    padding: sbb.pxToRem(5) sbb.pxToRem(15) sbb.pxToRem(6);
+  }
+
+  &:not(:disabled):not(.sbb-disabled) {
+    cursor: pointer;
+  }
+
+  &:is(:disabled, .sbb-disabled) {
+    :where(html:not(.sbb-lean)) & {
+      background-color: transparent;
+      color: var(--sbb-color-granite);
+      border-color: var(--sbb-color-storm);
+
+      &,
+      & * {
+        text-decoration: line-through;
+      }
+    }
+  }
+}
+
+.sbb-button {
+  background-color: var(--sbb-color-call-to-action);
+  color: var(--sbb-color-white);
+
+  &:not(:disabled):not(.sbb-disabled):is(:hover, :focus) {
+    background-color: var(--sbb-color-call-to-action-hover);
+  }
+
+  &:is(:disabled, .sbb-disabled) {
+    :where(html.sbb-lean) & {
+      background-color: var(--sbb-color-red-alpha40);
+      color: var(--sbb-color-white-alpha50);
+    }
+  }
+}
+
+.sbb-alt-button {
+  background-color: var(--sbb-color-granite);
+  color: var(--sbb-color-white);
+
+  &:not(:disabled):not(.sbb-disabled):is(:hover, :focus) {
+    background-color: var(--sbb-color-iron);
+  }
+
+  &:is(:disabled, .sbb-disabled) {
+    :where(html.sbb-lean) & {
+      background-color: var(--sbb-color-granite-alpha40);
+      color: var(--sbb-color-white-alpha50);
+    }
+  }
+}
+
+.sbb-secondary-button {
+  background-color: var(--sbb-color-silver);
+  color: var(--sbb-color-iron);
+
+  &:not(:disabled):not(.sbb-disabled):is(:hover, :focus) {
+    background-color: var(--sbb-color-platinum);
+  }
+
+  &:is(:disabled, .sbb-disabled) {
+    :where(html.sbb-lean) & {
+      background-color: var(--sbb-color-silver-alpha40);
+      color: var(--sbb-color-iron-alpha50);
+    }
+  }
+}
+
+// Icon animation for primary/secondary button.
+.sbb-button-base:is(.sbb-button, .sbb-secondary-button):not(.sbb-disabled, .sbb-icon-button) {
+  :where(html:not(.sbb-lean)) & {
+    transition: {
+      duration: var(--sbb-transition-duration-default);
+      timing-function: var(--sbb-transition-timing-default);
+      property: transform, padding-left, padding-right;
+    }
+    padding-left: calc(#{sbb.pxToRem(39)} * var(--sbb-scaling-factor));
+    padding-right: calc(#{sbb.pxToRem(69)} * var(--sbb-scaling-factor));
+
+    // This solves a bug with the placement of the right icon, which is otherwise displayed
+    // inside the text.
+    .sbb-button-right-icon {
+      right: calc(#{sbb.pxToRem(39)} * var(--sbb-scaling-factor));
+    }
+
+    &:hover {
+      padding-left: calc(#{sbb.pxToRem(69)} * var(--sbb-scaling-factor));
+      padding-right: calc(#{sbb.pxToRem(39)} * var(--sbb-scaling-factor));
+
+      .sbb-button-right-icon {
+        right: 0;
+      }
+    }
+  }
+}
+
+.sbb-ghost-button {
+  background-color: transparent;
+  color: var(--sbb-color-granite);
+  border-color: var(--sbb-color-storm);
+
+  &:not(:disabled):not(.sbb-disabled):is(:hover, :focus) {
+    border-color: var(--sbb-color-iron);
+  }
+
+  &:is(:disabled, .sbb-disabled) {
+    :where(html:not(.sbb-lean)) & {
+      display: none;
+    }
+    :where(html.sbb-lean) & {
+      color: var(--sbb-color-iron-alpha40);
+      border-color: var(--sbb-color-storm-alpha40);
+    }
+  }
+}
+
+.sbb-icon-button {
+  // Subtract 1 from the padding values, since we always use the border
+  // in order to avoid tearing on state changes.
+  height: var(--sbb-button-height);
+  padding: calc(#{sbb.pxToRem(11)} * var(--sbb-scaling-factor)) !important;
+  min-width: auto;
+  line-height: 0 !important;
+
+  // Strike through icons in disabled buttons in standard mode.
+  :where(html:not(.sbb-lean)) &:is(:disabled, .sbb-disabled):before {
+    @include sbb.absoluteCenterY();
+    content: '';
+    width: var(--sbb-icon-size-default);
+    border-top: var(--sbb-border-width-thin) solid var(--sbb-color-smoke);
+  }
+
+  :where(html.sbb-lean) & {
+    padding: calc(#{sbb.pxToRem(5)} * var(--sbb-scaling-factor)) !important;
+  }
+}
+
+:is(
+  .sbb-frameless-button,
+  // We only want to style .sbb-link classes which use the sbb-link component
+  .sbb-link:where(.sbb-button-base)) {
+  @include sbb.buttonResetFrameless();
+  @include sbb.ellipsis;
+  position: relative;
+  display: inline-block;
+  font-size: var(--sbb-font-size);
+  line-height: var(--sbb-line-height);
+  text-decoration: none;
+  text-align: left;
+  cursor: pointer;
+  outline: none;
+
+  &:not(:disabled):not(.sbb-disabled):is(:hover, :focus) {
+    color: var(--sbb-color-call-to-action-hover);
+  }
+
+  // Icon animation for links and frameless buttons for standard
+  &.sbb-button-base:not(:disabled):not(.sbb-disabled) {
+    :where(html:not(.sbb-lean)) & {
+      transition: {
+        duration: var(--sbb-transition-duration-default);
+        timing-function: var(--sbb-transition-timing-default);
+        property: transform, padding-left, padding-right;
+      }
+      padding-left: 0;
+      padding-right: calc(#{sbb.pxToRem(30)} * var(--sbb-scaling-factor));
+
+      &:hover {
+        padding-left: calc(#{sbb.pxToRem(30)} * var(--sbb-scaling-factor));
+        padding-right: 0;
+      }
+    }
+  }
+}
+
+.sbb-link.sbb-button-base {
+  white-space: normal;
+  :where(html.sbb-lean) & {
+    padding-right: calc(#{sbb.pxToRem(30)} * var(--sbb-scaling-factor));
+  }
+
+  .sbb-link-group &:not(:disabled):not(.sbb-disabled) {
+    padding: var(--sbb-divider-thin) calc(#{sbb.pxToRem(28)} * var(--sbb-scaling-factor))
+      var(--sbb-divider-thin) 0;
+    border-bottom: var(--sbb-border-width-thin) solid var(--sbb-color-silver);
+
+    // Disable transitions from default behavior
+    :is(&, &:hover) {
+      :where(html:not(.sbb-lean)) & {
+        transition: none;
+        padding-left: 0;
+        padding-right: 0;
+      }
+    }
+  }
+}
+
+.sbb-frameless-button {
+  color: var(--sbb-color-iron);
+
+  &:is(:disabled, .sbb-disabled) {
+    display: none;
+  }
+}
+
+:is(.sbb-button, .sbb-alt-button, .sbb-secondary-button, .sbb-ghost-button, .sbb-icon-button, .sbb-frameless-button, .sbb-link:where(.sbb-button-base))
+  .sbb-icon {
+  width: var(--sbb-icon-size-default);
+  height: var(--sbb-icon-size-default);
+
+  > svg {
+    width: 100%;
+    height: 100%;
+  }
+}
+
+// We need to position icons inside the buttons in a special way.
+:is(.sbb-button, .sbb-alt-button, .sbb-secondary-button, .sbb-ghost-button, .sbb-frameless-button, .sbb-link:where(.sbb-button-base)):where(:not(.sbb-icon-button))
+  .sbb-icon {
+  margin-top: var(--sbb-button-icon-top-margin);
+
+  &:not(.sbb-button-indicator-icon) {
+    transform: translateY(calc(var(--sbb-button-icon-top-margin) / -2));
+  }
+}
+
+.sbb-button-indicator-icon {
+  transition: {
+    duration: var(--sbb-transition-duration-default);
+    timing-function: var(--sbb-transition-timing-default);
+    property: opacity, transform, right;
+  }
+  backface-visibility: hidden;
+  pointer-events: none;
+  position: absolute;
+  top: 50%;
+
+  :is(.sbb-button-base.sbb-disabled, .sbb-button-base.sbb-disabled:hover) & {
+    opacity: 0;
+  }
+
+  .sbb-button-base.sbb-link & {
+    top: unset;
+    margin-top: unset;
+    // !important is necessary here to overwrite the transform rules.
+    transform: translateY(calc(#{sbb.pxToRem(0.5)} * var(--sbb-scaling-factor))) !important;
+
+    :where(html.sbb-lean) & {
+      // !important is necessary here to overwrite the transform rules.
+      transform: translateY(#{sbb.pxToRem(-1)}) !important;
+    }
+
+    :where(html:not(.sbb-lean)) & {
+      color: var(--sbb-color-call-to-action);
+    }
+
+    &:hover {
+      :where(html:not(.sbb-lean)) & {
+        color: inherit;
+      }
+    }
+  }
+
+  .sbb-link-group :is(&, &:hover) {
+    transition: none;
+  }
+}
+
+.sbb-button-left-icon {
+  margin-left: calc(#{sbb.pxToRem(-30)} * var(--sbb-scaling-factor));
+  transform: translateX(calc(#{sbb.pxToRem(-26)} * var(--sbb-scaling-factor)));
+  opacity: 0;
+
+  .sbb-button-base:hover & {
+    transform: translateX(0);
+    opacity: 1;
+  }
+
+  .sbb-link-group :is(&, &:hover) {
+    display: none;
+  }
+}
+
+.sbb-button-right-icon {
+  margin-left: calc(#{sbb.pxToRem(6)} * var(--sbb-scaling-factor));
+  transform: translateX(0);
+  opacity: 1;
+
+  :where(html.sbb-lean) & {
+    transform: translateX(calc(#{sbb.pxToRem(-24)} * var(--sbb-scaling-factor)));
+  }
+
+  .sbb-button-base:hover & {
+    :where(html:not(.sbb-lean)) & {
+      transform: translateX(calc(#{sbb.pxToRem(26)} * var(--sbb-scaling-factor)));
+      opacity: 0;
+    }
+  }
+
+  .sbb-button-base.sbb-link & {
+    :where(html.sbb-lean) & {
+      transform: none;
+    }
+  }
+
+  .sbb-link-group :is(&, &:hover) {
+    opacity: 1;
+    right: 0;
+  }
+}
+
+.sbb-link-group {
+  display: inline-flex;
+  width: calc(#{sbb.pxToRem(250)} * var(--sbb-scaling-factor));
+  flex-direction: column;
+  border-top: var(--sbb-border-width-thin) solid var(--sbb-color-silver);
+}
+
+// ----------------------------------------------------------------------------------------------------
+// SBB Checkbox & Radio Button
+// ----------------------------------------------------------------------------------------------------
+
+// This is the basic class for checkbox and radio button.
+.sbb-selection-item {
+  display: inline-block;
+}
+
+// This is the class that should be applied to the label wrapper of
+// custom checkboxes or radio buttons.
+.sbb-selection-item-label {
+  display: flex;
+  position: relative; // assure absolute positioned native input is close to the label!
+  align-items: flex-start;
+  font-size: var(--sbb-font-size);
+  line-height: var(--sbb-line-height);
+}
+
+.sbb-selection-container {
+  display: inline-block;
+  background-color: var(--sbb-color-background);
+  margin-top: calc(#{sbb.pxToRem(3)} * var(--sbb-scaling-factor));
+
+  width: calc(#{sbb.pxToRem(20)} * var(--sbb-scaling-factor));
+  min-width: calc(#{sbb.pxToRem(20)} * var(--sbb-scaling-factor));
+  height: calc(#{sbb.pxToRem(20)} * var(--sbb-scaling-factor));
+  min-height: calc(#{sbb.pxToRem(20)} * var(--sbb-scaling-factor));
+  border: var(--sbb-border-width) solid var(--sbb-color-graphite);
+  margin-right: calc(#{sbb.pxToRem(8)} * var(--sbb-scaling-factor));
+
+  :where(html.sbb-lean) & {
+    margin-top: 0;
+  }
+
+  .sbb-selection-input:focus + &,
+  // Applies focus highlight for pseudo-checkbox
+  .sbb-menu-item.sbb-active .sbb-pseudo-checkbox & {
+    border-color: var(--sbb-color-weak-accent);
+  }
+
+  :is(.sbb-checkbox, .sbb-pseudo-checkbox) & {
+    border-radius: var(--sbb-border-radius);
+  }
+
+  .sbb-radio-button & {
+    border-radius: 50%;
+
+    :where(html.sbb-lean) & {
+      margin-top: 0;
+    }
+  }
+
+  .sbb-selection-disabled & {
+    border-color: var(--sbb-color-aluminum);
+    background-color: var(--sbb-color-milk);
+  }
+
+  .sbb-selection-indeterminate &::before {
+    content: '';
+    position: relative;
+    height: sbb.pxToRem(1);
+    width: sbb.pxToRem(10);
+    left: calc(50% - #{sbb.pxToRem(5)});
+    top: calc(50% - #{sbb.pxToRem(0.5)});
+    border: sbb.pxToRem(1) solid var(--sbb-color-red);
+    display: block;
+    background-color: var(
+      --sbb-color-red
+    ); // Used to fill line when user has activated browser zoom
+
+    :where(html.sbb-lean) & {
+      border-color: var(--sbb-color-granite);
+      background-color: var(
+        --sbb-color-granite
+      ); // Used to fill line when user has activated browser zoom
+    }
+  }
+}
+
+.sbb-selection-container-checked {
+  color: var(--sbb-color-red);
+  line-height: 0;
+  height: 100%;
+  width: 100%;
+  transition: opacity var(--sbb-transition-default);
+  position: relative;
+
+  :where(html.sbb-lean) & {
+    color: var(--sbb-color-iron);
+  }
+
+  :is(.sbb-checkbox, .sbb-pseudo-checkbox) & {
+    display: none;
+    border-radius: var(--sbb-border-radius);
+    transform: scale(1.3);
+
+    & > svg {
+      display: inline-block;
+      line-height: 0;
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+
+      & > polyline {
+        stroke: currentColor;
+      }
+    }
+  }
+
+  .sbb-radio-button & {
+    display: none;
+    border-radius: 50%;
+    transform: scale(0.65);
+    background-color: var(--sbb-color-red);
+
+    :where(html.sbb-lean) & {
+      background-color: var(--sbb-color-iron);
+    }
+
+    @include cdk.high-contrast(active, off) {
+      background-color: CanvasText;
+    }
+  }
+
+  .sbb-selection-disabled & {
+    color: var(--sbb-color-granite);
+  }
+
+  .sbb-selection-checked & {
+    display: block;
+  }
+
+  .sbb-selection-indeterminate & {
+    display: none;
+  }
+}
+
+.sbb-selection-content {
+  @include sbb.user-select(auto);
+  color: var(--sbb-color-granite);
+  transition: color var(--sbb-transition-default);
+
+  :where(html.sbb-lean) & {
+    line-height: sbb.pxToRem(20);
+  }
+
+  :is(.sbb-selection-checked, .sbb-selection-indeterminate) & {
+    color: var(--sbb-color-text);
+
+    :where(html.sbb-lean) & {
+      color: var(--sbb-color-iron);
+    }
+  }
+
+  .sbb-selection-disabled & {
+    color: var(--sbb-color-granite);
+
+    :where(html.sbb-lean) & {
+      color: var(--sbb-color-storm);
+    }
+  }
+}
+
+.sbb-selection-disabled {
+  pointer-events: none;
+
+  @include cdk.high-contrast(active, off) {
+    opacity: 0.5;
+  }
+}
+
+:is(.sbb-checkbox-group-vertical, .sbb-radio-group-vertical) {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: column;
+  align-items: flex-start;
+  row-gap: calc(#{sbb.pxToRem(16)} * var(--sbb-scaling-factor));
+
+  :where(html.sbb-lean) & {
+    row-gap: sbb.pxToRem(3);
+  }
+}
+
+:is(.sbb-checkbox-group-horizontal, .sbb-radio-group-horizontal) {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  column-gap: calc(#{sbb.pxToRem(32)} * var(--sbb-scaling-factor));
+
+  :where(html.sbb-lean) & {
+    column-gap: sbb.pxToRem(15);
+  }
+}
+
+// ----------------------------------------------------------------------------------------------------
+// SBB Checkbox Panel & Radio Button Panel
+// ----------------------------------------------------------------------------------------------------
+
+.sbb-selection-panel-item {
+  display: inline-block;
+  background-color: var(--sbb-color-milk);
+  border: var(--sbb-border-width-thin) solid transparent;
+  border-radius: var(--sbb-border-radius);
+  font-size: var(--sbb-font-size);
+  line-height: var(--sbb-line-height);
+  color: var(--sbb-color-granite);
+  width: 100%;
+  transition: border-color 0.15s ease-in-out;
+  position: relative;
+
+  &.sbb-selection-checked {
+    background-color: var(--sbb-color-background);
+    border-color: var(--sbb-color-black);
+    color: var(--sbb-color-text);
+  }
+
+  // We need to provide error styling for both on the element
+  // or on a wrapper (e.g. sbb-radio-group) with both manual
+  // classes and Angular Form Validation classes.
+  &:is(.sbb-selection-error, .ng-touched.ng-invalid),
+  .sbb-radio-group-base:is(.sbb-selection-error, .ng-touched.ng-invalid) & {
+    border-color: var(--sbb-color-error);
+    color: var(--sbb-color-error);
+  }
+
+  &.sbb-selection-disabled {
+    background-color: var(--sbb-color-background);
+    border-color: var(--sbb-color-aluminum);
+  }
+
+  :is(.sbb-selection-container, .sbb-selection-panel-icon) {
+    display: inline-block;
+    flex: 0 0 auto;
+  }
+
+  .sbb-selection-content {
+    flex: 1 auto;
+    display: flex;
+    flex-wrap: wrap;
+    overflow-x: hidden;
+    gap: calc(#{sbb.pxToRem(8)} * var(--sbb-scaling-factor));
+  }
+}
+
+.sbb-selection-panel-item .sbb-selection-item-label {
+  padding: sbb.pxToRem(18) sbb.pxToRem(24);
+
+  :where(html:not(.sbb-lean)) & {
+    @include sbb.mq($from: desktop4k) {
+      padding: sbb.pxToRem(27) sbb.pxToRem(36) sbb.pxToRem(26);
+    }
+    @include sbb.mq($from: desktop5k) {
+      padding: sbb.pxToRem(37) sbb.pxToRem(48) sbb.pxToRem(35);
+    }
+  }
+}
+
+.sbb-selection-inner-content {
+  flex-direction: column;
+  display: flex;
+  flex: 1 1 50%;
+  padding-right: calc(#{sbb.pxToRem(8)} * var(--sbb-scaling-factor));
+
+  &:not(:only-child) {
+    margin-right: calc(#{sbb.pxToRem(16)} * var(--sbb-scaling-factor));
+  }
+}
+
+.sbb-selection-panel-subtitle {
+  font-size: var(--sbb-font-size-small);
+  line-height: var(--sbb-line-height-small);
+  color: var(--sbb-color-granite);
+}
+
+.sbb-selection-panel-warning {
+  flex: 1 100%;
+  order: 3;
+  color: var(--sbb-color-granite);
+
+  @include sbb.mq($from: tablet) {
+    flex-basis: 0;
+    order: initial;
+    margin-top: initial;
+  }
+}
+
+.sbb-selection-panel-note {
+  margin-left: auto;
+  margin-bottom: calc(#{sbb.pxToRem(8)} * var(--sbb-scaling-factor));
+
+  @include sbb.mq($from: tablet) {
+    margin-bottom: 0;
+  }
+
+  img {
+    max-height: calc(#{sbb.pxToRem(24)} * var(--sbb-scaling-factor));
+  }
+}
+
+// These are the css classes to group sbb-checkbox-panel & sbb-radio-button-panel
+// We use em here to reduce media query usage.
+:is(.sbb-checkbox-panel-group, .sbb-radio-panel-group) {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: calc(#{sbb.pxToRem(8)} * var(--sbb-scaling-factor))
+    calc(#{sbb.pxToRem(6)} * var(--sbb-scaling-factor));
+  font-size: var(--sbb-font-size);
+
+  // The number indicates the max number of columns for the resolution
+  $sbbSelectionPanelResolutions: (
+    tablet: 4,
+    desktop: 8,
+    desktopLarge: 8,
+    desktop2k: 8,
+    desktop4k: 8,
+    desktop5k: 8,
+  );
+
+  @each $from, $max in $sbbSelectionPanelResolutions {
+    @include sbb.mq($from: $from) {
+      @for $i from 2 through $max {
+        &.sbb-col-#{$from}-#{$i} {
+          grid-template-columns: repeat(#{$i}, 1fr);
+        }
+      }
+    }
+  }
+}
+
+// ----------------------------------------------------------------------------------------------------
+// SBB Label
+// ----------------------------------------------------------------------------------------------------
+
+.sbb-label {
+  letter-spacing: 0;
+  outline: 0;
+  resize: none;
+  background-color: transparent;
+  font-family: var(--sbb-font-roman);
+  font-size: var(--sbb-font-size-small);
+  line-height: var(--sbb-form-label-line-height);
+  color: var(--sbb-color-granite);
+  display: block;
+}
+
+// ----------------------------------------------------------------------------------------------------
+// SBB Table
+// ----------------------------------------------------------------------------------------------------
+
+.sbb-table-wrapper {
+  display: block;
+  overflow: auto;
+
+  &:focus-visible {
+    outline: var(--sbb-border-width) solid var(--sbb-color-black);
+  }
+}
+
+.sbb-table {
+  border-spacing: 0;
+  width: 100%;
+  font-size: var(--sbb-font-size);
+  line-height: var(--sbb-line-height-medium);
+  padding-bottom: var(--sbb-table-tbody-padding);
+
+  :where(html.sbb-lean) & {
+    line-height: var(--sbb-line-height);
+    padding-bottom: 0;
+  }
+
+  :is(th, td) {
+    color: var(--sbb-color-text);
+    background-color: var(--sbb-table-background-color);
+    vertical-align: top;
+    position: relative;
+  }
+
+  th {
+    font-family: var(--sbb-font-bold);
+    font-weight: 400;
+
+    .sbb-table-header-subtitle {
+      font-family: var(--sbb-font-roman);
+    }
+
+    // Selector is placed here to be specific enough
+    &.sbb-header-cell.sbb-table-filter {
+      font-family: var(--sbb-font-roman);
+      font-weight: normal;
+      padding-top: 0;
+
+      input {
+        width: 100%;
+      }
+    }
+
+    :where(html.sbb-lean) & {
+      color: var(--sbb-color-granite);
+    }
+  }
+
+  thead {
+    text-align: left;
+
+    :where(html.sbb-lean) & {
+      > tr:last-child :is(th, td) {
+        border-bottom: var(--sbb-border-width-thin) solid var(--sbb-color-graphite);
+      }
+
+      > tr :is(th, td) {
+        border-right: var(--sbb-border-width-thin) solid var(--sbb-color-graphite);
+
+        :is(.sbb-table-wrapper-offset-right, .sbb-table-wrapper-offset-both)
+          &.sbb-table-sticky-border-elem-right {
+          border-left: var(--sbb-border-width-thin) solid var(--sbb-color-graphite);
+        }
+      }
+    }
+  }
+
+  :is(thead, tfoot) > tr :is(th, td) {
+    :where(html:not(.sbb-lean)) & {
+      background-color: var(--sbb-table-thead-background-color);
+      padding: var(--sbb-table-thead-padding-vertical-top) var(--sbb-table-cell-padding-horizontal)
+        var(--sbb-table-thead-padding-vertical-bottom) var(--sbb-table-cell-padding-horizontal);
+
+      @include sbb.mq($from: tabletPortrait) {
+        &:first-child {
+          border-left: var(--sbb-table-thead-padding) solid var(--sbb-table-thead-background-color);
+        }
+
+        &:last-child {
+          border-right: var(--sbb-table-thead-padding) solid var(--sbb-table-thead-background-color);
+        }
+      }
+    }
+  }
+
+  :is(& tbody, & tfoot, &) > tr :is(th, td) {
+    :where(html.sbb-lean) & {
+      border-right: var(--sbb-border-width-thin) solid var(--sbb-color-aluminum);
+    }
+  }
+
+  :is(& thead, & tbody, & tfoot, &) > tr :is(th, td) {
+    :where(html.sbb-lean) & {
+      padding: var(--sbb-table-cell-padding-vertical) var(--sbb-table-tbody-padding);
+
+      &.sbb-table-group-with-next {
+        border-right: none;
+      }
+
+      &:first-child {
+        padding-left: var(--sbb-table-tbody-padding);
+        border-left: none;
+      }
+
+      &:last-child {
+        padding-right: var(--sbb-table-tbody-padding);
+        border-right: none;
+      }
+    }
+  }
+
+  :is(& tbody, &) > tr {
+    :is(th, td) {
+      :where(html:not(.sbb-lean)) & {
+        padding: var(--sbb-table-cell-padding-vertical-top) var(--sbb-table-cell-padding-horizontal)
+          var(--sbb-table-cell-padding-vertical-bottom) var(--sbb-table-cell-padding-horizontal);
+
+        @include sbb.mq($from: tabletPortrait) {
+          &:first-child {
+            border-left: var(--sbb-table-thead-padding) solid var(--sbb-table-background-color);
+          }
+
+          &:last-child {
+            border-right: var(--sbb-table-thead-padding) solid var(--sbb-table-background-color);
+          }
+        }
+      }
+
+      :where(html.sbb-lean) & {
+        border-bottom: var(--sbb-border-width-thin) solid var(--sbb-color-aluminum);
+      }
+    }
+
+    :where(html:not(.sbb-lean)) & {
+      &:nth-child(even) :is(th, td) {
+        background-color: var(--sbb-table-tbody-stripe-background-color);
+      }
+    }
+
+    :where(html.sbb-lean) & {
+      &.sbb-table-row-selected :is(td, th) {
+        background-color: var(--sbb-color-cloud);
+        border-bottom: var(--sbb-border-width-thin) solid var(--sbb-color-black);
+      }
+
+      &:is(:hover, :focus, :focus-within) :is(td, th) {
+        background-color: var(--sbb-color-milk);
+        border-bottom: var(--sbb-border-width-thin) solid var(--sbb-color-call-to-action-hover);
+      }
+    }
+  }
+
+  caption {
+    font-size: var(--sbb-font-size-small);
+    line-height: var(--sbb-line-height-small);
+    color: var(--sbb-color-weak-accent);
+  }
+
+  .sbb-selection-item {
+    vertical-align: top;
+  }
+
+  // Position buttons and contextmenu over padding of cell
+  // Only in lean design: Additionally reduce size of buttons to fit into cell
+  .sbb-button-base,
+  .sbb-menu-trigger-contextmenu {
+    margin: -100% 0;
+  }
+
+  .sbb-button-base {
+    :where(html.sbb-lean) & {
+      padding-top: 0 !important;
+      padding-bottom: 0 !important;
+      height: var(--sbb-icon-size-default);
+
+      &:not(.sbb-ghost-button) {
+        border: none;
+      }
+    }
+  }
+
+  .sbb-icon-button {
+    :where(html.sbb-lean) & {
+      padding: 0 !important;
+    }
+  }
+
+  .sbb-icon-button,
+  .sbb-menu-trigger-contextmenu {
+    transform: translateY(calc(#{sbb.pxToRem(7)} * var(--sbb-scaling-factor)));
+  }
+}
+
+.sbb-table-caption > * {
+  font-size: var(--sbb-font-size-small);
+  line-height: var(--sbb-line-height-small);
+  color: var(--sbb-color-weak-accent);
+}
+
+.sbb-table-align-center {
+  text-align: center;
+}
+
+.sbb-table-align-left {
+  text-align: left;
+}
+
+.sbb-table-align-right {
+  text-align: right;
+}
+
+.sbb-table-sticky {
+  // Note that the table can either set this class or an inline style to make something sticky.
+  // We set the style as `!important` so that we get an identical specificity in both cases
+  // and to avoid cases where user styles have a higher specificity.
+  position: sticky !important;
+}
+
+:is(.sbb-table-sticky-border-elem-left, .sbb-table-sticky-border-elem-right)::after {
+  content: '';
+  transition: {
+    timing-function: var(--sbb-transition-timing-fast-start);
+    duration: var(--sbb-transition-duration-fast);
+    property: visibility, opacity;
+  }
+  visibility: hidden;
+  opacity: 0;
+  position: absolute;
+  width: var(--sbb-table-sticky-shadow-width);
+  top: 0;
+  bottom: 0;
+}
+
+.sbb-table-sticky-border-elem-left {
+  :is(.sbb-table-wrapper-offset-left, .sbb-table-wrapper-offset-both) & {
+    &::after {
+      visibility: visible;
+      opacity: 1;
+      background-image: linear-gradient(-270deg, rgba(0, 0, 0, 0.2) 0%, transparent 100%);
+      right: var(--sbb-table-sticky-shadow-offset);
+    }
+  }
+}
+
+.sbb-table-sticky-border-elem-right {
+  :is(.sbb-table-wrapper-offset-right, .sbb-table-wrapper-offset-both) & {
+    :where(html.sbb-lean) & {
+      border-left: var(--sbb-border-width-thin) solid var(--sbb-color-aluminum);
+    }
+
+    &::after {
+      visibility: visible;
+      opacity: 1;
+      background-image: linear-gradient(270deg, rgba(0, 0, 0, 0.2) 0%, transparent 100%);
+      left: var(--sbb-table-sticky-shadow-offset);
+    }
+  }
+}
+
+:where(html.sbb-lean) .sbb-table-sticky-border-elem-bottom::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: sbb.pxToRem(-1);
+  border-top: sbb.pxToRem(1) solid var(--sbb-color-aluminum);
+}
+
+.sbb-table-fixed-layout {
+  table-layout: fixed;
+}
+
+.sbb-table-divider-title {
+  font-family: var(--sbb-font-bold);
+}
+
+.sbb-table-cell-actions {
+  --sbb-table-cell-actions-background-color: var(--sbb-table-background-color);
+
+  display: none;
+  align-items: center;
+  position: absolute;
+  right: 0;
+  top: 0;
+  gap: calc(#{sbb.pxToRem(2)} * var(--sbb-scaling-factor));
+  padding: calc(#{sbb.pxToRem(12)} * var(--sbb-scaling-factor))
+    calc(#{sbb.pxToRem(12)} * var(--sbb-scaling-factor)) 0
+    calc(#{sbb.pxToRem(2)} * var(--sbb-scaling-factor));
+  box-shadow: 0 0 calc(#{sbb.pxToRem(8)} * var(--sbb-scaling-factor))
+    calc(#{sbb.pxToRem(8)} * var(--sbb-scaling-factor))
+    var(--sbb-table-cell-actions-background-color);
+  background-color: var(--sbb-table-cell-actions-background-color);
+
+  // Cut right and top shadow.
+  clip-path: inset(0 0 -100% -100%);
+
+  :where(html:not(.sbb-lean)) :is(tbody, .sbb-table) > tr:nth-child(even) & {
+    --sbb-table-cell-actions-background-color: var(--sbb-table-tbody-stripe-background-color);
+  }
+
+  :where(html.sbb-lean) & {
+    --sbb-table-cell-actions-background-color: var(--sbb-color-milk);
+    padding: sbb.pxToRem(5) sbb.pxToRem(5) sbb.pxToRem(0) sbb.pxToRem(2);
+    box-shadow: 0 0 sbb.pxToRem(4) sbb.pxToRem(4) var(--sbb-table-cell-actions-background-color);
+  }
+
+  .sbb-button-base {
+    margin: 0;
+    transform: none;
+  }
+
+  .sbb-icon-button {
+    :where(html:not(.sbb-lean)) & {
+      // Reduce button size
+      padding: calc(#{sbb.pxToRem(5)} * var(--sbb-scaling-factor)) !important;
+      height: var(--sbb-icon-size-large);
+    }
+  }
+
+  tr:is(:hover, :focus, :focus-within) & {
+    display: flex;
+  }
+}
+
+// ----------------------------------------------------------------------------------------------------
+// SBB time-input
+// ----------------------------------------------------------------------------------------------------
+
+input.sbb-input-element.sbb-time-input {
+  width: calc(#{sbb.pxToRem(84)} * var(--sbb-scaling-factor));
+  height: calc(#{sbb.pxToRem(48)} * var(--sbb-scaling-factor));
+  text-align: center;
+
+  :where(html.sbb-lean) & {
+    width: sbb.pxToRem(70);
+    height: sbb.pxToRem(36);
+
+    &:is([readonly], .sbb-readonly) {
+      text-align: left;
+    }
+  }
+}
+
+// ----------------------------------------------------------------------------------------------------
+// SBB scrollbar
+// ----------------------------------------------------------------------------------------------------
+
+.sbb-scrollbar {
+  --sbb-scrollbar-thumb-color: transparent;
+  --sbb-scrollbar-track-color: transparent;
+
+  &:is(:hover, .sbb-scrollbar-opaque) {
+    --sbb-scrollbar-thumb-color: var(--sbb-color-platinum);
+    --sbb-scrollbar-track-color: var(--sbb-color-milk);
+  }
+
+  scrollbar-width: thin;
+  scrollbar-color: var(--sbb-scrollbar-thumb-color) var(--sbb-scrollbar-track-color);
+
+  &::-webkit-scrollbar {
+    width: 0.5rem;
+    height: 0.5rem;
+  }
+  &::-webkit-scrollbar-thumb {
+    background-color: var(--sbb-scrollbar-thumb-color);
+  }
+  &::-webkit-scrollbar-track {
+    background-color: var(--sbb-scrollbar-track-color);
+  }
+
+  @supports (-webkit-touch-callout: none) {
+    // Only applied on iOS devices.
+    // Sets scrollbar on iOS devices invisible which solves a bug where a scrollbar
+    // is wrongly visible for a short time (until clicking or scrolling) inside the sidebar.
+    &::-webkit-scrollbar {
+      width: 0;
+      height: 0;
+    }
+  }
+
+  &:hover::-webkit-scrollbar-thumb:hover {
+    background-color: var(--sbb-color-storm);
+  }
+}
+
+// ----------------------------------------------------------------------------------------------------
+// Utility
+// ----------------------------------------------------------------------------------------------------
+
+/**
+ * Contain floats with clearfix
+ *
+ * http://nicolasgallagher.com/micro-clearfix-hack/
+ */
+.clearfix {
+  zoom: 1;
+
+  &::before,
+  &::after {
+    content: '';
+    display: table;
+  }
+
+  &::after {
+    clear: both;
+  }
+}
+
+// ----------------------------------------------------------------------------------------------------
+// Sbb Panel
+// ----------------------------------------------------------------------------------------------------
+
+$panelBorderWidthStandard: 2;
+$panelBorderWidthLean: 1;
+$panelBorderRadius: 2;
+
+.sbb-panel {
+  width: 100%;
+  overflow-x: hidden;
+  overflow-y: auto;
+  background-color: var(--sbb-color-background);
+  border: var(--sbb-border-width) solid var(--sbb-color-weak-accent);
+  border-radius: 0 0 var(--sbb-border-radius) var(--sbb-border-radius);
+  border-top: none;
+  transition: height var(--sbb-transition-fast-start), opacity var(--sbb-transition-fast-start);
+  color: var(--sbb-color-weak-accent);
+  position: relative;
+  top: var(--sbb-box-shadow-horizontal-border-offset-top-below);
+  box-shadow: var(--sbb-box-shadow-below), var(--sbb-box-shadow-horizontal-border-bottom);
+
+  hr {
+    margin: sbb.pxToRem(10) 0;
+    padding: 0;
+    border: none;
+    border-top: var(--sbb-border-width-thin) solid var(--sbb-color-cloud);
+
+    :where(html.sbb-lean) & {
+      margin: sbb.pxToRem(4) 0;
+    }
+  }
+
+  .sbb-label {
+    color: var(--sbb-color-metal);
+    padding: calc(#{sbb.pxToRem(5)} * var(--sbb-scaling-factor))
+      calc(#{sbb.pxToRem(14)} * var(--sbb-scaling-factor));
+
+    :where(html.sbb-lean) & {
+      color: var(--sbb-color-granite);
+      padding: sbb.pxToRem(4) sbb.pxToRem(8);
+    }
+  }
+}
+
+.sbb-panel-above {
+  border-radius: var(--sbb-border-radius) var(--sbb-border-radius) 0 0;
+  border-top-width: var(--sbb-border-width);
+  border-top-style: solid;
+  border-bottom: none;
+  top: var(--sbb-box-shadow-horizontal-border-offset-top-above);
+  box-shadow: var(--sbb-box-shadow-horizontal-border-top);
+}
+
+.sbb-panel-padded {
+  padding-top: calc(#{sbb.pxToRem(10)} * var(--sbb-scaling-factor));
+  padding-bottom: calc(#{sbb.pxToRem(10)} * var(--sbb-scaling-factor));
+
+  :where(html.sbb-lean) & {
+    padding-top: sbb.pxToRem(4);
+    padding-bottom: sbb.pxToRem(4);
+  }
+}
+
+.sbb-input-with-open-panel:not(.sbb-input-with-open-panel-above).sbb-input-element,
+.sbb-input-with-open-panel:not(.sbb-input-with-open-panel-above) > .sbb-input-element {
+  border-bottom-left-radius: 0 !important;
+  border-bottom-right-radius: 0 !important;
+}
+
+.sbb-input-with-open-panel-above.sbb-input-element,
+.sbb-input-with-open-panel-above > .sbb-input-element {
+  border-top-left-radius: 0 !important;
+  border-top-right-radius: 0 !important;
+
+  box-shadow: var(--sbb-box-shadow-below);
+}
+
+// ----------------------------------------------------------------------------------------------------
+// Sbb Menu
+// ----------------------------------------------------------------------------------------------------
+
+$menuItemPaddingLeftRightStandard: 14;
+$menuItemPaddingTopBottom: 4;
+
+.sbb-menu-item {
+  @include sbb.ellipsis;
+  @include sbb.buttonResetFrameless;
+
+  position: relative;
+  display: block;
+  text-decoration: none;
+  padding: calc(#{sbb.pxToRem(4)} * var(--sbb-scaling-factor))
+    calc(#{sbb.pxToRem(14)} * var(--sbb-scaling-factor));
+  text-align: left;
+  max-width: 100%;
+  cursor: pointer;
+  outline: 0;
+  color: var(--sbb-color-weak-accent);
+  font-size: var(--sbb-font-size);
+  line-height: var(--sbb-line-height-medium);
+
+  :where(html.sbb-lean) & {
+    padding-left: sbb.pxToRem(8);
+    padding-right: sbb.pxToRem(8);
+  }
+
+  &:not(.sbb-focused) strong {
+    color: var(--sbb-color-text);
+  }
+
+  &:is(.sbb-selected, .sbb-active) {
+    color: var(--sbb-color-text);
+
+    :where(html.sbb-lean) & {
+      @include sbb.sbbMenuItemBlackLean();
+    }
+  }
+
+  &:is(:disabled, [disabled], .sbb-disabled) {
+    cursor: default;
+    opacity: 0.5;
+    @include sbb.user-select(none);
+  }
+
+  &:is(:not(:disabled):not([disabled]):not(.sbb-disabled):is(:hover, :focus), .sbb-focused) {
+    :is(&, & strong) {
+      color: var(--sbb-color-red);
+
+      :where(html.sbb-lean) & {
+        @include sbb.sbbMenuItemRedLean();
+      }
+    }
+  }
+
+  .sbb-icon {
+    line-height: 0;
+    margin: sbb.pxToRem(-7) 0 sbb.pxToRem(-7) 0;
+    transform: translateY(calc(#{sbb.pxToRem(7)} * var(--sbb-scaling-factor)));
+    width: var(--sbb-icon-size-default);
+    height: var(--sbb-icon-size-default);
+
+    :where(html:not(.sbb-lean)) & {
+      @include sbb.mq($from: desktop4k) {
+        margin-top: sbb.pxToRem(-12);
+        margin-bottom: sbb.pxToRem(-12);
+      }
+      @include sbb.mq($from: desktop5k) {
+        margin-top: sbb.pxToRem(-15);
+        margin-bottom: sbb.pxToRem(-15);
+      }
+    }
+    :where(html.sbb-lean) & {
+      margin: sbb.pxToRem(-9) 0 sbb.pxToRem(-9) 0;
+    }
+  }
+
+  > .sbb-icon:first-child {
+    float: left; // used to ignore users whitespace and to ensure margin is correct
+    margin-right: calc(#{sbb.pxToRem(11)} * var(--sbb-scaling-factor));
+    margin-left: calc(#{sbb.pxToRem(-1)} * var(--sbb-scaling-factor));
+
+    :where(html.sbb-lean) & {
+      margin-right: sbb.pxToRem(8);
+      margin-left: 0;
+    }
+  }
+}
+
+.sbb-menu-group {
+  display: block;
+
+  .sbb-menu-item {
+    padding-left: calc(#{sbb.pxToRem(22)} * var(--sbb-scaling-factor));
+
+    :where(html.sbb-lean) & {
+      padding-left: sbb.pxToRem(16);
+    }
+  }
+
+  &:first-child > .sbb-label:first-child {
+    padding-top: calc(#{sbb.pxToRem(16)} * var(--sbb-scaling-factor));
+
+    .sbb-panel-padded > & {
+      padding-top: calc(#{sbb.pxToRem(6)} * var(--sbb-scaling-factor));
+    }
+  }
+
+  .sbb-label:where(:not(.sbb-option-hint)) {
+    padding-top: calc(#{sbb.pxToRem(22)} * var(--sbb-scaling-factor));
+
+    :where(html.sbb-lean) & {
+      padding-top: sbb.pxToRem(12);
+    }
+  }
+
+  :is(& + &, .sbb-menu-item + &, & + .sbb-menu-item) {
+    border-top: var(--sbb-border-width-thin) solid var(--sbb-color-cloud);
+    margin-top: calc(#{sbb.pxToRem(8)} * var(--sbb-scaling-factor));
+
+    :where(html.sbb-lean) & {
+      margin-top: sbb.pxToRem(4);
+    }
+
+    .sbb-label:where(:not(.sbb-option-hint)) {
+      padding-top: calc(#{sbb.pxToRem(16)} * var(--sbb-scaling-factor));
+
+      :where(html.sbb-lean) & {
+        padding-top: sbb.pxToRem(8);
+      }
+    }
+  }
+
+  & + .sbb-menu-item {
+    padding-top: calc(#{sbb.pxToRem(14)} * var(--sbb-scaling-factor));
+
+    :where(html.sbb-lean) & {
+      padding-top: sbb.pxToRem(8);
+    }
+  }
+}
+
+// ----------------------------------------------------------------------------------------------------
+// Sbb Tooltip
+// ----------------------------------------------------------------------------------------------------
+
+.sbb-tooltip-trigger,
+.sbb-tooltip-icon {
+  line-height: 0;
+  cursor: pointer;
+
+  .sbb-tooltip-inline & {
+    vertical-align: text-bottom;
+    margin-bottom: calc(sbb.pxToRem(-3.5) * var(--sbb-scaling-factor));
+  }
+}
+
+:is(.sbb-tooltip-icon, .sbb-tooltip-trigger):is(:active, :hover, :focus),
+.sbb-tooltip-trigger-active {
+  outline: none;
+  color: var(--sbb-color-call-to-action-hover);
+  border-color: var(--sbb-color-call-to-action-hover);
+}
+
+// ----------------------------------------------------------------------------------------------------
+// Dividers (should to be at the very bottom of the typography to ensure overwriting styles which have already a margin defined)
+// ----------------------------------------------------------------------------------------------------
+
+@each $size in thin, small, medium, big {
+  @each $position in top, bottom {
+    .sbb-divider-#{$size}-vertical,
+    .sbb-divider-#{$size}-#{$position} {
+      margin-#{$position}: var(--sbb-divider-#{$size});
+    }
+  }
+}

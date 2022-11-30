@@ -1,0 +1,7 @@
+.example-chip.cdk-drag-animating {
+  transition: transform var(--sbb-transition-duration-fast) cubic-bezier(0, 0, 0.2, 1);
+}
+
+.example-chip-list .cdk-drop-list-dragging {
+  transition: transform transform var(--sbb-transition-duration-fast) cubic-bezier(0, 0, 0.2, 1);
+}

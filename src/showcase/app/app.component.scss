@@ -1,0 +1,9 @@
+@use '@sbb-esta/angular' as sbb;
+
+:host {
+  display: block;
+}
+
+.sbb-icon-sidebar.sbb-icon-sidebar-expanded {
+  width: sbb.pxToEm(260);
+}

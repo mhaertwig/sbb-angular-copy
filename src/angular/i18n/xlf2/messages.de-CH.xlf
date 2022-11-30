@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="2.0" xmlns="urn:oasis:names:tc:xliff:document:2.0" srcLang="en-CH" trgLang="de-CH">
+  <file original="ng.template" id="ngi18n">
+    <unit id="sbbAlertCloseAlert">
+      <segment state="reviewed">
+        <source>Close message</source>
+        <target>Meldung schliessen</target>
+      </segment>
+    </unit>
+    <unit id="sbbBreadcrumbExpand">
+      <segment state="reviewed">
+        <source>Show entire path</source>
+        <target>Ganzen Pfad anzeigen</target>
+      </segment>
+    </unit>
+    <unit id="sbbDatepickerSwitchToPreviousMonth">
+      <segment state="reviewed">
+        <source>Change to the previous month</source>
+        <target>Zum letzten Monat wechseln</target>
+      </segment>
+    </unit>
+    <unit id="sbbDatepickerSwitchToNextMonth">
+      <segment state="reviewed">
+        <source>Change to the next month</source>
+        <target>Zum nächsten Monat wechseln</target>
+      </segment>
+    </unit>
+    <unit id="sbbDatepickerSwitchToPreviousYear">
+      <segment state="reviewed">
+        <source>Change to the previous year</source>
+        <target>Zum letzten Jahr wechseln</target>
+      </segment>
+    </unit>
+    <unit id="sbbDatepickerSwitchToNextYear">
+      <segment state="reviewed">
+        <source>Change to the next year</source>
+        <target>Zum nächsten Jahr wechseln</target>
+      </segment>
+    </unit>
+    <unit id="sbbDatepickerOpenCalendar">
+      <segment state="reviewed">
+        <source>Show calendar</source>
+        <target>Kalender anzeigen</target>
+      </segment>
+    </unit>
+    <unit id="sbbDatePickerNextDayAriaLabel">
+      <segment state="translated">
+        <source>Next day</source>
+        <target>Nächster Tag</target>
+      </segment>
+    </unit>
+    <unit id="sbbDatePickerPrevDayAriaLabel">
+      <segment state="translated">
+        <source>Previous day</source>
+        <target>Vorheriger Tag</target>
+      </segment>
+    </unit>
+    <unit id="sbbDialogCloseDialog">
+      <segment state="reviewed">
+        <source>Close dialog</source>
+        <target>Dialog schliessen</target>
+      </segment>
+    </unit>
+    <unit id="sbbFileSelectorUploadFile">
+      <segment state="reviewed">
+        <source>Upload file</source>
+        <target>Datei hochladen</target>
+      </segment>
+    </unit>
+    <unit id="sbbFileSelectorRemoveFile">
+      <segment state="reviewed">
+        <source>Remove file</source>
+        <target>Datei entfernen</target>
+      </segment>
+    </unit>
+    <unit id="sbbHeaderMenuBack">
+      <segment state="reviewed">
+        <source>Back</source>
+        <target>Zurück</target>
+      </segment>
+    </unit>
+    <unit id="sbbHeaderOpenMenu">
+      <segment state="reviewed">
+        <source>Open Menu</source>
+        <target>Menü öffnen</target>
+      </segment>
+    </unit>
+    <unit id="sbbHeaderCloseMenu">
+      <segment state="reviewed">
+        <source>Close Menu</source>
+        <target>Menü schliessen</target>
+      </segment>
+    </unit>
+    <unit id="sbbLightboxCloseLightbox">
+      <segment state="reviewed">
+        <source>Close lightbox</source>
+        <target>Lightbox schliessen</target>
+      </segment>
+    </unit>
+    <unit id="sbbPaginationPreviousPage">
+      <segment state="reviewed">
+        <source>Previous Page</source>
+        <target>Vorherige Seite</target>
+      </segment>
+    </unit>
+    <unit id="sbbPaginationNextPage">
+      <segment state="reviewed">
+        <source>Next Page</source>
+        <target>Nächste Seite</target>
+      </segment>
+    </unit>
+    <unit id="sbbSearchHeaderButtonLabel">
+      <segment state="reviewed">
+        <source>Search</source>
+        <target>Suche</target>
+      </segment>
+    </unit>
+    <unit id="sbbSidebarCollapse">
+      <segment state="translated">
+        <source>Collapse</source>
+        <target>Zusammenklappen</target>
+      </segment>
+    </unit>
+    <unit id="sbbSidebarExpand">
+      <segment state="translated">
+        <source>Expand</source>
+        <target>Erweitern</target>
+      </segment>
+    </unit>
+    <unit id="sbbSidebarCloseSidebar">
+      <segment state="reviewed">
+        <source>Close Sidebar</source>
+        <target>Seitenmenü schliessen</target>
+      </segment>
+    </unit>
+    <unit id="sbbSidebarOpenSidebar">
+      <segment state="reviewed">
+        <source>Open Sidebar</source>
+        <target>Seitenmenü öffnen</target>
+      </segment>
+    </unit>
+    <unit id="sbbTagBadgePillAmountOfResults">
+      <segment state="translated">
+        <source><ph id="0" equiv="PH" disp="this.amount"/> results available</source>
+        <target><ph id="0" equiv="PH" disp="this.amount"/> Resultate verfügbar</target>
+      </segment>
+    </unit>
+    <unit id="sbbTagsAll">
+      <segment state="reviewed">
+        <source>All</source>
+        <target>Alle</target>
+      </segment>
+    </unit>
+    <unit id="sbbTagsAllBadgeDescription">
+      <segment state="reviewed">
+        <source>A total of <ph id="0" equiv="PH" disp="this.totalAmount"/> results available</source>
+        <target>Ein Total von <ph id="0" equiv="PH" disp="this.totalAmount"/> Resultaten verfügbar</target>
+      </segment>
+    </unit>
+    <unit id="sbbTextareaCounterText">
+      <segment state="reviewed">
+        <source><ph id="0" equiv="PH" disp="this._counter.value"/> characters remaining</source>
+        <target>Noch <ph id="0" equiv="PH" disp="this._counter.value"/> Zeichen</target>
+      </segment>
+    </unit>
+    <unit id="sbbTextexpandShowLess">
+      <segment state="reviewed">
+        <source>Show less</source>
+        <target>Weniger anzeigen</target>
+      </segment>
+    </unit>
+    <unit id="sbbTextexpandShowMore">
+      <segment state="reviewed">
+        <source>Show more</source>
+        <target>Mehr anzeigen</target>
+      </segment>
+    </unit>
+    <unit id="sbbUsermenuLogin">
+      <segment state="reviewed">
+        <source>Login</source>
+        <target>Anmelden</target>
+      </segment>
+    </unit>
+    <unit id="sbbUsermenuOpenPanel">
+      <segment state="reviewed">
+        <source>Logged in as <ph id="0" equiv="PH" disp="this.displayName || this.userName"/>. Click or press enter to open user menu.</source>
+        <target>Angemeldet als <ph id="0" equiv="PH" disp="this.displayName || this.userName
+"/>. Klicken oder Enter drücken, um das Benutzermenü zu öffnen.</target>
+      </segment>
+    </unit>
+  </file>
+</xliff>
