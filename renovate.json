@@ -1,9 +1,6 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": ["config:base"],
-  "username": "sbb-angular-renovate[bot]",
-  "gitAuthor": "sbb-angular-renovate<52953647+sbb-angular-renovate[bot]@users.noreply.github.com>",
-  "repositories": ["sbb-design-systems/sbb-angular"],
   "baseBranches": ["main"],
   "includePaths": ["package.json", ".github/**"],
   "lockFileMaintenance": {
