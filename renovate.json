@@ -8,7 +8,7 @@
     "enabled": true
   },
   "allowPostUpgradeCommandTemplating": true,
-  "allowedPostUpgradeCommands": ["^yarn", "^npm", "^npx"],
+  "allowedPostUpgradeCommands": ["^yarn"],
   "ignoreDeps": [
     "@arcgis/core",
     "@types/marked",
@@ -61,9 +61,9 @@
       "matchPackageNames": ["@angular/cli", "@angular/cdk", "angular-server-side-configuration"],
       "postUpgradeTasks": {
         "commands": [
-          "npm ci --ignore-scripts",
-          "npx ng update {{{depName}}} --from={{{currentVersion}}} --to={{{newVersion}}} --migrate-only --allow-dirty --force",
-          "npm run format"
+          "yarn install --ignore-scripts --frozen-lockfile --non-interactive --production=false",
+          "yarn ng update {{{depName}}} --from={{{currentVersion}}} --to={{{newVersion}}} --migrate-only --allow-dirty --force",
+          "yarn format"
         ],
         "fileFilters": ["**/**"]
       }
@@ -72,8 +72,8 @@
       "matchPackageNames": ["prettier"],
       "postUpgradeTasks": {
         "commands": [
-          "npm ci --ignore-scripts",
-          "npm run format:prettier"
+          "yarn install --ignore-scripts --frozen-lockfile --non-interactive --production=false",
+          "yarn format:prettier"
         ],
         "fileFilters": ["**/**"]
       }
@@ -82,9 +82,9 @@
       "matchPackageNames": ["esbuild"],
       "postUpgradeTasks": {
         "commands": [
-          "npm ci --ignore-scripts",
-          "npm run build:schematics",
-          "npm run format"
+          "yarn install --ignore-scripts --frozen-lockfile --non-interactive --production=false",
+          "yarn build:schematics",
+          "yarn format"
         ],
         "fileFilters": ["**/**"]
       }
